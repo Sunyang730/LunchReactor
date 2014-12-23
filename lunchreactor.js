@@ -4,9 +4,18 @@ var LUNCHREACTOR = (function() {
 
   function addHacker(name) {
     if (_.contains(getHackers(), name) === false)
-      hackers.name = [];
+      hackers[name] = [];
     else
       console.log(name + " is already in the record.");
   }
+
+  function getHackers() {
+    return Object.keys(hackers);
+  }
+
+  return {
+    addHacker: addHacker,
+    getHackers: getHackers
+  };
 
 })();
