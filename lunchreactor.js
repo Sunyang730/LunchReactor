@@ -13,9 +13,17 @@ var LUNCHREACTOR = (function() {
     return _.keys(hackers);
   }
 
+  function getMatches() {
+   }
+
+  function hasMet(name, other) {
+    return _.contains(hackers[name], other);
+  }
+  
   return {
     addHacker: addHacker,
-    getHackers: getHackers
+    getHackers: getHackers,
+    getMatches: getMatches
   };
 
 })();
