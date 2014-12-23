@@ -10,7 +10,7 @@ var LUNCHREACTOR = (function() {
   }
 
   function getHackers() {
-    return Object.keys(hackers);
+    return _.keys(hackers);
   }
 
   return {
