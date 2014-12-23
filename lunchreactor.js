@@ -14,8 +14,11 @@ var LUNCHREACTOR = (function() {
   }
 
   function allFriends() {
+    var maxMeets = (getHackers().length % 2 === 0)?
+          getHackers().length - 1 :
+          getHackers().length - 2;
     return _.some(hackers, function(met) {
-      return met.length === (getHackers().length - 1);
+      return met.length >= maxMeets;
     });
   }
 
@@ -28,7 +31,12 @@ var LUNCHREACTOR = (function() {
 
   function matches(names) {
     var pairs = {};
+    var luckyOne;
     while (names.length > 0) {
+
+      if (names.length % 2 !== 0) {
+        luckyOne = names.shift();
+      }
 
       var one = names.pop();
       var two = _.find(names, function(name) {
@@ -42,6 +50,16 @@ var LUNCHREACTOR = (function() {
       pairs[one] = two;
       pairs[two] = one;
     }
+
+    if (luckyOne !== undefined) {
+      var rando = _.find(pairs, function(name) {
+        return _.contains(hackers[luckyOne], name) === false;
+      });
+      pairs[pairs[rando]] += " & " + luckyOne;
+      pairs[rando] += " & " + luckyOne;
+      hackers[luckyOne].push(rando);
+    }
+    
     return pairs;
   }
 
