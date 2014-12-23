@@ -20,6 +20,29 @@ var LUNCHREACTOR = (function() {
   }
 
   function getMatches() {
+    if (allFriends()) {
+      return "Everyone knows everyone.";
+    }
+    return matches(getHackers());
+  }
+
+  function matches(names) {
+    var pairs = {};
+    while (names.length > 0) {
+
+      var one = names.pop();
+      var two = _.find(names, function(name) {
+        return _.contains(hackers[one], name) === false;
+      });
+      names = _.without(names, two);
+
+      hackers[one].push(two);
+      hackers[two].push(one);
+
+      pairs[one] = two;
+      pairs[two] = one;
+    }
+    return pairs;
   }
 
   function hasMet(name, other) {
