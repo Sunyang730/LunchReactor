@@ -13,8 +13,14 @@ var LUNCHREACTOR = (function() {
     return _.keys(hackers);
   }
 
+  function allFriends() {
+    return _.some(hackers, function(met) {
+      return met.length === (getHackers().length - 1);
+    });
+  }
+
   function getMatches() {
-   }
+  }
 
   function hasMet(name, other) {
     return _.contains(hackers[name], other);
