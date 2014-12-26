@@ -1,4 +1,4 @@
 LunchReactor
 ============
 
-Web App that randomly match HRers.
+Web App that randomly matches HRers.
