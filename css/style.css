@@ -7,8 +7,11 @@ h1 {
 }
 
 h2 {
-  font-family:'Roboto Slab', Geneva, sans-serif;
-  font-size:6pt;
+  font-family:'Lato', Geneva, sans-serif;
+  font-size:24pt;
+  font-weight:100;
+  margin-top: -26px;
+  letter-spacing:2px;
   color: #fff;
   text-align:center;
 }
