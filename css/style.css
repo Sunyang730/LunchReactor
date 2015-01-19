@@ -6,7 +6,8 @@ video#bgvid {
   right: 0; bottom: 0;
   background-position: 50 0;
   opacity:.65;
-  width: 100%; height: 100%; z-index: 1;
+  min-width: 100%; min-height:100%;
+  width: auto; height: auto; z-index: 1;
   background:#000;
   background-size: cover;
 }
@@ -14,6 +15,7 @@ video#bgvid {
 .overlay {
   position:fixed;
   right:0; bottom: 0;
-  width:100%; height: 100%; z-index: 2;
+  min-width:100%; min-height:100%;
+  width:auto; height: auto; z-index: 2;
   background-color:#000;
 }
