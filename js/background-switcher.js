@@ -8,6 +8,7 @@ $(document).ready(function(){
                      'bg/coffee-beans-left-justified-small.mp4',
                      'bg/coffee-beans-small.mp4',
                      'bg/coffee-cup-small.mp4'];
+
   var $video = $('#bgvid'); 
   var $source = $('source');
   

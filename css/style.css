@@ -1,3 +1,17 @@
+h1 {
+
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:48pt;
+  color: #fff;
+  text-align:center;
+}
+
+h2 {
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:6pt;
+  color: #fff;
+  text-align:center;
+}
 
 /* Background */
 
@@ -19,3 +33,61 @@ video#bgvid {
   width:auto; height: auto; z-index: 2;
   background-color:#000;
 }
+
+/* Containers */
+
+#top {
+
+  
+}
+
+#middle{
+  position:relative;
+  width:500px; height:400px;
+  margin: 0 auto;
+  top: 50%;
+  -ms-transform: translateY(-50%)
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index:3;
+}
+
+/* Shapes */
+
+.circleBase {
+  border-radius: 50%;
+  behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+  z-index: 3;
+}
+
+.type1 {
+  width: 200px; height: 200px;
+  border: 1px solid #fff;
+  z-index: 3; 
+}
+
+div.type1 p{
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:36px;
+  color:#fff;
+  position:relative;
+  text-align:center;
+  margin: 0;
+  height: auto; width: 200px;
+  transform: translate(-50%, -50%);
+  top:50%;
+  left: 50%;
+}
+div.type1 p span.rsvp {
+  font-size:42pt;
+}
+div.type1 p span.count {
+  font-size:63pt;
+}
+
+
+/* Alignments */
+
+.fleft { float:left; }
+.fright { float:right; }
+
