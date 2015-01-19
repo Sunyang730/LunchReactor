@@ -31,8 +31,8 @@ $(document).ready(function(){
   $(window).on('resize', function() {
 
     // shows/hides video background
-    if($(window).width() < 640){ $video.hide();}
-    else{ $video.show();}
+    if($(window).width() < 640){ $video.fadeOut();}
+    else{ $video.fadeIn();}
   });
 
   /* **************
