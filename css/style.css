@@ -23,7 +23,7 @@ video#bgvid {
   position: fixed;
   right: 0; bottom: 0;
   background-position: 50 0;
-  opacity:.65;
+  opacity:.85;
   min-width: 100%; min-height:100%;
   width: auto; height: auto; z-index: 1;
   background:#000;
@@ -124,8 +124,8 @@ video#bgvid {
 }
 
 div.type1 p{
-  font-family:'Roboto Slab', Geneva, sans-serif;
-  font-size:36px;
+  font-family: 'Lato', Geneva, sans-serif;
+  font-size:18pt;
   color:#fff;
   position:relative;
   text-align:center;
@@ -135,11 +135,19 @@ div.type1 p{
   top:50%;
   left: 50%;
 }
+
 div.type1 p span.rsvp {
   font-size:42pt;
+  font-family:'Roboto Slab', Geneva, sans-serif;
+
 }
 div.type1 p span.count {
-  font-size:63pt;
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:72pt;
+}
+
+div.type1 p span.subtitle {
+ text-align:center;
 }
 
 /* Alignments */
