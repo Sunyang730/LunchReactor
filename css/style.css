@@ -36,9 +36,62 @@ video#bgvid {
 
 /* Containers */
 
-#top {
+.signup{
+  position:absolute;
+  top:0px;
+  right:10px;
+  width:150px; 
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:24pt;
+  color: #fff;
+  text-align:left;
+  z-index:4;
+}
 
-  
+.register{
+    display:none;
+  position:absolute;
+  right:0px;
+  width:200px; height:100px;
+  margin: 0 auto;
+  padding:5px;
+  z-index:4;
+}
+
+.info{
+  background-color: rgba(0,0,0,0,1);
+  color:black;
+}
+
+.infoField{
+  padding:5px 0 5px 2;
+  margin: 5px 5px 5px 5px;
+  width: 150px;
+  opacity:0.4;
+  border: 1px solid #321900;
+  border-radius: 5px; 
+  -moz-border-radius: 3px; 
+  background-color: rgba(0,0,0,0,1);
+  color:black;
+}
+
+
+.submitInfo{
+  padding: 0 0 0 0;
+  margin: 5px 0 0 5px;
+  background:#402000;
+  color:#FFFFFF ;
+  border: 1px solid #321900;
+  border-radius: 5px; 
+  -moz-border-radius: 3px; 
+  display:inline-block;
+  width:150px; 
+  height: 25px;
+  -webkit-font-smoothing: antialiased;
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:12pt;
+  color: #fff;
+  text-align:center;
 }
 
 #middle{
@@ -85,9 +138,7 @@ div.type1 p span.count {
   font-size:63pt;
 }
 
-
 /* Alignments */
-
-.fleft { float:left; }
-.fright { float:right; }
+.fleft { float:left; } 
+.fright { float:right; } 
 
