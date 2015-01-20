@@ -1,5 +1,6 @@
 var LUNCHREACTOR = (function() {
-
+  
+  var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
   var hackers = {};
 
   function addHacker(name) {
