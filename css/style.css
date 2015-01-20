@@ -1,0 +1,156 @@
+h1 {
+
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:48pt;
+  color: #fff;
+  text-align:center;
+}
+
+h2 {
+  font-family:'Lato', Geneva, sans-serif;
+  font-size:24pt;
+  font-weight:100;
+  margin-top: -26px;
+  padding-bottom: 16px;
+  letter-spacing:2px;
+  color: #fff;
+  text-align:center;
+}
+
+/* Background */
+
+video#bgvid {
+  position: fixed;
+  right: 0; bottom: 0;
+  background-position: 50 0;
+  opacity:.85;
+  min-width: 100%; min-height:100%;
+  width: auto; height: auto; z-index: 1;
+  background:#000;
+  background-size: cover;
+}
+
+.overlay {
+  position:fixed;
+  right:0; bottom: 0;
+  min-width:100%; min-height:100%;
+  width:auto; height: auto; z-index: 2;
+  background-color:#000;
+}
+
+/* Containers */
+
+.signup{
+  position:absolute;
+  top:0px;
+  right:10px;
+  width:150px; 
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:24pt;
+  color: #fff;
+  text-align:left;
+  z-index:4;
+}
+
+.register{
+    display:none;
+  position:absolute;
+  right:0px;
+  width:200px; height:100px;
+  margin: 0 auto;
+  padding:5px;
+  z-index:4;
+}
+
+.info{
+  background-color: rgba(0,0,0,0,1);
+  color:black;
+}
+
+.infoField{
+  padding:5px 0 5px 2;
+  margin: 5px 5px 5px 5px;
+  width: 150px;
+  opacity:0.4;
+  border: 1px solid #321900;
+  border-radius: 5px; 
+  -moz-border-radius: 3px; 
+  background-color: rgba(0,0,0,0,1);
+  color:black;
+}
+
+
+.submitInfo{
+  padding: 0 0 0 0;
+  margin: 5px 0 0 5px;
+  background:#402000;
+  color:#FFFFFF ;
+  border: 1px solid #321900;
+  border-radius: 5px; 
+  -moz-border-radius: 3px; 
+  display:inline-block;
+  width:150px; 
+  height: 25px;
+  -webkit-font-smoothing: antialiased;
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:12pt;
+  color: #fff;
+  text-align:center;
+}
+
+#middle{
+  position:relative;
+  width:500px; height:400px;
+  margin: 0 auto;
+  top: 50%;
+  -ms-transform: translateY(-50%)
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  z-index:3;
+}
+
+/* Shapes */
+
+.circleBase {
+  border-radius: 50%;
+  behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+  z-index: 3;
+}
+
+.type1 {
+  width: 200px; height: 200px;
+  border: 1px solid #fff;
+  z-index: 3; 
+}
+
+div.type1 p{
+  font-family: 'Lato', Geneva, sans-serif;
+  font-size:18pt;
+  color:#fff;
+  position:relative;
+  text-align:center;
+  margin: 0;
+  height: auto; width: 200px;
+  transform: translate(-50%, -50%);
+  top:50%;
+  left: 50%;
+}
+
+div.type1 p span.rsvp {
+  font-size:42pt;
+  font-family:'Roboto Slab', Geneva, sans-serif;
+
+}
+div.type1 p span.count {
+  font-family:'Roboto Slab', Geneva, sans-serif;
+  font-size:72pt;
+}
+
+div.type1 p span.subtitle {
+ text-align:center;
+}
+
+/* Alignments */
+.fleft { float:left; } 
+.fright { float:right; } 
+
