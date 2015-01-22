@@ -47,6 +47,11 @@ $(function(){
   // Shows the success message in RSVP circle
   $rsvp_circle.on('click',function(){
     
+    // voids click if already RSVPed
+    if(rsvped){ return; }
+    
+    // shows green check mark and
+    // kills 'frost' hover action
     rsvped = true;
     $rsvp_frost.css('display','none');
     $('#rsvp_text').fadeOut('fast', function(){
