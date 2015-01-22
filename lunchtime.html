@@ -2,15 +2,11 @@
   
   <head>
     <title>LunchReactor</title>
-    <script src="js/underscore-min.js"></script>
     <script src="http://momentjs.com/downloads/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/velocity/1.2.1/velocity.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/velocity/1.2.1/velocity.ui.min.js"></script>
     <script src="js/lunchreactor.js"></script>
-    <script src="js/jquery.js"></script>
-    <script src="js/background-switcher.js"></script>
-    <script src="js/rsvp.js"></script>
-    <script src="js/timestamp.js"></script>
-    <script src="js/register.js"></script>
-    <script src="https://cdn.firebase.com/js/client/2.1.0/firebase.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto+Slab">
     <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'> 
@@ -19,13 +15,13 @@
   <body>
     <div id="bg">
       <video autoplay loop  id="bgvid">
-        <source src="bg/coffee-cup-small.mp4" type="video/mp4">
+        <source id="source" src="bg/coffee-cup-small.mp4" type="video/mp4">
       </video>
     </div>
 
-    <div class="signup">
+    <div class="signup" id="signup">
       <p>Sign Up</p>
-        <div class="register">
+        <div class="register" id="register">
           <form class="info">
             <input type="text" class="infoField" name="firstname" placeholder="First Name"><br>
             <input type="text" class="infoField" name="lastname" placeholder="Last Name"><br>
@@ -38,9 +34,9 @@
 
     <div id="middle">
       <h1>Lunch Reactor</h1>
-      <h2>Monday, January 19, 2015</h2>
-      <div class="circle frost"></div>
-      <div class="circle rsvp fleft">
+      <h2 id="date">Monday, January 19, 2015</h2>
+      <div class="circle" id="frost"></div>
+      <div class="circle fleft" id="rsvp">
         <p>
           <a href="#"><span class="rsvp">RSVP</span></a>
           <br>

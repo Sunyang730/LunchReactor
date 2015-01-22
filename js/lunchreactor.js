@@ -1,77 +1,72 @@
-var LUNCHREACTOR = (function() {
+$(function(){
+
   
-  var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
-  var hackers = {};
+  /* ******************
+   * Global Variables *
+   * ******************/
 
-  function addHacker(name) {
-    if (_.contains(getHackers(), name) === false)
-      hackers[name] = [];
-    else
-      console.log(name + " is already in the record.");
-  }
+  var $video = $('#bgvid'); 
+  var $source = $video.find('#source');
+  var backgrounds = ['bg/coffee-beans-fast-fall-small.mp4',
+                     'bg/coffee-beans-left-justified-small.mp4',
+                     'bg/coffee-beans-small.mp4',
+                     'bg/coffee-cup-small.mp4'];
+  var $sign = $('#signup');
+  var $reg = $sign.find('#register');
+  var frost = false;
+  var $rsvp_frost = $('#frost', '#middle');
+  var $rsvp_circle = $('#rsvp', '#middle');
 
-  function getHackers() {
-    return _.keys(hackers);
-  }
-
-  function allFriends() {
-    var maxMeets = (getHackers().length % 2 === 0)?
-          getHackers().length - 1 :
-          getHackers().length - 2;
-    return _.some(hackers, function(met) {
-      return met.length >= maxMeets;
-    });
-  }
-
-  function getMatches() {
-    if (allFriends()) {
-      return "Everyone knows everyone.";
-    }
-    return matches(getHackers());
-  }
-
-  function matches(names) {
-    var pairs = {};
-    var luckyOne;
-    while (names.length > 0) {
-
-      if (names.length % 2 !== 0) {
-        luckyOne = names.shift();
-      }
-
-      var one = names.pop();
-      var two = _.find(names, function(name) {
-        return _.contains(hackers[one], name) === false;
-      });
-      names = _.without(names, two);
-
-      hackers[one].push(two);
-      hackers[two].push(one);
-
-      pairs[one] = two;
-      pairs[two] = one;
-    }
-
-    if (luckyOne !== undefined) {
-      var rando = _.find(pairs, function(name) {
-        return _.contains(hackers[luckyOne], name) === false;
-      });
-      pairs[pairs[rando]] += " & " + luckyOne;
-      pairs[rando] += " & " + luckyOne;
-      hackers[luckyOne].push(rando);
-    }
+  /* ***********
+   * Functions *
+   * ***********/
     
-    return pairs;
-  }
-
-  function hasMet(name, other) {
-    return _.contains(hackers[name], other);
-  }
-  
-  return {
-    addHacker: addHacker,
-    getHackers: getHackers,
-    getMatches: getMatches
+  var generateBackground = function(){
+    return backgrounds[Math.floor(Math.random() * backgrounds.length)];
   };
 
-})();
+  var setBackground = function(background){
+    $source.attr('src', background);
+  };
+
+  /* ****************
+   * Event Handlers *
+   * ****************/
+
+  // Frosts the RSVP circle on hover
+  $rsvp_circle.hover(function(){
+   if(!frost){
+     $rsvp_frost.stop().velocity({opacity:0.4},{display:"block"}); 
+     frost = true; 
+   }else{
+     $rsvp_frost.stop().velocity({opacity:0},{display:"none"}); 
+     frost = false;
+   }
+  });
+
+  // Displays sign up form
+  $sign.hover(function() {
+    $reg.stop().slideToggle('fast');
+  });
+
+  // Shows/Hides video background
+  $(window).on('resize', function() {
+    if($(this).width() < 640){ 
+      $video.fadeToggle('slow');
+      return false;
+    } else{
+      if ($video.css('opacity') === '0'){
+      $video.fadeToggle('slow');}
+    }});
+
+  /* **************
+   * Default Code *
+   * **************/
+    
+  // Sets a random motion background
+  setBackground(generateBackground());
+
+  // Sets the day's date 
+  $('#date').text(moment().format('dddd, MMMM Do YYYY')); 
+
+});

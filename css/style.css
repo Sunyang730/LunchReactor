@@ -119,19 +119,18 @@ video#bgvid {
   z-index: 2; 
 }
 
-.frost{
+#frost{
   display:none;
-  opacity:.2;
   background:#fff;
   overflow:hidden;
   position: absolute;
 }
 
-.rsvp{
+#rsvp{
 position: relative;
 }
 
-.count{
+#count{
 position: relative;
 }
 
