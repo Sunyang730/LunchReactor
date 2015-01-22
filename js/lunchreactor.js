@@ -11,6 +11,7 @@ $(function(){
                      'bg/coffee-beans-left-justified-small.mp4',
                      'bg/coffee-beans-small.mp4',
                      'bg/coffee-cup-small.mp4'];
+  var small = false;                   
   var $sign = $('#signup');
   var $reg = $sign.find('#register');
   var frost = false;
@@ -51,13 +52,18 @@ $(function(){
 
   // Shows/Hides video background
   $(window).on('resize', function() {
-    if($(this).width() < 640){ 
+    if(small && $(this).width() > 640){ 
       $video.fadeToggle('slow');
-      return false;
-    } else{
-      if ($video.css('opacity') === '0'){
-      $video.fadeToggle('slow');}
-    }});
+      small = false;
+      return;
+    } 
+    
+    if (!small && $(this).width() < 640){
+      $video.fadeToggle('slow');
+      small = true;
+      return;
+    }
+    });
 
   /* **************
    * Default Code *
