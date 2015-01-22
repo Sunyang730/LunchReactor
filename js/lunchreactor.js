@@ -17,7 +17,7 @@ $(function(){
   var $middle = $('#middle');
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
-  var rsvped = false;
+  var rsvped;
 
   /* ***********
    * Functions *
@@ -96,4 +96,6 @@ $(function(){
   // Sets the day's date 
   $('#date').text(moment().format('dddd, MMMM Do YYYY')); 
 
+  // TODO: set boolean from Parse.com
+  rsvped = false; // default
 });
