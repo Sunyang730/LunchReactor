@@ -3,27 +3,29 @@ var LUNCHREACTOR = (function() {
 
   Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
 
-  var TestObject = Parse.Object.extend("TestObject");
-  var testObject = new TestObject();
-  testObject.save({foo: "bar"}, {
-    success: function(obj) {
-      // alert('success');
-    }
-  });
-
-  // var RetrieveTestObj = Parse.Object.extend('RetrieveTestObj');
-  // var query = new Parse.Query(TestObject);
-  // query.get('q6llgb6kYc', {
-  //   success: function(val) {
-  //     alert('workd');
-  //   },
-  //   error: function(obj, err) {
-  //     alert('error');
+  // var TestObject = Parse.Object.extend("TestObject");
+  // var testObject = new TestObject();
+  // testObject.save({what: "is up"}, {
+  //   success: function(obj) {
+  //     // alert('success');
+  //     testObject.set('foo', 'baz');
+  //     testObject.set('what', 'nothing');
+  //     testObject.save();
   //   }
   // });
 
-  var test = testObject.get('foo');
-  alert(test);
+  var GameScore = Parse.Object.extend("TestObject");
+  var gameScore = new GameScore();
+  var query = new Parse.Query(GameScore);
+  query.get("RY0fOrBL02", {
+    success: function(gameScore) {
+      var score = gameScore.get("foo");
+      alert(score);
+    },
+    error: function(object, error) {
+      alert('err');
+    }
+  });
 
   // var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
   var hackers = {};
