@@ -121,6 +121,7 @@ video#bgvid {
 
 #frost{
   display:none;
+  opacity:0.4;
   background:#fff;
   overflow:hidden;
   position: absolute;
@@ -155,7 +156,12 @@ position: relative;
 .circle p span.rsvp {
   font-size:42pt;
   font-family:'Roboto Slab', Geneva, sans-serif;
+}
 
+#rsvp_success{
+  display:none;
+  color: #66BB6A;
+  font-size:96pt;
 }
 
 .circle p span.count {

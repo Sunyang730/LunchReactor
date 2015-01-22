@@ -17,6 +17,7 @@ $(function(){
   var $middle = $('#middle');
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
+  var rsvped = false;
 
   /* ***********
    * Functions *
@@ -36,13 +37,29 @@ $(function(){
 
   // Frosts the RSVP circle on hover
   $rsvp_circle.hover(
-    function(){
-      $rsvp_frost.css({opacity:0.4, display:"block"}); 
-    },
-    function(){
-      $rsvp_frost.css({opacity:0, display:"none"}); 
+    function(){ 
+      if(!rsvped) {$rsvp_frost.css('display', 'block'); }
+    }, 
+    function(){ 
+      if(!rsvped) {$rsvp_frost.css('display','none'); }
     });
 
+  // Shows the success message in RSVP circle
+  $rsvp_circle.on('click',function(){
+    
+    rsvped = true;
+    $rsvp_frost.css('display','none');
+    $('#rsvp_text').fadeOut('fast', function(){
+      $rsvp_circle.css({border: '1px solid #66BB6A'});
+      $('#rsvp_success').fadeIn('slow');
+    });
+
+   /* ****************************************** 
+    *  TODO:                                   *
+    *  perform RSVP action on Parse.com here   *
+    * ******************************************/ 
+    
+  }); 
   
   // Displays sign up form
   $sign.hover(function() {
