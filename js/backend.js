@@ -14,18 +14,56 @@ var LUNCHREACTOR = (function() {
   //   }
   // });
 
-  var GameScore = Parse.Object.extend("TestObject");
-  var gameScore = new GameScore();
-  var query = new Parse.Query(GameScore);
-  query.get("RY0fOrBL02", {
-    success: function(gameScore) {
-      var score = gameScore.get("foo");
-      alert(score);
-    },
-    error: function(object, error) {
-      alert('err');
+  // var GameScore = Parse.Object.extend("TestObject");
+  // var gameScore = new GameScore();
+  // var query = new Parse.Query(GameScore);
+  // query.get("RY0fOrBL02", {
+  //   success: function(gameScore) {
+  //     var score = gameScore.get("foo");
+  //     alert(score);
+  //   },
+  //   error: function(object, error) {
+  //     alert('err');
+  //   }
+  // });
+
+  var checkUser = function() {
+    var currentUser = Parse.User.current();
+
+    if (currentUser) {
+      return currentUser.get('username');
     }
-  });
+
+    return undefined;
+  };
+
+  var signUp = function(fullname, password, email) {
+    var user = new Parse.User();
+    user.set('username', fullname);
+    user.set('password', password);
+    user.set('email', email);
+
+    user.signUp(null, {
+      success: function(user) {
+        return user.get('username');
+      }
+    });
+  };
+
+  var logIn = function(fullname, password) {
+    var user = new Parse.User();
+
+    user.logIn(fullname, password, {
+      success: function(user) {
+        return user.get('username');
+      }
+    });
+  };
+
+  var logOut = function() {
+    Parse.User.LogOut();
+  };
+
 
   // var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
   var hackers = {};
