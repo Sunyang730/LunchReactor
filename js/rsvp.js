@@ -12,7 +12,10 @@ $(document).ready(function(){
    * ****************/
 
   // Frost the RSVP circle on hover
+
   $rsvp_circle.hover(function(){
    $rsvp_frost.fadeToggle(150);
   });
+
+
 });
