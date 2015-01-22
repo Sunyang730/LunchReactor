@@ -1,6 +1,31 @@
 var LUNCHREACTOR = (function() {
-  
-  var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
+
+
+  Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
+
+  var TestObject = Parse.Object.extend("TestObject");
+  var testObject = new TestObject();
+  testObject.save({foo: "bar"}, {
+    success: function(obj) {
+      // alert('success');
+    }
+  });
+
+  // var RetrieveTestObj = Parse.Object.extend('RetrieveTestObj');
+  // var query = new Parse.Query(TestObject);
+  // query.get('q6llgb6kYc', {
+  //   success: function(val) {
+  //     alert('workd');
+  //   },
+  //   error: function(obj, err) {
+  //     alert('error');
+  //   }
+  // });
+
+  var test = testObject.get('foo');
+  alert(test);
+
+  // var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
   var hackers = {};
 
   function addHacker(name) {
@@ -60,14 +85,14 @@ var LUNCHREACTOR = (function() {
       pairs[rando] += " & " + luckyOne;
       hackers[luckyOne].push(rando);
     }
-    
+
     return pairs;
   }
 
   function hasMet(name, other) {
     return _.contains(hackers[name], other);
   }
-  
+
   return {
     addHacker: addHacker,
     getHackers: getHackers,
