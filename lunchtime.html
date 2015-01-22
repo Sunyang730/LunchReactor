@@ -6,6 +6,7 @@
     <script src="js/lunchreactor.js"></script>
     <script src="js/jquery.js"></script>
     <script src="js/background-switcher.js"></script>
+    <script src="js/rsvp.js"></script>
     <script src="js/register.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.1.0/firebase.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
@@ -14,7 +15,7 @@
   </head>
   
   <body>
-    <div class="overlay">
+    <div id="bg">
       <video autoplay loop  id="bgvid">
         <source src="bg/coffee-cup-small.mp4" type="video/mp4">
       </video>
@@ -36,14 +37,15 @@
     <div id="middle">
       <h1>Lunch Reactor</h1>
       <h2>Monday, January 19, 2015</h2>
-      <div class="circleBase type1 fleft">
+      <div class="circle frost"></div>
+      <div class="circle rsvp fleft">
         <p>
-          <span class="rsvp">RSVP</span>
+          <a href="#"><span class="rsvp">RSVP</span></a>
           <br>
           3 hours left
         </p>
       </div>
-      <div class="circleBase type1 fright">
+      <div class="circle count fright">
         <p>
           <span class="count">23</span>
         </p>

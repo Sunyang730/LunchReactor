@@ -1,5 +1,5 @@
-h1 {
 
+h1 {
   font-family:'Roboto Slab', Geneva, sans-serif;
   font-size:48pt;
   color: #fff;
@@ -19,23 +19,23 @@ h2 {
 
 /* Background */
 
+#bg {
+  position:fixed;
+  right:0; bottom: 0;
+  min-width:100%; min-height:100%;
+  width:auto; height: auto; z-index: 1;
+  background-color:#000;
+}
+
 video#bgvid {
   position: fixed;
   right: 0; bottom: 0;
   background-position: 50 0;
-  opacity:.85;
+  opacity:.5;
   min-width: 100%; min-height:100%;
-  width: auto; height: auto; z-index: 1;
+  width: auto; height: auto; z-index: 2;
   background:#000;
   background-size: cover;
-}
-
-.overlay {
-  position:fixed;
-  right:0; bottom: 0;
-  min-width:100%; min-height:100%;
-  width:auto; height: auto; z-index: 2;
-  background-color:#000;
 }
 
 /* Containers */
@@ -53,7 +53,7 @@ video#bgvid {
 }
 
 .register{
-    display:none;
+  display:none;
   position:absolute;
   right:0px;
   width:200px; height:100px;
@@ -106,51 +106,70 @@ video#bgvid {
   -ms-transform: translateY(-50%)
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-  z-index:3;
+  z-index:2;
 }
 
 /* Shapes */
 
-.circleBase {
+.circle {
   border-radius: 50%;
-  behavior: url(PIE.htc); /* remove if you don't care about IE8 */
-  z-index: 3;
-}
-
-.type1 {
+  behavior: url(PIE.htc); /* IE8 */
   width: 200px; height: 200px;
   border: 1px solid #fff;
-  z-index: 3; 
+  z-index: 2; 
 }
 
-div.type1 p{
+.frost{
+  display:none;
+  opacity:.2;
+  background:#fff;
+  overflow:hidden;
+  position: absolute;
+}
+
+.rsvp{
+position: relative;
+}
+
+.count{
+position: relative;
+}
+
+.circle p{
   font-family: 'Lato', Geneva, sans-serif;
   font-size:18pt;
   color:#fff;
   position:relative;
   text-align:center;
   margin: 0;
+  z-index:3;
   height: auto; width: 200px;
   transform: translate(-50%, -50%);
   top:50%;
   left: 50%;
 }
+.circle a { 
+  text-decoration:none;
+  color:#fff;
+}
 
-div.type1 p span.rsvp {
+.circle p span.rsvp {
   font-size:42pt;
   font-family:'Roboto Slab', Geneva, sans-serif;
 
 }
-div.type1 p span.count {
+
+.circle p span.count {
   font-family:'Roboto Slab', Geneva, sans-serif;
   font-size:72pt;
 }
 
-div.type1 p span.subtitle {
+.circle p span.subtitle {
  text-align:center;
 }
 
 /* Alignments */
 .fleft { float:left; } 
 .fright { float:right; } 
+
 
