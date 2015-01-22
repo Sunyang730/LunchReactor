@@ -14,6 +14,7 @@ $(function(){
   var small = false;                   
   var $sign = $('#signup');
   var $reg = $sign.find('#register');
+  var $middle = $('#middle');
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
 
@@ -36,10 +37,10 @@ $(function(){
   // Frosts the RSVP circle on hover
   $rsvp_circle.hover(
     function(){
-      $rsvp_frost.stop().velocity({opacity:0.4},{display:"block"}); 
+      $rsvp_frost.css({opacity:0.4, display:"block"}); 
     },
     function(){
-      $rsvp_frost.stop().velocity({opacity:0},{display:"none"}); 
+      $rsvp_frost.css({opacity:0, display:"none"}); 
     });
 
   
