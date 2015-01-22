@@ -55,7 +55,8 @@ $(function(){
     rsvped = true;
     $rsvp_frost.css('display','none');
     $('#rsvp_text').fadeOut('fast', function(){
-      $rsvp_circle.css({border: '1px solid #66BB6A'});
+      $rsvp_circle.css({border: '1px solid #66BB6A',
+                        cursor:'auto'});
       $('#rsvp_success').fadeIn('slow');
     });
 
