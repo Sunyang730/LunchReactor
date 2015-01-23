@@ -6,10 +6,6 @@ $(function(){
 
   var $video = $('#bgvid');
   var $source = $video.find('#source');
-  var backgrounds = ['bg/coffee-beans-fast-fall-small.mp4',
-                     'bg/coffee-beans-left-justified-small.mp4',
-                     'bg/coffee-beans-small.mp4',
-                     'bg/coffee-cup-small.mp4'];
   var small = false;
   var $sign = $('#signup');
   var $reg = $sign.find('#register');
@@ -20,18 +16,6 @@ $(function(){
   var rsvped;
   var loggedIn;
   
-  /* ***********
-   * Functions *
-   * ***********/
-
-  var generateBackground = function(){
-    return backgrounds[Math.floor(Math.random() * backgrounds.length)];
-  };
-
-  var setBackground = function(background){
-    $source.attr('src', background);
-  };
-
   /* ****************
    * Event Handlers *
    * ****************/
@@ -105,7 +89,7 @@ $(function(){
    * **************/
 
   // Sets a random motion background
-  setBackground(generateBackground());
+  $source.attr('src', generateBackground());
 
   // Sets the day's date
   $('#date').text(moment().format('dddd, MMMM Do YYYY'));
