@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Lunch Reactor": {
+            "applicationId": "MpPiIKUQR5feeQMw36y6Bw5DKHObYLJ78DenmItK", 
+            "masterKey": "5J54hYMklKSIYeUZEuwd6aPADgOzK7uY1Jb1G67k"
+        }, 
+        "_default": {
+            "link": "Lunch Reactor"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.3"
+    }
+}
