@@ -27,14 +27,14 @@ var LUNCHREACTOR = (function() {
   //   }
   // });
 
-  var checkUser = function() {
+  var checkUser = function(callback) {
     var currentUser = Parse.User.current();
 
     if (currentUser) {
-      return currentUser.get('username');
+      callback(currentUser.get('username'));
+    } else {
+      callback(undefined);
     }
-
-    return undefined;
   };
 
   var signUp = function(fullname, password, email) {
@@ -50,12 +50,13 @@ var LUNCHREACTOR = (function() {
     });
   };
 
-  var logIn = function(fullname, password) {
-    var user = new Parse.User();
-
-    user.logIn(fullname, password, {
+  var logIn = function(fullname, password, callback) {
+    Parse.User.logIn(fullname, password, {
       success: function(user) {
-        return user.get('username');
+        callback(user.get('username'));
+      },
+      error: function(user, err) {
+        alert(JSON.stringify(err));
       }
     });
   };
