@@ -19,7 +19,7 @@ $(function(){
   var $time_left = $('#time_left');
   var rsvped;
   var loggedIn;
-
+  
   /* ***********
    * Functions *
    * ***********/
