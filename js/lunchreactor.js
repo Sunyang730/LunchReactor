@@ -72,22 +72,12 @@ $(function(){
   $('.submitInfo').submit(function(event) {
     signUp($('#fullname').val(),
           $('#password').val(),
-          $('#email').val(),
-          function(user) {
-
-          });
+          $('#email').val());
   });
 
   // Check if the user is currently logged-in
   // checkUser(function(user) {
   //
-  // });
-
-  // Log in the user with information from the forms (TESTING)
-  // $('.submitInfo').on('click', function() {
-  //   logIn($('#fullname').val(), $('#password').val(), function(user) {
-  //     alert(user);
-  //   });
   // });
 
   // Displays sign up form
