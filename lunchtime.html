@@ -9,7 +9,7 @@
     <script src="js/lunchreactor.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto+Slab">
-    <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'> 
   </head>
 
   <body>
@@ -20,7 +20,6 @@
     </div>
 
     <div class="signup" id="signup">
-      <p>Sign Up</p>
         <div class="register" id="register">
           <form class="info">
             <input type="text" class="infoField" name="firstname" placeholder="First Name"><br>
@@ -40,7 +39,7 @@
         <p id="rsvp_text">
           <span class="rsvp">RSVP</span>
           <br>
-          3 hours left
+          <span id="time_left">3 hours left</span>
         </p>
         <p id="rsvp_success">&#x2713</p>
       </div>
@@ -49,6 +48,10 @@
           <span class="count">23</span>
         </p>
       </div>
+      <p id="new_user">
+        <a href=#" id="sign_in">Sign in</a> or <a href="#" id="create_account">create an account</a> in seconds.
+      </p>
+      <p id="greet"></p>
     </div>
   </body>
 

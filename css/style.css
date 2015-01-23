@@ -44,7 +44,7 @@ video#bgvid {
   position:absolute;
   top:0px;
   right:10px;
-  width:150px; 
+  width:250px; 
   font-family:'Roboto Slab', Geneva, sans-serif;
   font-size:24pt;
   color: #fff;
@@ -100,13 +100,32 @@ video#bgvid {
 
 #middle{
   position:relative;
-  width:500px; height:400px;
+  width:500px; height:500px;
   margin: 0 auto;
   top: 50%;
   -ms-transform: translateY(-50%)
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   z-index:2;
+}
+
+#new_user {
+  font-family:'Lato', Geneva, sans-serif;
+  color: #fff;
+  margin-top:270px;
+  font-size:18pt;
+  font-weight:100;
+  text-align:center;
+}
+
+#new_user a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:300;
+}
+
+#new_user a:hover{
+  border-bottom: 1px solid #fff;
 }
 
 /* Shapes */

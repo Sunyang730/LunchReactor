@@ -1,6 +1,5 @@
 $(function(){
 
-  
   /* ******************
    * Global Variables *
    * ******************/
@@ -18,6 +17,7 @@ $(function(){
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
   var rsvped;
+  var loggedIn;
 
   /* ***********
    * Functions *
@@ -97,6 +97,23 @@ $(function(){
   // Sets the day's date 
   $('#date').text(moment().format('dddd, MMMM Do YYYY')); 
 
+  // TODO: Sets the time left to RSVP
+  $('#time_left').val(function(){}());   
+
+  // TODO: set to user or false from Parse.com 
+  loggedIn = checkUser(function(user){
+    if(user === undefined){ return false; }
+    else{ return user;}
+  });
+
   // TODO: set boolean from Parse.com
   rsvped = false; // default
+  if(rsvped){
+    $rsvp_frost.css('display','none');
+    $('#rsvp_text').hide();
+    $rsvp_circle.css({border: '1px solid #66BB6A',
+                      cursor:'auto'});
+    $('#rsvp_success').show();
+  }
+
 });
