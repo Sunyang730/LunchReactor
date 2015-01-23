@@ -110,16 +110,19 @@ $(function(){
   // Sets the day's date
   $('#date').text(moment().format('dddd, MMMM Do YYYY'));
 
-  // TODO: Sets the time left to RSVP
-  $('#time_left').text(moment().hour(11).from(moment()));
+  // Sets the time left to RSVP
+  var deadline = moment().hour(11);
+  var timeLeft = deadline.from(moment());
+  if(moment().isAfter(deadline)){$time_left.text('Closed');}
+  else {$time_left.text(timeLeft);}
 
-  // TODO: set to user or false from Parse.com
+  // TODO: Check if user is logged in, display signup or greeting 
   loggedIn = checkUser(function(user){
     if(user === undefined){ return false; }
     else{ return user;}
   });
 
-  // TODO: set boolean from Parse.com
+  // TODO: Check if user has RSVPed that day, display RSVP or green check mark
   rsvped = false; // default
   if(rsvped){
     $rsvp_frost.css('display','none');
