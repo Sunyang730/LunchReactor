@@ -1,19 +1,38 @@
+
+/* **************
+* Default code *
+* **************/
+
+// Initialize Parse first so that the following functions are available
+Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
+
+
 /* *******************
  * Backend Functions *
  * *******************/
 
+  // If user is logged in, pass their username to the callback
+  // Otherwise do nothing
+  // ex:
+  // checkUser(function(user) {
+  //   alert('welcome back ' + user);
+  // });
   var checkUser = function(callback) {
    var currentUser = Parse.User.current();
 
    if (currentUser) {
      callback(currentUser.get('username'));
-   } else {
-     callback(undefined);
    }
   };
 
-
-  var signUp = function(fullname, password, email) {
+  // signUp takes the user's fullname, password, and email
+  // If sign-up was successful, it passes the fullname back to 'callback()'
+  // Otherwise, it passes the username and error to 'err()'
+  // ex:
+  // signUp('tyler', 'hack', 'tyler@me.com', function(user) {
+  //   alert('signed up ' + user);
+  // });
+  var signUp = function(fullname, password, email, callback, err) {
     var user = new Parse.User();
     user.set('username', fullname);
     user.set('password', password);
@@ -21,19 +40,26 @@
 
     user.signUp(null, {
       success: function(user) {
-        return user.get('username');
+        callback(user.get('username'));
+      },
+      error: function(user, error) {
+        err(error);
       }
     });
   };
 
-
-  var logIn = function(fullname, password, callback) {
+  // Log in the user with their fullname and password
+  // Run the 'callback' on success, 'err' if there's an error
+  // logIn('tyler', 'hack', function(user) {
+  //   alert('logged in ' + user);
+  // });
+  var logIn = function(fullname, password, callback, err) {
     Parse.User.logIn(fullname, password, {
       success: function(user) {
         callback(user.get('username'));
       },
-      error: function(user, err) {
-        alert(JSON.stringify(err));
+      error: function(user, error) {
+        err(error);
       }
     });
   };
@@ -106,12 +132,6 @@ var timeLeft = function(){
   if(now.isAfter(deadline)) { return 'Closed'; }
   else { return deadline.from(now);  }
 };
-
-/* **************
- * Default code *
- * **************/
-
-Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
 
 /* **********
  * Old Code *
