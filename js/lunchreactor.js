@@ -16,9 +16,10 @@ $(function(){
   var $middle = $('#middle');
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
+  var $time_left = $('#time_left');
   var rsvped;
   var loggedIn;
-
+  
   /* ***********
    * Functions *
    * ***********/
@@ -98,7 +99,7 @@ $(function(){
   $('#date').text(moment().format('dddd, MMMM Do YYYY')); 
 
   // TODO: Sets the time left to RSVP
-  $('#time_left').val(function(){}());   
+  $('#time_left').text(moment().hour(11).from(moment()));
 
   // TODO: set to user or false from Parse.com 
   loggedIn = checkUser(function(user){
