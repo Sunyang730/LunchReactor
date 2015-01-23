@@ -4,13 +4,13 @@ $(function(){
    * Global Variables *
    * ******************/
 
-  var $video = $('#bgvid'); 
+  var $video = $('#bgvid');
   var $source = $video.find('#source');
   var backgrounds = ['bg/coffee-beans-fast-fall-small.mp4',
                      'bg/coffee-beans-left-justified-small.mp4',
                      'bg/coffee-beans-small.mp4',
                      'bg/coffee-cup-small.mp4'];
-  var small = false;                   
+  var small = false;
   var $sign = $('#signup');
   var $reg = $sign.find('#register');
   var $middle = $('#middle');
@@ -19,11 +19,11 @@ $(function(){
   var $time_left = $('#time_left');
   var rsvped;
   var loggedIn;
-  
+
   /* ***********
    * Functions *
    * ***********/
-    
+
   var generateBackground = function(){
     return backgrounds[Math.floor(Math.random() * backgrounds.length)];
   };
@@ -38,19 +38,19 @@ $(function(){
 
   // Frosts the RSVP circle on hover
   $rsvp_circle.hover(
-    function(){ 
+    function(){
       if(!rsvped) {$rsvp_frost.css('display', 'block'); }
-    }, 
-    function(){ 
+    },
+    function(){
       if(!rsvped) {$rsvp_frost.css('display','none'); }
     });
 
   // Shows the success message in RSVP circle
   $rsvp_circle.on('click',function(){
-    
+
     // voids click if already RSVPed
     if(rsvped){ return; }
-    
+
     // shows green check mark and
     // kills 'frost' hover action
     rsvped = true;
@@ -61,13 +61,25 @@ $(function(){
       $('#rsvp_success').fadeIn('slow');
     });
 
-   /* ****************************************** 
+   /* ******************************************
     *  TODO:                                   *
     *  perform RSVP action on Parse.com here   *
-    * ******************************************/ 
-    
-  }); 
-  
+    * ******************************************/
+
+  });
+
+  // Sign up the user with information from the forms
+  $('.submitInfo').submit(function(event) {
+    signUp($('#fullname').val(),
+          $('#password').val(),
+          $('#email').val());
+  });
+
+  // Check if the user is currently logged-in
+  // checkUser(function(user) {
+  //
+  // });
+
   // Displays sign up form
   $sign.hover(function() {
     $reg.stop().slideToggle('fast');
@@ -75,12 +87,12 @@ $(function(){
 
   // Shows/Hides video background
   $(window).on('resize', function() {
-    if(small && $(this).width() > 640){ 
+    if(small && $(this).width() > 640){
       $video.fadeToggle('slow');
       small = false;
       return;
-    } 
-    
+    }
+
     if (!small && $(this).width() < 640){
       $video.fadeToggle('slow');
       small = true;
@@ -91,23 +103,26 @@ $(function(){
   /* **************
    * Default Code *
    * **************/
-    
+
   // Sets a random motion background
   setBackground(generateBackground());
 
-  // Sets the day's date 
-  $('#date').text(moment().format('dddd, MMMM Do YYYY')); 
+  // Sets the day's date
+  $('#date').text(moment().format('dddd, MMMM Do YYYY'));
 
-  // TODO: Sets the time left to RSVP
-  $('#time_left').text(moment().hour(11).from(moment()));
+  // Sets the time left to RSVP
+  var deadline = moment().hour(11);
+  var timeLeft = deadline.from(moment());
+  if(moment().isAfter(deadline)){$time_left.text('Closed');}
+  else {$time_left.text(timeLeft);}
 
-  // TODO: set to user or false from Parse.com 
+  // TODO: Check if user is logged in, display signup or greeting 
   loggedIn = checkUser(function(user){
     if(user === undefined){ return false; }
     else{ return user;}
   });
 
-  // TODO: set boolean from Parse.com
+  // TODO: Check if user has RSVPed that day, display RSVP or green check mark
   rsvped = false; // default
   if(rsvped){
     $rsvp_frost.css('display','none');

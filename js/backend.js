@@ -1,6 +1,72 @@
 var LUNCHREACTOR = (function() {
-  
-  var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
+
+
+  Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
+
+  // var TestObject = Parse.Object.extend("TestObject");
+  // var testObject = new TestObject();
+  // testObject.save({what: "is up"}, {
+  //   success: function(obj) {
+  //     // alert('success');
+  //     testObject.set('foo', 'baz');
+  //     testObject.set('what', 'nothing');
+  //     testObject.save();
+  //   }
+  // });
+
+  // var GameScore = Parse.Object.extend("TestObject");
+  // var gameScore = new GameScore();
+  // var query = new Parse.Query(GameScore);
+  // query.get("RY0fOrBL02", {
+  //   success: function(gameScore) {
+  //     var score = gameScore.get("foo");
+  //     alert(score);
+  //   },
+  //   error: function(object, error) {
+  //     alert('err');
+  //   }
+  // });
+
+  var checkUser = function(callback) {
+    var currentUser = Parse.User.current();
+
+    if (currentUser) {
+      callback(currentUser.get('username'));
+    } else {
+      callback(undefined);
+    }
+  };
+
+  var signUp = function(fullname, password, email) {
+    var user = new Parse.User();
+    user.set('username', fullname);
+    user.set('password', password);
+    user.set('email', email);
+
+    user.signUp(null, {
+      success: function(user) {
+        return user.get('username');
+      }
+    });
+  };
+
+  var logIn = function(fullname, password, callback) {
+    Parse.User.logIn(fullname, password, {
+      success: function(user) {
+        callback(user.get('username'));
+      },
+      error: function(user, err) {
+        alert(JSON.stringify(err));
+      }
+    });
+  };
+
+  var logOut = function() {
+    Parse.User.LogOut();
+  };
+
+
+  // var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
   var hackers = {};
 
   function addHacker(name) {
@@ -60,14 +126,14 @@ var LUNCHREACTOR = (function() {
       pairs[rando] += " & " + luckyOne;
       hackers[luckyOne].push(rando);
     }
-    
+
     return pairs;
   }
 
   function hasMet(name, other) {
     return _.contains(hackers[name], other);
   }
-  
+
   return {
     addHacker: addHacker,
     getHackers: getHackers,
