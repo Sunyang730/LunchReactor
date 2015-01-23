@@ -1,6 +1,3 @@
-
-  Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
-
 /* *******************
  * Backend Functions *
  * *******************/
@@ -43,7 +40,6 @@ var logOut = function() {
   Parse.User.LogOut();
 };
 
-
 /* ********************
  * Frontend Functions *
  * ********************/
@@ -56,6 +52,19 @@ var backgrounds = ['bg/coffee-beans-fast-fall-small.mp4',
 var generateBackground = function(){
   return backgrounds[Math.floor(Math.random() * backgrounds.length)];
 };
+
+var timeLeft = function(){
+  var now = moment();
+  var deadline = moment().hour(11);
+  if(now.isAfter(deadline)) { return 'Closed'; }
+  else { return deadline.from(now);  }
+};
+
+/* **************
+ * Default code *
+ * **************/
+
+Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
 
 /* **********
  * Old Code *
