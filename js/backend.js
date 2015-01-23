@@ -2,43 +2,90 @@
  * Backend Functions *
  * *******************/
 
-var checkUser = function(callback) {
-  var currentUser = Parse.User.current();
+  var checkUser = function(callback) {
+   var currentUser = Parse.User.current();
 
-  if (currentUser) {
-    callback(currentUser.get('username'));
-  } else {
-    callback(undefined);
-  }
-};
+   if (currentUser) {
+     callback(currentUser.get('username'));
+   } else {
+     callback(undefined);
+   }
+  };
 
-var signUp = function(fullname, password, email) {
-  var user = new Parse.User();
-  user.set('username', fullname);
-  user.set('password', password);
-  user.set('email', email);
 
-  user.signUp(null, {
-    success: function(user) {
-      return user.get('username');
+  var signUp = function(fullname, password, email) {
+    var user = new Parse.User();
+    user.set('username', fullname);
+    user.set('password', password);
+    user.set('email', email);
+
+    user.signUp(null, {
+      success: function(user) {
+        return user.get('username');
+      }
+    });
+  };
+
+
+  var logIn = function(fullname, password, callback) {
+    Parse.User.logIn(fullname, password, {
+      success: function(user) {
+        callback(user.get('username'));
+      },
+      error: function(user, err) {
+        alert(JSON.stringify(err));
+      }
+    });
+  };
+
+  // Log the current user out of their account
+  var logOut = function() {
+    Parse.User.logOut();
+  };
+
+  // Send RSVP 'request' to the server, invoke 'callback' if successful.
+  // 'request' should be true/false
+  // example:
+  // sendRSVP(true, function() {
+  //   alert('You successfuly RSVP'd!');
+  // });
+  //
+  var sendRSVP = function(request, callback) {
+    var currentUser = Parse.User.current();
+
+    if (currentUser !== undefined) {
+      currentUser.set('RSVP', request);
+      currentUser.save(null, {
+        success: function(currentUser) {
+          callback();
+        }
+      });
     }
-  });
-};
+  };
 
-var logIn = function(fullname, password, callback) {
-  Parse.User.logIn(fullname, password, {
-    success: function(user) {
-      callback(user.get('username'));
-    },
-    error: function(user, err) {
-      alert(JSON.stringify(err));
+
+  // Check user's RSVP status
+  // Provides 'response' to the callback function
+  // example:
+  // checkRSVP(function(response) {
+  //  if (response) {
+  //    alert('You are currently RSVP'd!');
+  //  }
+  // });
+  //
+  var checkRSVP = function(callback) {
+    var currentUser = Parse.User.current();
+
+    if (currentUser !== undefined) {
+      var query = new Parse.Query(Parse.User);
+      query.get('vGmuEkf9Cz', {
+        success: function(user) {
+          callback(user.get('RSVP'));
+        }
+      });
     }
-  });
-};
+  };
 
-var logOut = function() {
-  Parse.User.LogOut();
-};
 
 /* ********************
  * Frontend Functions *
@@ -69,7 +116,7 @@ Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8Hfinu
 /* **********
  * Old Code *
  * **********/
- 
+
 //   var TestObject = Parse.Object.extend("TestObject");
 //   var testObject = new TestObject();
 // testObject.save({what: "is up"}, {
@@ -80,7 +127,7 @@ Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8Hfinu
 //       testObject.save();
 //     }
 // });
-  
+
 // var GameScore = Parse.Object.extend("TestObject");
 // var gameScore = new GameScore();
 // var query = new Parse.Query(GameScore);
@@ -92,7 +139,7 @@ Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8Hfinu
 //     error: function(object, error) {
 //       alert('err');
 //     }
-  
+
 // var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
 // var hackers = {};
 //
