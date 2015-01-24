@@ -85,11 +85,11 @@ $(function(){
    $rsvp_frost.css('display','none');
    $rsvp_circle.css('cursor', 'auto');
   }
-  $time_left.text(timeLeft);
+  $time_left.text(time_left);
 
   // Greets user, or displays signup message
   var user;
-  checkUser(function(username){ user = username; });
+  backend.checkUser(function(username){ user = username; });
   if(user !== undefined){
     $new_user.hide();
     $greet.html('You\'re all that and a bag of chips, ' + user + '.<br> Mmm... chips.').show();
