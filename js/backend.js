@@ -5,7 +5,6 @@ var backend = (function() {
    // --------------------------- //
   Parse.initialize("c7Yv1NXWxdwF2GwXDrFCUKbF1V69EDhJQLiAAjMl", "8gUndkylCKEr8HfinuDN7Z4Lw3R0570gbsb0KLDh");
 
-
   /* *******************
    * Backend Functions *
    * *******************/
@@ -136,7 +135,15 @@ var backend = (function() {
    // public functions of backend.
    // --------------------------- //
   return {
-  checkUser: checkUser
+    checkUser: checkUser,
+    signUp: signUp,
+    logIn: logIn,
+    logOut: logOut,
+    sendRSVP: sendRSVP,
+    checkRSVP: checkRSVP,
+    backgrounds: backgrounds,
+    generateBackground: generateBackground,
+    timeLeft: timeLeft
   };
 
 })();
