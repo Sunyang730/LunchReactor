@@ -9,7 +9,7 @@ var backend = (function() {
    * Backend Functions *
    * *******************/
 
-  // If user is logged in, pass their username to the callback
+  // If user is logged in, pass their full name to the callback
   // Otherwise do nothing
   // ex:
   // checkUser(function(user) {
@@ -19,7 +19,7 @@ var backend = (function() {
    var currentUser = Parse.User.current();
 
    if (currentUser) {
-     callback(currentUser.get('username'));
+     callback(currentUser.get('fullname'));
    }
   };
 
@@ -27,18 +27,19 @@ var backend = (function() {
   // If sign-up was successful, it passes the fullname back to 'callback()'
   // Otherwise, it passes the username and error to 'err()'
   // ex:
-  // signUp('tyler', 'hack', 'tyler@me.com', function(user) {
+  // signUp('tyler@abc.com', 'hack', 'tyler', function(user) {
   //   alert('signed up ' + user);
   // });
-  var signUp = function(fullname, password, email, callback, err) {
+  var signUp = function(email, password, fullname, callback, err) {
     var user = new Parse.User();
-    user.set('username', fullname);
-    user.set('password', password);
+    user.set('username', email);
     user.set('email', email);
+    user.set('password', password);
+    user.set('fullname', fullname);
 
     user.signUp(null, {
       success: function(user) {
-        callback(user.get('username'));
+        callback(user.get('fullname'));
       },
       error: function(user, error) {
         err(error);
@@ -48,13 +49,13 @@ var backend = (function() {
 
   // Log in the user with their fullname and password
   // Run the 'callback' on success, 'err' if there's an error
-  // logIn('tyler', 'hack', function(user) {
+  // logIn('tyler@abc.com', 'hack', function(user) {
   //   alert('logged in ' + user);
   // });
-  var logIn = function(fullname, password, callback, err) {
-    Parse.User.logIn(fullname, password, {
+  var logIn = function(email, password, callback, err) {
+    Parse.User.logIn(email, password, {
       success: function(user) {
-        callback(user.get('username'));
+        callback(user.get('fullname'));
       },
       error: function(user, error) {
         err(error);
