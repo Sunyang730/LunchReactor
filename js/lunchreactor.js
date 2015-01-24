@@ -59,13 +59,6 @@ $(function(){
     });
   });
 
-  // Sign up the user with information from the forms
-  $('.submitInfo').submit(function(event) {
-    backend.signUp($('#fullname').val(),
-          $('#password').val(),
-          $('#email').val());
-  });
-
   // Shows/Hides video background
   var small = false;
   $(window).on('resize', function() {
@@ -135,11 +128,28 @@ $(function(){
       return false;
     });
 
+  // $('#registerform').submit(function(e){
+  //   backend.signUp($('#username').val(), $('#password').val(), $('#fullname').val(),
+  //     function(user) {
+  //       $new_user.hide();
+  //       $greet.html('Welcome back, ' + user + '!<br>You look fantastic today.').show();
+  //     });
+  //   return false;
+  // });
+  //
+  // $('#loginform').submit(function(e){
+  //   backend.logIn($('#username').val(), $('#password').val(), function(user) {
+  //     $new_user.hide();
+  //     $greet.html('Welcome back, ' + user + '!<br>You look fantastic today.').show();
+  //   });
+  //   return false;
+  // });
+
   $('#form-reg').submit(function(e){
     console.log('register');
     return false;
   });
-      
+
   $('.modaltrigger').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
 
 });
