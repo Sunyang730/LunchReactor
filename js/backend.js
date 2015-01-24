@@ -78,7 +78,7 @@ var backend = (function() {
   var sendRSVP = function(request, callback) {
     var currentUser = Parse.User.current();
 
-    if (currentUser !== undefined) {
+    if (currentUser) {
       currentUser.set('rsvp', request);
       currentUser.save(null, {
         success: function(currentUser) {
@@ -101,7 +101,7 @@ var backend = (function() {
   var checkRSVP = function(callback) {
     var currentUser = Parse.User.current();
 
-    if (currentUser !== undefined) {
+    if (currentUser) {
       var query = new Parse.Query(Parse.User);
       query.get(currentUser.id, {
         success: function(user) {
