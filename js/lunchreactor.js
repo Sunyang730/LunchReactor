@@ -1,77 +1,114 @@
-var LUNCHREACTOR = (function() {
-  
-  var firebase  = new Firebase("https://crackling-torch-5502.firebaseio.com/");
-  var hackers = {};
+$(function(){
 
-  function addHacker(name) {
-    if (_.contains(getHackers(), name) === false)
-      hackers[name] = [];
-    else
-      console.log(name + " is already in the record.");
-  }
+  /* ******************
+   * Global Variables *
+   * ******************/
 
-  function getHackers() {
-    return _.keys(hackers);
-  }
+  var $video = $('#bgvid');
+  var $source = $video.find('#source');
+  var $sign = $('#signup');
+  var $reg = $sign.find('#register');
+  var $middle = $('#middle');
+  var $rsvp_frost = $('#frost', '#middle');
+  var $rsvp_circle = $('#rsvp', '#middle');
+  var $time_left = $('#time_left');
+  var $new_user = $('#new_user'); 
+  var $greet = $('#greet');
 
-  function allFriends() {
-    var maxMeets = (getHackers().length % 2 === 0)?
-          getHackers().length - 1 :
-          getHackers().length - 2;
-    return _.some(hackers, function(met) {
-      return met.length >= maxMeets;
+  /* ****************
+   * Event Handlers *
+   * ****************/
+
+  // Frosts the RSVP circle on hover
+  $rsvp_circle.hover(
+    function(){
+      if(!rsvped && !closed) {$rsvp_frost.css('display', 'block'); }
+    },
+    function(){
+      if(!rsvped && !closed) {$rsvp_frost.css('display','none'); }
     });
-  }
 
-  function getMatches() {
-    if (allFriends()) {
-      return "Everyone knows everyone.";
-    }
-    return matches(getHackers());
-  }
+  // Submits RSVP on click. 
+  $rsvp_circle.on('click',function(){
 
-  function matches(names) {
-    var pairs = {};
-    var luckyOne;
-    while (names.length > 0) {
+    if(rsvped || closed){ return; }
 
-      if (names.length % 2 !== 0) {
-        luckyOne = names.shift();
-      }
+    rsvped = true;
+    $rsvp_frost.css('display','none');
+    $('#rsvp_text').fadeOut('fast', function(){
+      $rsvp_circle.css({border: '1px solid #66BB6A',
+                        cursor:'auto'});
+      $('#rsvp_success').fadeIn('slow');
+    });
 
-      var one = names.pop();
-      var two = _.find(names, function(name) {
-        return _.contains(hackers[one], name) === false;
-      });
-      names = _.without(names, two);
-
-      hackers[one].push(two);
-      hackers[two].push(one);
-
-      pairs[one] = two;
-      pairs[two] = one;
-    }
-
-    if (luckyOne !== undefined) {
-      var rando = _.find(pairs, function(name) {
-        return _.contains(hackers[luckyOne], name) === false;
-      });
-      pairs[pairs[rando]] += " & " + luckyOne;
-      pairs[rando] += " & " + luckyOne;
-      hackers[luckyOne].push(rando);
-    }
-    
-    return pairs;
-  }
-
-  function hasMet(name, other) {
-    return _.contains(hackers[name], other);
-  }
+    // TODO: perform RSVP action on Parse.com here
+  });
   
-  return {
-    addHacker: addHacker,
-    getHackers: getHackers,
-    getMatches: getMatches
-  };
+  // Sign up the user with information from the forms
+  $('.submitInfo').submit(function(event) {
+    backend.signUp($('#fullname').val(),
+          $('#password').val(),
+          $('#email').val());
+  });
 
-})();
+  // Shows/Hides video background
+  var small = false;
+  $(window).on('resize', function() {
+    if(small && $(this).width() > 640){
+      $video.fadeToggle('slow');
+      small = false;
+      return;
+    }
+
+    if (!small && $(this).width() < 640){
+      $video.fadeToggle('slow');
+      small = true;
+      return;
+    }
+  });
+
+  /* **************
+   * Default Code *
+   * **************/
+
+  // Sets a random motion background
+  $source.attr('src', backend.generateBackground());
+
+  // Sets the day's date
+  $('#date').text(moment().format('dddd, MMMM Do YYYY'));
+
+  // Sets the time left to RSVP
+  var closed = false; // default
+  var time_left = backend.timeLeft();
+  if(time_left === 'Closed'){
+   closed = true; 
+   $rsvp_frost.css('display','none');
+   $rsvp_circle.css('cursor', 'auto');
+  }
+  $time_left.text(timeLeft);
+
+  // Greets user, or displays signup message
+  var user;
+  checkUser(function(username){ user = username; });
+  if(user !== undefined){
+    $new_user.hide();
+    $greet.html('You\'re all that and a bag of chips, ' + user + '.<br> Mmm... chips.').show();
+  }
+
+  // TODO: Check if user has RSVPed that day, display RSVP or green check mark
+  var rsvped = false; // default
+  if(rsvped){
+    $rsvp_frost.css('display','none');
+    $('#rsvp_text').hide();
+    $rsvp_circle.css({border: '1px solid #66BB6A',
+                      cursor:'auto'});
+    $('#rsvp_success').show();
+  }
+
+  $('#loginform').submit(function(e){
+      return false;
+    });
+      
+   $('#modaltrigger').leanModal({ top: 350, overlay: 0.45, closeButton: ".hidemodal" });
+});
+
