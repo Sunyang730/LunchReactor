@@ -132,6 +132,9 @@ var backend = (function() {
     else { return deadline.from(now);  }
   };
 
+   // --------------------------- //
+   // public functions of backend.
+   // --------------------------- //
   return {
   checkUser: checkUser
   };
