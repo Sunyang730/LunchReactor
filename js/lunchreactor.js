@@ -12,7 +12,9 @@ $(function(){
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
   var $time_left = $('#time_left');
-  
+  var $new_user = $('#new_user'); 
+  var $greet = $('#greet');
+
   /* ****************
    * Event Handlers *
    * ****************/
@@ -26,14 +28,11 @@ $(function(){
       if(!rsvped && !closed) {$rsvp_frost.css('display','none'); }
     });
 
-  // Shows the success message in RSVP circle
+  // Submits RSVP on click. 
   $rsvp_circle.on('click',function(){
 
-    // voids click if already RSVPed
     if(rsvped || closed){ return; }
 
-    // shows green check mark and
-    // kills 'frost' hover action
     rsvped = true;
     $rsvp_frost.css('display','none');
     $('#rsvp_text').fadeOut('fast', function(){
@@ -42,28 +41,14 @@ $(function(){
       $('#rsvp_success').fadeIn('slow');
     });
 
-   /* ******************************************
-    *  TODO:                                   *
-    *  perform RSVP action on Parse.com here   *
-    * ******************************************/
-
+    // TODO: perform RSVP action on Parse.com here
   });
-
+  
   // Sign up the user with information from the forms
   $('.submitInfo').submit(function(event) {
     signUp($('#fullname').val(),
           $('#password').val(),
           $('#email').val());
-  });
-
-  // Check if the user is currently logged-in
-  // checkUser(function(user) {
-  //
-  // });
-
-  // Displays sign up form
-  $sign.hover(function() {
-    $reg.stop().slideToggle('fast');
   });
 
   // Shows/Hides video background
@@ -80,7 +65,7 @@ $(function(){
       small = true;
       return;
     }
-    });
+  });
 
   /* **************
    * Default Code *
@@ -93,7 +78,7 @@ $(function(){
   $('#date').text(moment().format('dddd, MMMM Do YYYY'));
 
   // Sets the time left to RSVP
-  var closed = false;
+  var closed = false; // default
   var time_left = timeLeft();
   if(time_left === 'Closed'){
    closed = true; 
@@ -102,11 +87,13 @@ $(function(){
   }
   $time_left.text(timeLeft);
 
-  // TODO: Check if user is logged in, display signup or greeting 
-  var loggedIn = checkUser(function(user){
-    if(user === undefined){ return false; }
-    else{ return user;}
-  });
+  // Greets user, or displays signup message
+  var user;
+  checkUser(function(username){ user = username; });
+  if(user !== undefined){
+    $new_user.hide();
+    $greet.html('You\'re all that and a bag of chips, ' + user + '.<br> Mmm... chips.').show();
+  }
 
   // TODO: Check if user has RSVPed that day, display RSVP or green check mark
   var rsvped = false; // default
@@ -118,4 +105,10 @@ $(function(){
     $('#rsvp_success').show();
   }
 
+  $('#loginform').submit(function(e){
+      return false;
+    });
+      
+   $('#modaltrigger').leanModal({ top: 350, overlay: 0.45, closeButton: ".hidemodal" });
 });
+
