@@ -1,5 +1,5 @@
 var backend = (function() {
-  
+
    // --------------------------- //
    // Initialization code.
    // --------------------------- //
@@ -78,7 +78,7 @@ var backend = (function() {
     var currentUser = Parse.User.current();
 
     if (currentUser !== undefined) {
-      currentUser.set('RSVP', request);
+      currentUser.set('rsvp', request);
       currentUser.save(null, {
         success: function(currentUser) {
           callback();
@@ -102,9 +102,9 @@ var backend = (function() {
 
     if (currentUser !== undefined) {
       var query = new Parse.Query(Parse.User);
-      query.get('vGmuEkf9Cz', {
+      query.get(currentUser.id, {
         success: function(user) {
-          callback(user.get('RSVP'));
+          callback(user.get('rsvp'));
         }
       });
     }
@@ -119,11 +119,11 @@ var backend = (function() {
                      'bg/coffee-beans-left-justified-small.mp4',
                      'bg/coffee-beans-small.mp4',
                      'bg/coffee-cup-small.mp4'];
-  
+
   var generateBackground = function(){
     return backgrounds[Math.floor(Math.random() * backgrounds.length)];
   };
-  
+
   var timeLeft = function(){
     var now = moment();
     var deadline = moment().hour(11);

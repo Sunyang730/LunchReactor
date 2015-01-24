@@ -29,19 +29,20 @@ $(function(){
     });
 
   // Submits RSVP on click.
-  $rsvp_circle.on('click',function(){
+  $rsvp_circle.on('click',function() {
 
-    if(rsvped || closed){ return; }
+    // Call the backend function to set the user's 'rsvp' var on Parse{}
+    backend.sendRSVP(true, function() {
+      if(rsvped || closed){ return; }
 
-    rsvped = true;
-    $rsvp_frost.css('display','none');
-    $('#rsvp_text').fadeOut('fast', function(){
-      $rsvp_circle.css({border: '1px solid #66BB6A',
-                        cursor:'auto'});
-      $('#rsvp_success').fadeIn('slow');
+      rsvped = true;
+      $rsvp_frost.css('display','none');
+      $('#rsvp_text').fadeOut('fast', function(){
+        $rsvp_circle.css({border: '1px solid #66BB6A',
+        cursor:'auto'});
+        $('#rsvp_success').fadeIn('slow');
+      });
     });
-
-    // TODO: perform RSVP action on Parse.com here
   });
 
   // Sign up the user with information from the forms
@@ -95,15 +96,22 @@ $(function(){
     $greet.html('You\'re all that and a bag of chips, ' + user + '.<br> Mmm... chips.').show();
   }
 
-  // TODO: Check if user has RSVPed that day, display RSVP or green check mark
+  // Check if user has RSVPed that day, display RSVP or green check mark
   var rsvped = false; // default
-  if(rsvped){
-    $rsvp_frost.css('display','none');
-    $('#rsvp_text').hide();
-    $rsvp_circle.css({border: '1px solid #66BB6A',
-                      cursor:'auto'});
-    $('#rsvp_success').show();
-  }
+  backend.checkRSVP(function(response) {
+   if (response) {
+     rsvped = response;
+     if (rsvped) {
+       $rsvp_frost.css('display','none');
+       $('#rsvp_text').hide();
+       $rsvp_circle.css({border: '1px solid #66BB6A',
+       cursor:'auto'});
+       $('#rsvp_success').show();
+     }
+   }
+  });
+
+
 
   $('#loginform').submit(function(e){
       return false;
