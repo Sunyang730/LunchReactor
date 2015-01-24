@@ -12,7 +12,7 @@ $(function(){
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
   var $time_left = $('#time_left');
-  var $new_user = $('#new_user'); 
+  var $new_user = $('#new_user');
   var $greet = $('#greet');
 
   /* ****************
@@ -28,7 +28,7 @@ $(function(){
       if(!rsvped && !closed) {$rsvp_frost.css('display','none'); }
     });
 
-  // Submits RSVP on click. 
+  // Submits RSVP on click.
   $rsvp_circle.on('click',function(){
 
     if(rsvped || closed){ return; }
@@ -43,7 +43,7 @@ $(function(){
 
     // TODO: perform RSVP action on Parse.com here
   });
-  
+
   // Sign up the user with information from the forms
   $('.submitInfo').submit(function(event) {
     backend.signUp($('#fullname').val(),
@@ -81,15 +81,15 @@ $(function(){
   var closed = false; // default
   var time_left = backend.timeLeft();
   if(time_left === 'Closed'){
-   closed = true; 
+   closed = true;
    $rsvp_frost.css('display','none');
    $rsvp_circle.css('cursor', 'auto');
   }
-  $time_left.text(timeLeft);
+  $time_left.text(time_left);
 
   // Greets user, or displays signup message
   var user;
-  checkUser(function(username){ user = username; });
+  backend.checkUser(function(username){ user = username; });
   if(user !== undefined){
     $new_user.hide();
     $greet.html('You\'re all that and a bag of chips, ' + user + '.<br> Mmm... chips.').show();
@@ -108,7 +108,6 @@ $(function(){
   $('#loginform').submit(function(e){
       return false;
     });
-      
+
    $('#modaltrigger').leanModal({ top: 350, overlay: 0.45, closeButton: ".hidemodal" });
 });
-
