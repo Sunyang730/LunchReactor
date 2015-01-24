@@ -46,7 +46,7 @@ $(function(){
   
   // Sign up the user with information from the forms
   $('.submitInfo').submit(function(event) {
-    signUp($('#fullname').val(),
+    backend.signUp($('#fullname').val(),
           $('#password').val(),
           $('#email').val());
   });
@@ -72,14 +72,14 @@ $(function(){
    * **************/
 
   // Sets a random motion background
-  $source.attr('src', generateBackground());
+  $source.attr('src', backend.generateBackground());
 
   // Sets the day's date
   $('#date').text(moment().format('dddd, MMMM Do YYYY'));
 
   // Sets the time left to RSVP
   var closed = false; // default
-  var time_left = timeLeft();
+  var time_left = backend.timeLeft();
   if(time_left === 'Closed'){
    closed = true; 
    $rsvp_frost.css('display','none');
