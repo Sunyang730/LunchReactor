@@ -20,7 +20,7 @@ h2 {
 h3 {
   font-family: 'Lato', Geneva, sans-serif;
   font-size:18pt;
-  color:#000;
+  color:#212121;
 }
 
 /* Background */
@@ -43,31 +43,6 @@ video#bgvid {
   background:#000;
   background-size: cover;
 }
-
-/* Containers */
-
-.signup{
-  position:absolute;
-  top:0px;
-  right:10px;
-  width:250px; 
-  font-family:'Roboto Slab', Geneva, sans-serif;
-  font-size:24pt;
-  color: #fff;
-  text-align:left;
-  z-index:4;
-}
-
-.register{
-  position:absolute;
-  right:0px;
-  background: #fff;
-  width:600px; height:400px;
-  margin: 0 auto;
-  padding:5px;
-  z-index:4;
-}
-
 
 /** custom login button **/
 .flatbtn-blu { 
@@ -136,19 +111,25 @@ video#bgvid {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-#registerform { padding-bottom:20px;/* no default styles */ }
-#loginform { /* no default styles */ }
+#form-reg { /* no default styles */ }
+#form-signin { /* no default styles */ }
 
-#register-modal {
+#register {
   width: 298px;
   padding-right:25px;
   margin: 0 auto;
-  border-right: 1px solid #000;
+  border-right: 1px solid #212121;
 }
 
-#login-modal{
+#signin{
   width:299px;
   padding-left:25px;
+}
+
+p.notice {
+  display:none;
+  color:#F44336; 
+  font-family: 'Roboto Slab', Geneva, sans-serif;
 }
 
 .txtfield { 

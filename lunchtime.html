@@ -31,52 +31,42 @@
         <p id="rsvp_text">
           <span class="rsvp">RSVP</span>
           <br>
-          <span id="time_left">3 hours left</span>
+          <span id="time_left"></span>
         </p>
         <p id="rsvp_success">&#x2713</p>
       </div>
       <div class="circle count fright">
         <p>
-          <span class="count" id="rsvp_count">23</span>
+          <span class="count" id="rsvp_count"></span>
         </p>
       </div>
       <p id="new_user">
         <a href="#modal" class="modaltrigger">Sign in</a> or <a href="#modal" class="modaltrigger">create an account</a> in seconds.
       </p>
-
-      <div class="signup" id="login" style="display:none;">
-          <div class="register" id="register">
-            <form class="info">
-              <input type="text" class="infoField" name="firstname" placeholder="First Name"><br>
-              <input type="text" class="infoField" name="lastname" placeholder="Last Name"><br>
-              <input type="text" class="infoField" name="email" placeholder="email"><br>
-              <div type="submit" class="submitInfo" value="Submit"></div>
-            </form>
-          </div>
-        </div>
-
       <p id="greet"></p>
     </div>
 
     <div id="modal" style="display:none;">
 
-      <div id="register-modal" class="fleft center">
+      <div id="register" class="fleft center">
         <h3>Create an account</h3>
-        <form id="registerform" name="registerform" method="post" action="lunchtime.html">
-          <input type="text" name="email" id="email" class="txtfield" tabindex="2" placeholder="email address">
-          <input type="password" name="password" id="password" class="txtfield" tabindex="3" placeholder="password">
-          <input type="password" name="password2" id="password2" class="txtfield" tabindex="4" placeholder="verify password">
-          <input type="text" name="username" id="username" class="txtfield" tabindex="1" placeholder="first and last name">
-          <input type="submit" name="registerbtn" id="registerbtn" class="flatbtn-blu hidemodal" value="Create Account" tabindex="5">
+        <form id="form-reg" name="form-reg" method="post" action="lunchtime.html">
+          <input type="text" name="email-reg" id="email-reg" class="txtfield" tabindex="1" placeholder="email address">
+          <input type="password" name="pwd-reg" id="pwd-reg" class="txtfield" tabindex="2" placeholder="password">
+          <input type="password" name="pwd2-reg" id="pwd2-reg" class="txtfield" tabindex="3" placeholder="verify password">
+          <input type="text" name="flname-reg" id="flname-reg" class="txtfield" tabindex="4" placeholder="first and last name">
+          <input type="submit" name="submit-reg" id="submit-reg" class="flatbtn-blu hidemodal" value="Create Account" tabindex="5">
+          <p id="notice-reg" class="notice">passwords must match</p>
         </form>
       </div>
 
-      <div id="login-modal" class="fright center">
+      <div id="signin" class="fright center">
         <h3>Sign in</h3>
-        <form id="loginform" name="loginform" method="post" action="lunchtime.html">
-          <input type="text" name="username" id="username" class="txtfield" tabindex="6" placeholder="email address">
-          <input type="password" name="password" id="password" class="txtfield" tabindex="7" placeholder="password">
-          <div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Sign In" tabindex="8"></div>
+        <form id="form-signin" name="form-signin" method="post" action="lunchtime.html">
+          <input type="text" name="email-signin" id="email-signin" class="txtfield" tabindex="6" placeholder="email address">
+          <input type="password" name="pwd-signin" id="pwd-signin" class="txtfield" tabindex="7" placeholder="password">
+          <div class="center"><input type="submit" name="submit-signin" id="submit-signin" class="flatbtn-blu hidemodal" value="Sign In" tabindex="8"></div>
+          <p id="notice-signin" class="notice">incorrect login credentials</p>
         </form>
       </div>
 
