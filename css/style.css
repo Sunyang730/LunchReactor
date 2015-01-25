@@ -75,6 +75,7 @@ video#bgvid {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: inline-block;
+  width:250px;
   outline: 0;
   border: 0;
   color: #edf4f9;
@@ -122,10 +123,9 @@ video#bgvid {
 
 #modal {
   z-index:10;
-  top:225px;
   position:fixed;
-  width: 600px;
-  padding: 15px 20px;
+  width: 650px;
+  padding: 40px 20px 40px;
   background: #D7CCC8;
   opacity:.5;
   -webkit-border-radius: 6px;
@@ -136,23 +136,26 @@ video#bgvid {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-#registerform { /* no default styles */ }
+#registerform { padding-bottom:20px;/* no default styles */ }
 #loginform { /* no default styles */ }
 
 #register-modal {
-  width: 275px;
-  border-right: 1px solid #fff;
+  width: 298px;
+  padding-right:25px;
+  margin: 0 auto;
+  border-right: 1px solid #000;
 }
 
 #login-modal{
-  width:275px;
+  width:299px;
+  padding-left:25px;
 }
 
 .txtfield { 
   display: block;
-  width: 95%;
+  width: 250px;
   padding: 6px 5px;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
   font-family: 'Roboto Slab', Geneva, sans-serif;
   color: #7988a3;
   font-size: 14pt;

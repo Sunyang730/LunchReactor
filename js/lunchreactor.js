@@ -123,5 +123,10 @@ $(function(){
       return false;
     });
 
-   $('#modaltrigger').leanModal({ top: 350, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#registerform').submit(function(e){
+    return false;
+  });
+      
+  $('.modaltrigger').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+
 });
