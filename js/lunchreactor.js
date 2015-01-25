@@ -12,6 +12,7 @@ $(function(){
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
   var $time_left = $('#time_left');
+  var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
   var $greet = $('#greet');
 
@@ -87,6 +88,11 @@ $(function(){
    $rsvp_circle.css('cursor', 'auto');
   }
   $time_left.text(time_left);
+
+  // Sets the number of RSVPs
+  backend.numRSVPs(function(len) {
+    $rsvp_count.text(len);
+  });
 
   // Greets user, or displays signup message
   var user;

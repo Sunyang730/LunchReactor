@@ -78,11 +78,11 @@ var backend = (function() {
   var sendRSVP = function(request, callback) {
     var currentUser = Parse.User.current();
 
-    if (currentUser !== undefined) {
+    if (currentUser) {
       currentUser.set('rsvp', request);
       currentUser.save(null, {
         success: function(currentUser) {
-          callback();
+          addRSVP(callback);
         }
       });
     }
@@ -101,7 +101,7 @@ var backend = (function() {
   var checkRSVP = function(callback) {
     var currentUser = Parse.User.current();
 
-    if (currentUser !== undefined) {
+    if (currentUser) {
       var query = new Parse.Query(Parse.User);
       query.get(currentUser.id, {
         success: function(user) {
@@ -111,6 +111,104 @@ var backend = (function() {
     }
   };
 
+  /*
+    Set the option 'opt' to 'val', invoke 'callback' if successful.
+    example:
+    setOption('auto-rsvp', true, function() {
+      alert('You are set to automatically RSVP!');
+    });
+  */
+  var setOption = function(opt, val, callback, error) {
+    var currentUser = Parse.User.current();
+
+    if (currentUser !== undefined) {
+      currentUser.set(opt, val);
+      currentUser.save(null, {
+        success: function(user) {
+          callback(user);
+        },
+        error: function(user, err) {
+          error(user, err);
+        }
+      });
+    }
+  };
+
+  /*
+    Check the option 'opt's value, invoke 'callback' if successful.
+    example:
+    checkOption('auto-rsvp', function() {
+      if (response) {
+        alert('You are currently set to automatically RSVP!');
+      }
+    });
+  */
+  var checkOption = function(opt, callback, error) {
+    var currentUser = Parse.User.current();
+
+    if (currentUser !== undefined) {
+      var query = new Parse.Query(Parse.User);
+      query.get(currentUser.id, {
+        success: function(user) {
+          callback(user.get(opt));
+        },
+        error: function(user, err) {
+          error(user, err);
+        }
+      });
+    }
+  };
+
+  /*
+    Add the user to the RSVP class
+    ex:
+    addRSVP(function(user) {
+      alert(user + ' has RSVPd!');
+    });
+  */
+  var addRSVP = function(callback) {
+    var currentUsername = Parse.User.current().get('username');
+    var Rsvps = Parse.Object.extend("Rsvps");
+    var rsvps = new Rsvps();
+    rsvps.save({user: currentUsername}, {
+      success: function() {
+        callback();
+      }
+    });
+  };
+
+  /*
+    Find the users who have RSVPd
+    Pass the array of confirmed users to the callback function
+    ex:
+    findRSVP(function(vals) {
+      alert('There are ' + vals.length + ' confirmed attendees: ' + vals.join(' '));
+    });
+  */
+  var findRSVP = function(callback, error) {
+    var Rsvps = Parse.Object.extend("Rsvps");
+    var query = new Parse.Query(Rsvps);
+    query.find({
+      success: function(results) {
+        var users = [];
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          users.push(object.get('user'));
+        }
+        callback(users);
+      },
+      error: function(error) {
+        error("Error: " + error.code + " " + error.message);
+      }
+    });
+  };
+
+  // Use findRSVP to pass the number of respondents to the callback
+  var numRSVPs = function(callback) {
+    findRSVP(function(vals) {
+      callback(vals.length);
+    });
+  };
 
   /* ********************
    * Frontend Functions *
@@ -144,7 +242,8 @@ var backend = (function() {
     checkRSVP: checkRSVP,
     backgrounds: backgrounds,
     generateBackground: generateBackground,
-    timeLeft: timeLeft
+    timeLeft: timeLeft,
+    numRSVPs: numRSVPs
   };
 
 })();
