@@ -46,6 +46,8 @@ $(window).load(function(){
   $rsvp_circle.on('click',function() {
 
     if(rsvped || closed){ return; }
+
+    backend.checkUser(function(username){ user = username; });
     if(user === undefined){ $('.modaltrigger').click(); return; }
 
     // Call the backend function to set the user's 'rsvp' var on Parse{}
@@ -143,8 +145,7 @@ $(window).load(function(){
   backend.checkUser(function(username){ user = username; });
   if(user !== undefined){
     $new_user.hide();
-    username = "Danny Delott";
-    $greet.html(backend.generateGreeting(username)).show();
+    $greet.html(backend.generateGreeting(user)).show();
   }
 
   // Check if user has RSVPed that day, display RSVP or green check mark
