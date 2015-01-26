@@ -1,4 +1,4 @@
-$(function(){
+$(window).load(function(){
 
   /* ******************
    * Global Variables *
@@ -88,8 +88,15 @@ $(function(){
     return false;
   });
 
-  $('.modaltrigger').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  // Show login/register modal
+  $('#auth-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#auth-link2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
   
+  // Use event delegation method for dynamic greeting
+  $greet.on('click', '#user-link[rel*=leanModal]', function(){
+    $('#user-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  });
+
   // Shows/Hides video background
   var small = false;
   $(window).on('resize', function() {
@@ -136,7 +143,8 @@ $(function(){
   backend.checkUser(function(username){ user = username; });
   if(user !== undefined){
     $new_user.hide();
-    $greet.html('You\'re all that and a bag of chips, ' + user + '.<br> Mmm... chips.').show();
+    username = "Danny Delott";
+    $greet.html(backend.generateGreeting(username)).show();
   }
 
   // Check if user has RSVPed that day, display RSVP or green check mark

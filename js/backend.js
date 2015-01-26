@@ -233,6 +233,15 @@ var backend = (function() {
     else { return deadline.from(now);  }
   };
 
+  var generateGreeting = function(name){
+    var fname = name.split(' ')[0];
+    var greetings = [
+      '<a id=\"user-link\" rel=\"leanModal\"  href=\"#modal-user\">' + fname + '</a>, you\'re all that and a bag of chips.<br>Mmm... chips.'
+    ];
+
+    return greetings[Math.floor(Math.random() * greetings.length)];
+  };
+
    // --------------------------- //
    // public functions of backend.
    // --------------------------- //
@@ -245,6 +254,7 @@ var backend = (function() {
     checkRSVP: checkRSVP,
     backgrounds: backgrounds,
     generateBackground: generateBackground,
+    generateGreeting: generateGreeting,
     timeLeft: timeLeft,
     numRSVPs: numRSVPs
   };
