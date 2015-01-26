@@ -96,7 +96,7 @@ video#bgvid {
   display: none;
 }
 
-#modal {
+.modal {
   z-index:10;
   position:fixed;
   width: 650px;

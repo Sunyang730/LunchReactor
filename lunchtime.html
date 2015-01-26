@@ -41,12 +41,12 @@
         </p>
       </div>
       <p id="new_user">
-        <a href="#modal" class="modaltrigger">Sign in</a> or <a href="#modal" class="modaltrigger">create an account</a> in seconds.
+        <a href="#modal-auth" class="modaltrigger">Sign in</a> or <a href="#modal-auth" class="modaltrigger">create an account</a> in seconds.
       </p>
       <p id="greet"></p>
     </div>
 
-    <div id="modal" style="display:none;">
+    <div id="modal-auth" class="modal" style="display:none;">
 
       <div id="register" class="fleft center">
         <h3>Create an account</h3>
@@ -72,6 +72,21 @@
 
     </div>
 
+    <div id="modal-user" class="modal" style="display:none;">
+
+      <div id="s" class="fleft center">
+        <h3>Create an account</h3>
+        <form id="form-reg" name="form-reg" method="post" action="lunchtime.html">
+          <input type="text" name="email-reg" id="email-reg" class="txtfield" tabindex="1" placeholder="email address">
+          <input type="password" name="pwd-reg" id="pwd-reg" class="txtfield" tabindex="2" placeholder="password">
+          <input type="password" name="pwd2-reg" id="pwd2-reg" class="txtfield" tabindex="3" placeholder="verify password">
+          <input type="text" name="flname-reg" id="flname-reg" class="txtfield" tabindex="4" placeholder="first and last name">
+          <input type="submit" name="submit-reg" id="submit-reg" class="flatbtn-blu hidemodal" value="Create Account" tabindex="5">
+          <p id="notice-reg" class="notice">passwords must match</p>
+        </form>
+      </div>
+
+    </div>
   </body>
 
 </html>

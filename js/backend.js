@@ -227,6 +227,9 @@ var backend = (function() {
     var now = moment();
     var deadline = moment().hour(11);
     if(now.isAfter(deadline)) { return 'Closed'; }
+    else if(deadline.from(now) === 'a few seconds ago'){
+      return 'Closed'; 
+    }
     else { return deadline.from(now);  }
   };
 
