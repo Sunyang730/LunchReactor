@@ -59,13 +59,6 @@ $(function(){
     });
   });
 
-  // Sign up the user with information from the forms
-  $('.submitInfo').submit(function(event) {
-    backend.signUp($('#fullname').val(),
-          $('#password').val(),
-          $('#email').val());
-  });
-
   // Shows/Hides video background
   var small = false;
   $(window).on('resize', function() {
@@ -130,16 +123,34 @@ $(function(){
    }
   });
 
-  $('#form-signin').submit(function(e){
-    console.log('login');
-      return false;
+  // Provide the user's email and password and sign them in
+  $('#form-signin').submit(function(e) {
+    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
+      $new_user.hide();
+      $greet.html('Welcome back, ' + user + '!<br>You look fantastic today.').show();
+      // TODO: hide warning $('notice-reg').hide();
+    },
+    function() {
+      // TODO: display warning $('notice-reg').show();
     });
-
-  $('#form-reg').submit(function(e){
-    console.log('register');
     return false;
   });
-      
+
+  // If the passwords match, provide them to the funciton to set up a new account
+  $('#form-reg').submit(function(e){
+    if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
+      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
+      function(user) {
+        $new_user.hide();
+        $greet.html('Welcome to Lunch Reactor, ' + user +'!').show();
+        // TODO: hide warning $('notice-reg').hide();
+      });
+    } else {
+      // TODO: display warning $('notice-reg').show();
+    }
+    return false;
+  });
+
   $('.modaltrigger').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
 
 });
