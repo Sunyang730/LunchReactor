@@ -15,6 +15,19 @@ $(function(){
   var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
   var $greet = $('#greet');
+  var $notice_reg = $('#notice-reg');
+  var $notice_signin = $('#notice-signin');
+
+  /* ***********
+   * Functions *
+   * ***********/
+
+  // updates the RSVP counter
+  var updateRsvpCounter = function(num){
+    $rsvp_count.fadeOut('fast', function(){
+      $rsvp_count.text(num).fadeIn('fast');
+    });
+  };
 
   /* ****************
    * Event Handlers *
@@ -91,7 +104,7 @@ $(function(){
 
   // Sets the number of RSVPs
   backend.numRSVPs(function(len) {
-    $rsvp_count.text(len);
+    updateRsvpCounter(len);
   });
 
   // Greets user, or displays signup message
@@ -117,13 +130,13 @@ $(function(){
    }
   });
 
-
-
-  $('#loginform').submit(function(e){
+  $('#form-signin').submit(function(e){
+    console.log('login');
       return false;
     });
 
-  $('#registerform').submit(function(e){
+  $('#form-reg').submit(function(e){
+    console.log('register');
     return false;
   });
       
