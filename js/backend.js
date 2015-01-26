@@ -227,7 +227,19 @@ var backend = (function() {
     var now = moment();
     var deadline = moment().hour(11);
     if(now.isAfter(deadline)) { return 'Closed'; }
+    else if(deadline.from(now) === 'a few seconds ago'){
+      return 'Closed'; 
+    }
     else { return deadline.from(now);  }
+  };
+
+  var generateGreeting = function(name){
+    var fname = name.split(' ')[0];
+    var greetings = [
+      '<a id=\"user-link\" rel=\"leanModal\"  href=\"#modal-user\">' + fname + '</a>, you\'re all that and a bag of chips.<br>Mmm... chips.'
+    ];
+
+    return greetings[Math.floor(Math.random() * greetings.length)];
   };
 
    // --------------------------- //
@@ -242,6 +254,7 @@ var backend = (function() {
     checkRSVP: checkRSVP,
     backgrounds: backgrounds,
     generateBackground: generateBackground,
+    generateGreeting: generateGreeting,
     timeLeft: timeLeft,
     numRSVPs: numRSVPs
   };

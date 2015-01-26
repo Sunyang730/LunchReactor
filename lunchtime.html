@@ -41,12 +41,12 @@
         </p>
       </div>
       <p id="new_user">
-        <a href="#modal" class="modaltrigger">Sign in</a> or <a href="#modal" class="modaltrigger">create an account</a> in seconds.
+        <a id="auth-link" rel="leanModal" href="#modal-auth" >Sign in</a> or <a id="auth-link2" rel="leanModal" href="#modal-auth">create an account</a> in seconds.
       </p>
       <p id="greet"></p>
     </div>
 
-    <div id="modal" style="display:none;">
+    <div id="modal-auth" class="modal" style="display:none;">
 
       <div id="register" class="fleft center">
         <h3>Create an account</h3>
@@ -72,6 +72,13 @@
 
     </div>
 
+    <div id="modal-user" class="modal" style="display:none;">
+
+      <div id="s" class="fleft center">
+      </div>
+
+    </div>
+    <div id="lean_overlay" style="display:none"></div>
   </body>
 
 </html>
