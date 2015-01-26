@@ -28,3 +28,30 @@ Parse.Cloud.job("userMigration", function(request, status) {
        status.error("Uh oh, something went wrong.");
     });
 });
+
+// Job to notify users of their match
+Parse.Cloud.job("notifyUsers", function(request, response) {
+  var sendgrid = require("sendgrid");
+  sendgrid.initialize("LunchReactor", "hackreactor0");
+
+  var notifyUser = function(email, match) {
+    sendgrid.sendEmail({
+      to: email,
+      from: 'lunchreactor@gmail.com',
+      subject: 'View Today\'s Lunch Match!',
+      text: 'Good morning, you\'re all set to get lunch with ' + match + ' today!'
+    }, {
+      success: function(httpResponse) {
+        console.log(httpResponse);
+        response.success("Email sent!");
+      },
+      error: function(httpResponse) {
+        console.error(httpResponse);
+        response.error("Uh oh, something went wrong");
+      }
+    });
+  };
+
+  notifyUser('trjulian@gmail.com', 'Matt');
+
+});
