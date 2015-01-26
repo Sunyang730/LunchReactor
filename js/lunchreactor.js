@@ -45,10 +45,11 @@ $(function(){
   // Submits RSVP on click.
   $rsvp_circle.on('click',function() {
 
+    if(rsvped || closed){ return; }
+    if(user === undefined){ $('.modaltrigger').click(); return; }
+
     // Call the backend function to set the user's 'rsvp' var on Parse{}
     backend.sendRSVP(true, function() {
-      if(rsvped || closed){ return; }
-
       rsvped = true;
       $rsvp_frost.css('display','none');
       $('#rsvp_text').fadeOut('fast', function(){
@@ -59,6 +60,36 @@ $(function(){
     });
   });
 
+  // Provide the user's email and password and sign them in
+  $('#form-signin').submit(function(e) {
+    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
+      $new_user.hide();
+      $greet.html('Welcome back, ' + user + '!<br>You look fantastic today.').show();
+      // TODO: hide warning $('notice-reg').hide();
+    },
+    function() {
+      // TODO: display warning $('notice-reg').show();
+    });
+    return false;
+  });
+
+  // If the passwords match, provide them to the funciton to set up a new account
+  $('#form-reg').submit(function(e){
+    if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
+      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
+      function(user) {
+        $new_user.hide();
+        $greet.html('Welcome to Lunch Reactor, ' + user +'!').show();
+        // TODO: hide warning $('notice-reg').hide();
+      });
+    } else {
+      // TODO: display warning $('notice-reg').show();
+    }
+    return false;
+  });
+
+  $('.modaltrigger').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  
   // Shows/Hides video background
   var small = false;
   $(window).on('resize', function() {
@@ -122,35 +153,5 @@ $(function(){
      }
    }
   });
-
-  // Provide the user's email and password and sign them in
-  $('#form-signin').submit(function(e) {
-    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
-      $new_user.hide();
-      $greet.html('Welcome back, ' + user + '!<br>You look fantastic today.').show();
-      // TODO: hide warning $('notice-reg').hide();
-    },
-    function() {
-      // TODO: display warning $('notice-reg').show();
-    });
-    return false;
-  });
-
-  // If the passwords match, provide them to the funciton to set up a new account
-  $('#form-reg').submit(function(e){
-    if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
-      function(user) {
-        $new_user.hide();
-        $greet.html('Welcome to Lunch Reactor, ' + user +'!').show();
-        // TODO: hide warning $('notice-reg').hide();
-      });
-    } else {
-      // TODO: display warning $('notice-reg').show();
-    }
-    return false;
-  });
-
-  $('.modaltrigger').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
 
 });
