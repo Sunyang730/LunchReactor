@@ -46,6 +46,7 @@ $(function(){
   $rsvp_circle.on('click',function() {
 
     if(rsvped || closed){ return; }
+    if(user === undefined){ $('.modaltrigger').click(); return; }
 
     // Call the backend function to set the user's 'rsvp' var on Parse{}
     backend.sendRSVP(true, function() {
