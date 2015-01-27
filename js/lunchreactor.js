@@ -17,7 +17,7 @@ $(function(){
   var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
   var $greet = $('#greet');
-  var $userlink = $('#user-link');
+  var $link_prefs = $('#link-prefs');
   var $notice_reg = $('#notice-reg');
   var $notice_signin = $('#notice-signin');
 
@@ -38,14 +38,15 @@ $(function(){
   var user;
   var updateGreeting = function(){
     user = undefined; // default
-    $greet.hide();
-    $new_user.hide();
-    backend.checkUser(function(currentuser){ 
+    $('#email-prefs'); 
+      $greet.hide();
+      $new_user.hide();
+      backend.checkUser(function(currentuser){ 
       user = currentuser; 
     });
 
     if(user !== undefined){
-      $userlink.text(user.get('fullname'));
+      $link_prefs.text(user.get('fullname'));
       $greet.fadeIn();
     }else{
       $new_user.fadeIn();
@@ -87,9 +88,33 @@ $(function(){
       } else {
         displayNoRSVP();
       }
+      reloadPrefs();
     }, function() {
         displayNoRSVP();
+        reloadPrefs();
     });
+  };
+  
+  // clears/auto-populates user prefs
+  var reloadPrefs = function(){
+    var $email_prefs = $('#email-prefs');
+    var $fullname = $('#flname-prefs');
+    var $signature = $('#signature-prefs');
+    var $unrsvp = $('#submit-unrsvp');
+    $email_prefs.val();
+    $fullname.val();
+    $signature.text();
+    $unrsvp.css({opacity: 0.2, cursor:'auto'}).prop('disabled', true);
+
+    if(user !== undefined){
+     $email_prefs.val(user.get('email'));
+     $fullname.val(user.get('fullname'));
+     $signature.text(user.get('signature'));
+    }
+
+    if(rsvped){
+      $unrsvp.css({opacity: 1, cursor:'pointer'}).prop('disabled', false);
+    }
   };
 
   /* ****************
@@ -109,7 +134,7 @@ $(function(){
   $rsvp_circle.on('click', function(e) {
 
     if(rsvped || closed){ return; }
-    if(user === undefined){ $('#auth-link[rel*=leanModal]').trigger('click'); return; }
+    if(user === undefined){ $('#link-auth[rel*=leanModal]').trigger('click'); return; }
 
     // Call the backend function to set the user's 'rsvp' var on Parse{}
     backend.sendRSVP(true, function() {
@@ -122,6 +147,7 @@ $(function(){
       });
       updateRSVP();
       updateCounter();
+      reloadPrefs();
     });
 
     e.preventDefault();
@@ -132,6 +158,7 @@ $(function(){
     backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
       updateGreeting();
       updateRSVP();
+      reloadPrefs();
       // TODO: hide warning $('notice-reg').hide();
     },
     function() {
@@ -143,15 +170,17 @@ $(function(){
   // If the passwords match, provide them to the funciton to set up a new account
   $('#form-reg').submit(function(e){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
-      function(user) {
-        updateGreeting();
+      backend.signUp($('#email-reg').val(), 
+                     $('#pwd-reg').val(),
+                     $('#flname-reg').val(),
+                     function(user) {
+                       updateGreeting();
         // TODO: hide warning $('notice-reg').hide();
-      });
+                     });
     } else {
       // TODO: display warning $('notice-reg').show();
     }
-    return false;
+    e.preventDefault();
   });
 
   $('#submit-update').on('click', function(e){
@@ -162,6 +191,7 @@ $(function(){
   $('#submit-unrsvp').on('click', function(e){
     backend.sendRSVP(false, function(){
       updateRSVP();
+      reloadPrefs();
       updateCounter();
     });
     e.preventDefault();
@@ -171,13 +201,14 @@ $(function(){
     backend.logOut();
     updateGreeting();
     updateRSVP();
+    reloadPrefs();
     e.preventDefault();
   });
 
   // Show login/register modal
-  $('#auth-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  $('#auth-link2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  $('#user-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-prefs[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
 
   // Shows/Hides video background
   var small = false;
