@@ -98,7 +98,7 @@ var backend = (function() {
   //  }
   // });
   //
-  var checkRSVP = function(callback) {
+  var checkRSVP = function(callback, error) {
     var currentUser = Parse.User.current();
 
     if (currentUser) {
@@ -106,6 +106,9 @@ var backend = (function() {
       query.get(currentUser.id, {
         success: function(user) {
           callback(user.get('rsvp'));
+        },
+        error: function(user, err) {
+          callback(err);
         }
       });
     }
