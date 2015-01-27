@@ -219,6 +219,7 @@ p.notice {
 
 #new_user, #greet {
   font-family:'Lato', Geneva, sans-serif;
+  display:none;
   color: #fff;
   margin-top:270px;
   font-size:18pt;
