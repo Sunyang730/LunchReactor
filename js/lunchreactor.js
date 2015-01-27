@@ -133,7 +133,9 @@ $(window).load(function(){
   });
 
   $('#submit-unrsvp').on('click', function(e){
-    console.log('unrsvp');
+    backend.sendRSVP(false, function() {
+      checkRSVP();
+    });
     e.preventDefault();
   });
 
