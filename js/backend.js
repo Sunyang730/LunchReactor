@@ -111,6 +111,8 @@ var backend = (function() {
           callback(err);
         }
       });
+    } else {
+      callback();
     }
   };
 
