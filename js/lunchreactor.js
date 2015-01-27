@@ -18,6 +18,8 @@ $(function(){
   var $new_user = $('#new_user');
   var $greet = $('#greet');
   var $link_prefs = $('#link-prefs');
+  var $modal_auth = $('#modal-auth');
+  var $modal_prefs = $('#modal-prefs');
   var $notice_reg = $('#notice-reg');
   var $notice_signin = $('#notice-signin');
   var $email_prefs = $('#email-prefs');
@@ -208,10 +210,19 @@ $(function(){
     e.preventDefault();
   });
 
-  // Show login/register modal
+  // Show auth/prefs modal
   $('#link-auth[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
   $('#link-auth2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
   $('#link-prefs[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+
+  // Hide auth/prefs modal
+  $(document).on('keydown', function(e){
+    if(e.keyCode === 27){
+      $('#lean_overlay').fadeOut(200);
+      $modal_auth.css({display: 'none'});
+      $modal_prefs.css({display: 'none'});
+    }
+  });
 
   // Shows/Hides video background
   var small = false;
