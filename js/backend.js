@@ -43,9 +43,12 @@ var backend = (function() {
   var signUp = function(email, password, fullname, callback, err) {
     var user = new Parse.User();
     user.set('username', email);
+    user.set('emailVerified', false);
     user.set('email', email);
     user.set('password', password);
     user.set('fullname', fullname);
+    user.set('rsvp', false);
+    user.set('matches', {});
 
     user.signUp(null, {
       success: function(user) {
