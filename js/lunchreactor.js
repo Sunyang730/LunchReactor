@@ -38,11 +38,11 @@ $(function(){
   var user;
   var updateGreeting = function(){
     user = undefined; // default
-    $('#email-prefs'); 
+    $('#email-prefs');
       $greet.hide();
       $new_user.hide();
-      backend.checkUser(function(currentuser){ 
-      user = currentuser; 
+      backend.checkUser(function(currentuser){
+      user = currentuser;
     });
 
     if(user !== undefined){
@@ -53,8 +53,8 @@ $(function(){
     }
   };
 
-  // shows the appropriate RSVP button/checkmark 
-  var rsvped; 
+  // shows the appropriate RSVP button/checkmark
+  var rsvped;
   var updateRSVP = function(){
     rsvped = false; // default
     $rsvp_circle.css({border: '1px solid #fff',
@@ -94,7 +94,7 @@ $(function(){
         reloadPrefs();
     });
   };
-  
+
   // clears/auto-populates user prefs
   var reloadPrefs = function(){
     var $email_prefs = $('#email-prefs');
@@ -170,7 +170,7 @@ $(function(){
   // If the passwords match, provide them to the funciton to set up a new account
   $('#form-reg').submit(function(e){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-      backend.signUp($('#email-reg').val(), 
+      backend.signUp($('#email-reg').val(),
                      $('#pwd-reg').val(),
                      $('#flname-reg').val(),
                      function(user) {
@@ -184,7 +184,19 @@ $(function(){
   });
 
   $('#submit-update').on('click', function(e){
-    console.log('update');
+    var $email_prefs = $('#email-prefs');
+    var $fullname = $('#flname-prefs');
+    var $signature = $('#signature-prefs');
+
+    if (user !== undefined) {
+      user.set('email', $email_prefs.val());
+      user.set('fullname', $fullname.val());
+      user.set('signature', $signature.val());
+      backend.updateUser(user, function() {
+        console.log('updated');
+      });
+    }
+
     e.preventDefault();
   });
 
