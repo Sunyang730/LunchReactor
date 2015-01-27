@@ -157,7 +157,6 @@ var backend = (function() {
     var now = moment();
     var deadline = moment().hour(11).minute(0).second(0);
     if(now.isAfter(deadline) || 
-       deadline.from(now) === 'a few seconds ago' ||
        deadline.from(now) === 'in a few seconds'){
       return 'Closed';
     }
