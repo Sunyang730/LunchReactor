@@ -300,6 +300,10 @@ hr {
 
 @media screen and (max-width: 375px) {
 
+h2 {
+  padding-bottom: 43px;
+}
+
 #middle {
   height: 900px;
   top: 100%;
@@ -311,6 +315,11 @@ hr {
 
 .fright {
   margin-right: 25px;
+}
+
+#new_user, #greet {
+margin-top: 300px;
+font-size: 32pt;
 }
 
 }
