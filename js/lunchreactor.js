@@ -121,6 +121,7 @@ $(function(){
         $('#rsvp_success').fadeIn('slow');
       });
       updateRSVP();
+      updateCounter();
     });
 
     e.preventDefault();
@@ -159,8 +160,9 @@ $(function(){
   });
 
   $('#submit-unrsvp').on('click', function(e){
-    backend.sendRSVP(false, function() {
-     updateRSVP();
+    backend.sendRSVP(false, function(){
+      updateRSVP();
+      updateCounter();
     });
     e.preventDefault();
   });
