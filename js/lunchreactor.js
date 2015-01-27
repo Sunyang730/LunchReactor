@@ -15,6 +15,7 @@ $(window).load(function(){
   var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
   var $greet = $('#greet');
+  var $userlink = $('#user-link');
   var $notice_reg = $('#notice-reg');
   var $notice_signin = $('#notice-signin');
 
@@ -47,8 +48,7 @@ $(window).load(function(){
 
     if(rsvped || closed){ return; }
 
-    backend.checkUser(function(username){ user = username; });
-    if(user === undefined){ $('.modaltrigger').click(); return; }
+    if(user === undefined){ $('#auth-link[rel*=leanModal]').trigger('click'); return; }
 
     // Call the backend function to set the user's 'rsvp' var on Parse{}
     backend.sendRSVP(true, function() {
@@ -64,9 +64,11 @@ $(window).load(function(){
 
   // Provide the user's email and password and sign them in
   $('#form-signin').submit(function(e) {
-    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
+    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
       $new_user.hide();
-      $greet.html('Welcome back, ' + user + '!<br>You look fantastic today.').show();
+      user = username;
+      $userlink.text(user);
+      $greet.show();
       // TODO: hide warning $('notice-reg').hide();
     },
     function() {
@@ -81,7 +83,8 @@ $(window).load(function(){
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
       function(user) {
         $new_user.hide();
-        $greet.html('Welcome to Lunch Reactor, ' + user +'!').show();
+        $userlink.text(user);
+        $greet.show();
         // TODO: hide warning $('notice-reg').hide();
       });
     } else {
@@ -93,11 +96,7 @@ $(window).load(function(){
   // Show login/register modal
   $('#auth-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
   $('#auth-link2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  
-  // Use event delegation method for dynamic greeting
-  $greet.on('click', '#user-link[rel*=leanModal]', function(){
-    $('#user-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  });
+  $('#user-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
 
   // Shows/Hides video background
   var small = false;
@@ -144,8 +143,10 @@ $(window).load(function(){
   var user;
   backend.checkUser(function(username){ user = username; });
   if(user !== undefined){
-    $new_user.hide();
-    $greet.html(backend.generateGreeting(user)).show();
+    $userlink.text(user);
+    $greet.show();
+  }else{
+    $new_user.show();
   }
 
   // Check if user has RSVPed that day, display RSVP or green check mark

@@ -236,7 +236,9 @@ var backend = (function() {
   var generateGreeting = function(name){
     var fname = name.split(' ')[0];
     var greetings = [
-      '<a id=\"user-link\" rel=\"leanModal\"  href=\"#modal-user\">' + fname + '</a>, you\'re all that and a bag of chips.<br>Mmm... chips.'
+      '<a id=\"user-link\" rel=\"leanModal\"  href=\"#modal-user\">' + name + '</a>, you\'re all that and a bag of chips.<br>Mmm... chips.',
+      'Welcome back, <a id=\"user-link\" rel=\"leanModal\" href=\"#modal-user\">' + name + '</a>!<br>You look fantastic today.',
+      'Welcome to Lunch Reactor, <a id=\"user-link\" rel=\"leanModal\" href=\"#modal-user\">' + name + '</a>!'
     ];
 
     return greetings[Math.floor(Math.random() * greetings.length)];
