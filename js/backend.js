@@ -82,7 +82,7 @@ var backend = (function() {
       currentUser.set('rsvp', request);
       currentUser.save(null, {
         success: function(currentUser) {
-          addRSVP(callback);
+          callback();
         }
       });
     }
