@@ -37,8 +37,8 @@ $(window).load(function(){
     user = undefined; //default
     $greet.hide();
     $new_user.hide();
-    backend.checkUser(function(currentuser){ 
-      user = currentuser.get('fullname'); 
+    backend.checkUser(function(currentuser){
+      user = currentuser.get('fullname');
     });
 
     if(user !== undefined){
@@ -50,23 +50,21 @@ $(window).load(function(){
   };
 
   // shows the appropriate RSVP box
-  var rsvped; 
+  var rsvped;
   var checkRSVP = function(){
     rsvped = false; // default
 
     backend.checkRSVP(function(response) {
       if (response) {
         rsvped = true;
+        $rsvp_frost.css('display','none');
+        $rsvp_circle.css({border: '1px solid #66BB6A',
+        cursor:'auto'});
+        $('#rsvp_success').fadeIn();
       }
+    }, function() {
+      $rsvp_text.fadeIn();
     });
-
-    if(!rsvped){ $rsvp_text.fadeIn(); }
-    else { 
-      $rsvp_frost.css('display','none');
-      $rsvp_circle.css({border: '1px solid #66BB6A',
-      cursor:'auto'});
-      $('#rsvp_success').fadeIn();
-    }
   };
 
   /* ****************
@@ -97,6 +95,7 @@ $(window).load(function(){
         cursor:'auto'});
         $('#rsvp_success').fadeIn('slow');
       });
+      checkRSVP();
     });
 
     e.preventDefault();
