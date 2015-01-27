@@ -240,6 +240,10 @@ position: relative;
 cursor:pointer;
 }
 
+#rsvp_text{
+  display:none;
+}
+
 #count{
 position: relative;
 }
