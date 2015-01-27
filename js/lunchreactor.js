@@ -187,6 +187,7 @@ $(function(){
       user.set('signature', $signature.val());
       backend.updateUser(user, function() {
         console.log('updated');
+        updateGreeting();
       });
     }
 
