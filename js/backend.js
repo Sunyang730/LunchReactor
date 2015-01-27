@@ -155,24 +155,13 @@ var backend = (function() {
 
   var timeLeft = function(){
     var now = moment();
-    var deadline = moment().hour(11);
+    var deadline = moment().hour(11).minute(0).second(0);
     if(now.isAfter(deadline) || 
        deadline.from(now) === 'a few seconds ago' ||
        deadline.from(now) === 'in a few seconds'){
       return 'Closed';
     }
     else { return deadline.from(now);  }
-  };
-
-  var generateGreeting = function(name){
-    var fname = name.split(' ')[0];
-    var greetings = [
-      '<a id=\"user-link\" rel=\"leanModal\"  href=\"#modal-user\">' + name + '</a>, you\'re all that and a bag of chips.<br>Mmm... chips.',
-      'Welcome back, <a id=\"user-link\" rel=\"leanModal\" href=\"#modal-user\">' + name + '</a>!<br>You look fantastic today.',
-      'Welcome to Lunch Reactor, <a id=\"user-link\" rel=\"leanModal\" href=\"#modal-user\">' + name + '</a>!'
-    ];
-
-    return greetings[Math.floor(Math.random() * greetings.length)];
   };
 
    // --------------------------- //
@@ -188,7 +177,6 @@ var backend = (function() {
     checkRSVP: checkRSVP,
     backgrounds: backgrounds,
     generateBackground: generateBackground,
-    generateGreeting: generateGreeting,
     timeLeft: timeLeft,
     numRSVPs: numRSVPs
   };
