@@ -20,7 +20,11 @@ $(function(){
   var $link_prefs = $('#link-prefs');
   var $notice_reg = $('#notice-reg');
   var $notice_signin = $('#notice-signin');
-
+  var $email_prefs = $('#email-prefs');
+  var $fullname = $('#flname-prefs');
+  var $signature = $('#signature-prefs');
+  var $unrsvp = $('#submit-unrsvp');
+  
   /* ***********
    * Functions *
    * ***********/
@@ -82,25 +86,14 @@ $(function(){
     };
 
     backend.checkRSVP(function(response) {
-      if (response) {
-        rsvped = true;
-        displayYesRSVP();
-      } else {
-        displayNoRSVP();
-      }
+      if (response){ rsvped = true; displayYesRSVP(); }
+      else{ displayNoRSVP(); }
       reloadPrefs();
-    }, function() {
-        displayNoRSVP();
-        reloadPrefs();
-    });
+    }, function() { displayNoRSVP(); reloadPrefs(); });
   };
 
   // clears/auto-populates user prefs
   var reloadPrefs = function(){
-    var $email_prefs = $('#email-prefs');
-    var $fullname = $('#flname-prefs');
-    var $signature = $('#signature-prefs');
-    var $unrsvp = $('#submit-unrsvp');
     $email_prefs.val();
     $fullname.val();
     $signature.text();
@@ -112,7 +105,7 @@ $(function(){
      $signature.text(user.get('signature'));
     }
 
-    if(rsvped){
+    if(rsvped && !closed){
       $unrsvp.css({opacity: 1, cursor:'pointer'}).prop('disabled', false);
     }
   };
