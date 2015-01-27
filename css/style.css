@@ -236,8 +236,8 @@ p.notice {
 }
 
 #rsvp{
-position: relative;
-cursor:pointer;
+  position: relative;
+  cursor:pointer;
 }
 
 #rsvp_text{
@@ -245,14 +245,14 @@ cursor:pointer;
 }
 
 #count{
-position: relative;
+  position: relative;
 }
 
 hr {
   height:1px;
   border:0;
   width:260px;
-background:#212121;
+  background:#212121;
 }
 
 .circle p{
