@@ -12,6 +12,7 @@ $(function(){
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
   var $rsvp_text = $('#rsvp_text', '#middle');
+  var $rsvp_success = $('#rsvp_success', '#middle');
   var $time_left = $('#time_left');
   var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
@@ -25,7 +26,7 @@ $(function(){
    * ***********/
 
   // updates the RSVP counter
-  var updateRsvpCounter = function(){
+  var updateCounter = function(){
     backend.numRSVPs(function(len) {
       $rsvp_count.fadeOut('fast', function(){
         $rsvp_count.text(len).fadeIn('fast');
@@ -35,7 +36,7 @@ $(function(){
 
   // shows the appropriate greeting
   var user;
-  var checkUser = function(){
+  var updateGreeting = function(){
     user = undefined; // default
     $greet.hide();
     $new_user.hide();
@@ -53,8 +54,12 @@ $(function(){
 
   // shows the appropriate RSVP button/checkmark 
   var rsvped; 
-  var checkRSVP = function(){
+  var updateRSVP = function(){
     rsvped = false; // default
+    $rsvp_circle.css({border: '1px solid #fff',
+      cursor:'pointer'});
+    $rsvp_text.css('display','none');
+    $rsvp_success.css('display','none');
 
     var displayYesRSVP = function() {
       $rsvp_frost.css('display','none');
@@ -69,11 +74,9 @@ $(function(){
       if (time_left === 'Closed') {
         closed = true;
         $rsvp_frost.css('display','none');
-        $rsvp_circle.css({border: '1px solid #fff',
-        cursor:'auto'});
+        $rsvp_circle.css('cursor','auto');
       }
       $time_left.text(time_left);
-      $('#rsvp_success').fadeOut();
       $rsvp_text.fadeIn();
     };
 
@@ -86,9 +89,6 @@ $(function(){
       }
     }, function() {
         displayNoRSVP();
-    });
-    backend.numRSVPs(function(len) {
-      updateRsvpCounter(len);
     });
   };
 
@@ -120,7 +120,7 @@ $(function(){
         cursor:'auto'});
         $('#rsvp_success').fadeIn('slow');
       });
-      checkRSVP();
+      updateRSVP();
     });
 
     e.preventDefault();
@@ -129,7 +129,8 @@ $(function(){
   // Provide the user's email and password and sign them in
   $('#form-signin').submit(function(e) {
     backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
-      checkUser();
+      updateGreeting();
+      updateRSVP();
       // TODO: hide warning $('notice-reg').hide();
     },
     function() {
@@ -143,7 +144,7 @@ $(function(){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
       function(user) {
-        checkUser();
+        updateGreeting();
         // TODO: hide warning $('notice-reg').hide();
       });
     } else {
@@ -159,14 +160,15 @@ $(function(){
 
   $('#submit-unrsvp').on('click', function(e){
     backend.sendRSVP(false, function() {
-      checkRSVP();
+     updateRSVP();
     });
     e.preventDefault();
   });
 
   $('#submit-signout').on('click', function(e){
     backend.logOut();
-    checkUser();
+    updateGreeting();
+    updateRSVP();
     e.preventDefault();
   });
 
@@ -212,11 +214,11 @@ $(function(){
   $time_left.text(time_left);
 
   // Sets the number of RSVPs
-  updateRsvpCounter();
+  updateCounter();
 
   // Greets user, or displays signup message
-  checkUser();
+  updateGreeting();
 
   // Check if user has RSVPed that day, display RSVP or green check mark
-  checkRSVP();
+  updateRSVP();
 });
