@@ -159,35 +159,53 @@ var backend = (function() {
     }
   };
 
-  /*
-    Add the user to the RSVP class
-    ex:
-    addRSVP(function(user) {
-      alert(user + ' has RSVPd!');
-    });
-  */
-  var addRSVP = function(callback) {
-    var currentUsername = Parse.User.current().get('username');
-    var Rsvps = Parse.Object.extend("Rsvps");
-    var rsvps = new Rsvps();
-    rsvps.save({user: currentUsername}, {
-      success: function() {
-        callback();
-      }
-    });
-  };
+  // /*
+  //   Add the user to the RSVP class
+  //   ex:
+  //   addRSVP(function(user) {
+  //     alert(user + ' has RSVPd!');
+  //   });
+  // */
+  // var addRSVP = function(callback) {
+  //   var currentUsername = Parse.User.current().get('username');
+  //   var Rsvps = Parse.Object.extend("Rsvps");
+  //   var rsvps = new Rsvps();
+  //   rsvps.save({user: currentUsername}, {
+  //     success: function() {
+  //       callback();
+  //     }
+  //   });
+  // };
+  //
+  // /*
+  //   Find the users who have RSVPd
+  //   Pass the array of confirmed users to the callback function
+  //   ex:
+  //   findRSVP(function(vals) {
+  //     alert('There are ' + vals.length + ' confirmed attendees: ' + vals.join(' '));
+  //   });
+  // */
+  // var findRSVP = function(callback, error) {
+  //   var Rsvps = Parse.Object.extend("Rsvps");
+  //   var query = new Parse.Query(Rsvps);
+  //   query.find({
+  //     success: function(results) {
+  //       var users = [];
+  //       for (var i = 0; i < results.length; i++) {
+  //         var object = results[i];
+  //         users.push(object.get('user'));
+  //       }
+  //       callback(users);
+  //     },
+  //     error: function(error) {
+  //       error("Error: " + error.code + " " + error.message);
+  //     }
+  //   });
+  // };
 
-  /*
-    Find the users who have RSVPd
-    Pass the array of confirmed users to the callback function
-    ex:
-    findRSVP(function(vals) {
-      alert('There are ' + vals.length + ' confirmed attendees: ' + vals.join(' '));
-    });
-  */
-  var findRSVP = function(callback, error) {
-    var Rsvps = Parse.Object.extend("Rsvps");
-    var query = new Parse.Query(Rsvps);
+  var getRSVPs = function(callback, error) {
+    var query = new Parse.Query(Parse.User);
+    query.equalTo('rsvp', true);
     query.find({
       success: function(results) {
         var users = [];
@@ -201,11 +219,11 @@ var backend = (function() {
         error("Error: " + error.code + " " + error.message);
       }
     });
-  };
+  }
 
-  // Use findRSVP to pass the number of respondents to the callback
+  // Use getRSVPs to pass the number of respondents to the callback
   var numRSVPs = function(callback) {
-    findRSVP(function(vals) {
+    getRSVPs(function(vals) {
       callback(vals.length);
     });
   };
@@ -228,7 +246,7 @@ var backend = (function() {
     var deadline = moment().hour(11);
     if(now.isAfter(deadline)) { return 'Closed'; }
     else if(deadline.from(now) === 'a few seconds ago'){
-      return 'Closed'; 
+      return 'Closed';
     }
     else { return deadline.from(now);  }
   };
