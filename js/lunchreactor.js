@@ -66,30 +66,28 @@ $(function(){
     $rsvp_text.css('display','none');
     $rsvp_success.css('display','none');
 
-    var displayYesRSVP = function() {
-      $rsvp_frost.css('display','none');
-      $rsvp_circle.css({border: '1px solid #66BB6A',
-      cursor:'auto'});
-      $('#rsvp_success').fadeIn();
-    };
-
-    var displayNoRSVP = function() {
-      closed = false; // default
-      var time_left = backend.timeLeft();
-      if (time_left === 'Closed') {
-        closed = true;
-        $rsvp_frost.css('display','none');
-        $rsvp_circle.css('cursor','auto');
-      }
-      $time_left.text(time_left);
-      $rsvp_text.fadeIn();
-    };
-
     backend.checkRSVP(function(response) {
       if (response){ rsvped = true; displayYesRSVP(); }
       else{ displayNoRSVP(); }
       reloadPrefs();
     }, function() { displayNoRSVP(); reloadPrefs(); });
+  };
+  var displayYesRSVP = function() {
+    $rsvp_frost.css('display','none');
+    $rsvp_circle.css({border: '1px solid #66BB6A',
+    cursor:'auto'});
+    $('#rsvp_success').fadeIn();
+  };
+  var displayNoRSVP = function() {
+    closed = false; // default
+    var time_left = backend.timeLeft();
+    if (time_left === 'Closed') {
+      closed = true;
+      $rsvp_frost.css('display','none');
+      $rsvp_circle.css('cursor','auto');
+    }
+    $time_left.text(time_left);
+    $rsvp_text.fadeIn();
   };
 
   // clears/auto-populates user prefs
