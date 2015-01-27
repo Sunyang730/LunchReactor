@@ -19,7 +19,7 @@ var backend = (function() {
    var currentUser = Parse.User.current();
 
    if (currentUser) {
-     callback(currentUser.get('fullname'));
+     callback(currentUser);
    }
   };
 

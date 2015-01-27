@@ -47,7 +47,7 @@
       <p id="greet"><a id="user-link" rel="leanModal" href="#modal-user"></a>, you're all that and a bag of chips.<br>Mmm... chips.</p>
     </div>
 
-    <div id="modal-auth" class="modal" style="display:none;">
+    <div id="modal-auth" style="display:none;">
 
       <div id="register" class="fleft center">
         <h3>Create an account</h3>
@@ -73,11 +73,18 @@
 
     </div>
 
-    <div id="modal-user" class="modal" style="display:none;">
-
-      <div id="s" class="fleft center">
-      </div>
-
+    <div id="modal-user" class="center" style="display:none;">
+      <h3>User Preferences</h3>
+      <form id="form-user" name="form-user" method="post" action="lunchtime.html">
+       <input type="text" name="email-user" id="email-user" class="txtfield" tabindex="1" placeholder="email address">
+       <input type="text" name="flname-user" id="flname-user" class="txtfield" tabindex="2" placeholder="first and last name">
+       <textarea  name="signature-user" id="signature-user" class="txtfield" style="resize:vertical;" maxlength="250" tabindex="3" placeholder="signature"></textarea>
+       <input type="submit" name="submit-update" id="submit-update" class="flatbtn-blu hidemodal" value="Update" style="width:123px;margin-right:8px;padding-left:18px;" tabindex="4">
+       <button type="button" name="submit-unrsvp" id="submit-unrsvp" class="flatbtn-blu hidemodal" style="width:123px;padding:12px;" tabindex="5">Un-RSVP</button>
+        </form>
+       <p id="notice-user" class="notice">incorrect login credentials</p>
+        <hr style="margin-bottom:16px">
+        <button type="button" name="submit-signout" id="submit-signout" class="flatbtn-blu hidemodal" tabindex="6">Sign out</button>
     </div>
     <div id="lean_overlay" style="display:none"></div>
   </body>
