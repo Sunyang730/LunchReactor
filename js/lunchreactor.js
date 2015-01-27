@@ -34,12 +34,13 @@ $(window).load(function(){
   // shows the appropriate greeting
   var user;
   var checkUser = function(){
+    user = undefined; //default
     $greet.hide();
     $new_user.hide();
     backend.checkUser(function(currentuser){ 
       user = currentuser.get('fullname'); 
     });
-  
+
     if(user !== undefined){
       $userlink.text(user);
       $greet.fadeIn();
