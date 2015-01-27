@@ -54,16 +54,39 @@ $(window).load(function(){
   var checkRSVP = function(){
     rsvped = false; // default
 
+    var displayYesRSVP = function() {
+      $rsvp_frost.css('display','none');
+      $rsvp_circle.css({border: '1px solid #66BB6A',
+      cursor:'auto'});
+      $('#rsvp_success').fadeIn();
+    };
+
+    var displayNoRSVP = function() {
+      closed = false; // default
+      var time_left = backend.timeLeft();
+      if (time_left === 'Closed') {
+        closed = true;
+        $rsvp_frost.css('display','none');
+        $rsvp_circle.css({border: '1px solid #fff',
+        cursor:'auto'});
+      }
+      $time_left.text(time_left);
+      $('#rsvp_success').fadeOut();
+      $rsvp_text.fadeIn();
+    };
+
     backend.checkRSVP(function(response) {
       if (response) {
         rsvped = true;
-        $rsvp_frost.css('display','none');
-        $rsvp_circle.css({border: '1px solid #66BB6A',
-        cursor:'auto'});
-        $('#rsvp_success').fadeIn();
+        displayYesRSVP();
+      } else {
+        displayNoRSVP();
       }
     }, function() {
-      $rsvp_text.fadeIn();
+        displayNoRSVP();
+    });
+    backend.numRSVPs(function(len) {
+      updateRsvpCounter(len);
     });
   };
 
@@ -178,18 +201,6 @@ $(window).load(function(){
 
   // Sets the time left to RSVP
   var closed = false; // default
-  var time_left = backend.timeLeft();
-  if(time_left === 'Closed'){
-   closed = true;
-   $rsvp_frost.css('display','none');
-   $rsvp_circle.css('cursor', 'auto');
-  }
-  $time_left.text(time_left);
-
-  // Sets the number of RSVPs
-  backend.numRSVPs(function(len) {
-    updateRsvpCounter(len);
-  });
 
   // Greets user, or displays signup message
   checkUser();
