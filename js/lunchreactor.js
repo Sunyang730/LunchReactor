@@ -148,18 +148,13 @@ $(function(){
 
   // Provide the user's email and password and sign them in
   $('#form-signin').submit(function(e) {
-<<<<<<< HEAD
-    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
+    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
       updateGreeting();
       updateRSVP();
       reloadPrefs();
-      // TODO: hide warning $('notice-reg').hide();
-=======
-    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
       checkUser();
       // TODO: hide warning $('notice-signin').hide();
       $('#notice-signin').css("display", "none");
->>>>>>> display errors on input validation
     },
     function(error) {
       // TODO: display warning $('notice-signin').show();
@@ -174,20 +169,17 @@ $(function(){
   // If the passwords match, provide them to the funciton to set up a new account
   $('#form-reg').submit(function(e){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-<<<<<<< HEAD
       backend.signUp($('#email-reg').val(),
                      $('#pwd-reg').val(),
                      $('#flname-reg').val(),
                      function(user) {
                        updateGreeting();
                      });
-=======
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
       function(user) {
         checkUser();
         // TODO: hide warning $('notice-reg').hide();
         $('#notice-reg').css("display", "none");
->>>>>>> display errors on input validation
       },
       function(error) {
         // TODO: display warning $('notice-reg').show();
@@ -195,16 +187,11 @@ $(function(){
         $('#notice-reg').text(error.message);
         $('#notice-reg').css("display", "block");
       });
-<<<<<<< HEAD
     } else {
       // TODO: display warning $('notice-reg').show();
     }
     e.preventDefault();
-=======
-    };
-    e.preventDefault();
     return false;
->>>>>>> display errors on input validation
   });
 
   $('#submit-update').on('click', function(e){
