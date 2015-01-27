@@ -133,53 +133,53 @@ var backend = (function() {
     }
   };
 
-  /*
-    Set the option 'opt' to 'val', invoke 'callback' if successful.
-    example:
-    setOption('auto-rsvp', true, function() {
-      alert('You are set to automatically RSVP!');
-    });
-  */
-  var setOption = function(opt, val, callback, error) {
-    var currentUser = Parse.User.current();
-
-    if (currentUser !== undefined) {
-      currentUser.set(opt, val);
-      currentUser.save(null, {
-        success: function(user) {
-          callback(user);
-        },
-        error: function(user, err) {
-          error(user, err);
-        }
-      });
-    }
-  };
-
-  /*
-    Check the option 'opt's value, invoke 'callback' if successful.
-    example:
-    checkOption('auto-rsvp', function() {
-      if (response) {
-        alert('You are currently set to automatically RSVP!');
-      }
-    });
-  */
-  var checkOption = function(opt, callback, error) {
-    var currentUser = Parse.User.current();
-
-    if (currentUser !== undefined) {
-      var query = new Parse.Query(Parse.User);
-      query.get(currentUser.id, {
-        success: function(user) {
-          callback(user.get(opt));
-        },
-        error: function(user, err) {
-          error(user, err);
-        }
-      });
-    }
-  };
+  // /*
+  //   Set the option 'opt' to 'val', invoke 'callback' if successful.
+  //   example:
+  //   setOption('auto-rsvp', true, function() {
+  //     alert('You are set to automatically RSVP!');
+  //   });
+  // */
+  // var setOption = function(opt, val, callback, error) {
+  //   var currentUser = Parse.User.current();
+  //
+  //   if (currentUser !== undefined) {
+  //     currentUser.set(opt, val);
+  //     currentUser.save(null, {
+  //       success: function(user) {
+  //         callback(user);
+  //       },
+  //       error: function(user, err) {
+  //         error(user, err);
+  //       }
+  //     });
+  //   }
+  // };
+  //
+  // /*
+  //   Check the option 'opt's value, invoke 'callback' if successful.
+  //   example:
+  //   checkOption('auto-rsvp', function() {
+  //     if (response) {
+  //       alert('You are currently set to automatically RSVP!');
+  //     }
+  //   });
+  // */
+  // var checkOption = function(opt, callback, error) {
+  //   var currentUser = Parse.User.current();
+  //
+  //   if (currentUser !== undefined) {
+  //     var query = new Parse.Query(Parse.User);
+  //     query.get(currentUser.id, {
+  //       success: function(user) {
+  //         callback(user.get(opt));
+  //       },
+  //       error: function(user, err) {
+  //         error(user, err);
+  //       }
+  //     });
+  //   }
+  // };
 
   var getRSVPs = function(callback, error) {
     var query = new Parse.Query(Parse.User);
