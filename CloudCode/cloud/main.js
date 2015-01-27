@@ -31,7 +31,7 @@ var updateMatches = function(callback) {
         }
       }
       console.log('Users: ' + users);
-      console.log('Matches: ' + matches);
+      console.log('Matches: ' + JSON.stringify(matches));
       console.log('RSVPS: ' + rsvps);
 
       //For each user, Add new users to their match list
@@ -59,39 +59,47 @@ var updateMatches = function(callback) {
       }
   }
 }).then(function(userArray){
-  //match first person in rsvp list with their User object  
+  
+  var current_rsvp = rsvps.shift();
+  console.log('current_rsvp: ' + current_rsvp);
+  console.log('RSVPS: ' + rsvps);
+  console.log('typeof rsvps: ' + typeof rsvps);
+  console.log('typeof current_rsvp: ' + typeof current_rsvp);
+  var current_matches = {};
+    
+  //match first person in rsvp list with their User name 
   for(var i = 0; i<users.length; i++) {
-      if (rsvps[0] === users[i].fullname)
-          break;
+      console.log('for ' + i + ' ' + users[i]);
+      if (current_rsvp  === users[i]) {
+        current_matches = matches[i];
+        break;
+      }
   }  
   //var oldmatches = matches;
-  var newmatches = {};
+  var matchesByCount = {};
 
-  console.log('RSVPS: ' + rsvps);
-  console.log('RSVPS type: ' + typeof rsvps);
-  console.log('newmatches: ' + newmatches);
-
-  //make a new object where the keys are digits  that are the number
-  //times you've matched a person and  
-  //their value pairs as an array of names with whom you've been
-  //matched n times.
-
-  for(var j in matches) {
-    if(newmatches.hasOwnProperty(matches[j]) ){
-      newmatches[matches[j]].push(j);
+  //swap key-value-pairs (keys become values and vice versa)
+  console.log('Current Matches: ' + JSON.stringify(current_matches));
+  for(var j in current_matches) {
+    if( matchesByCount.hasOwnProperty(current_matches[j]) ){
+      matchesByCount[current_matches[j]].push(j);
     }else{
-      newmatches[matches[j]] = [j];
+      matchesByCount[current_matches[j]] = [j];
     }
   }
 
   console.log('RSVPS: ' + rsvps);
-  console.log('newmatches: ' + newmatches);
+  console.log('matchesByCount: ' + JSON.stringify(matchesByCount));
 
   //get the list of names with lowest number of matches
-  //  for (var k = 0; !newmatches.hasOwnProperty(k);  k++){
-  //  }
-  //  var match = newmatches[k](Math.random() * newmatches[k].length);
-  // }
+  var k = 0; 
+  for (k; !matchesByCount.hasOwnProperty(k);  k++){}
+  var lowestCountList = matchesByCount[k];
+  console.log('lowestCountList: ' + lowestCountList);
+  console.log('Random number gerenated: ' + Math.floor(Math.random() * lowestCountList.length));
+  var match = lowestCountList[Math.floor(Math.random() * lowestCountList.length)];
+  console.log(current_rsvp + ' was matched with ' + match + '!');
+
   });
 };
      
