@@ -1,4 +1,4 @@
-$(window).load(function(){
+$(function(){
 
   /* ******************
    * Global Variables *
@@ -12,6 +12,7 @@ $(window).load(function(){
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
   var $rsvp_text = $('#rsvp_text', '#middle');
+  var $rsvp_success = $('#rsvp_success', '#middle');
   var $time_left = $('#time_left');
   var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
@@ -25,34 +26,40 @@ $(window).load(function(){
    * ***********/
 
   // updates the RSVP counter
-  var updateRsvpCounter = function(num){
-    $rsvp_count.fadeOut('fast', function(){
-      $rsvp_count.text(num).fadeIn('fast');
+  var updateCounter = function(){
+    backend.numRSVPs(function(len) {
+      $rsvp_count.fadeOut('fast', function(){
+        $rsvp_count.text(len).fadeIn('fast');
+      });
     });
   };
 
   // shows the appropriate greeting
   var user;
-  var checkUser = function(){
-    user = undefined; //default
+  var updateGreeting = function(){
+    user = undefined; // default
     $greet.hide();
     $new_user.hide();
-    backend.checkUser(function(currentuser){
-      user = currentuser.get('fullname');
+    backend.checkUser(function(currentuser){ 
+      user = currentuser; 
     });
 
     if(user !== undefined){
-      $userlink.text(user);
+      $userlink.text(user.get('fullname'));
       $greet.fadeIn();
     }else{
       $new_user.fadeIn();
     }
   };
 
-  // shows the appropriate RSVP box
-  var rsvped;
-  var checkRSVP = function(){
+  // shows the appropriate RSVP button/checkmark 
+  var rsvped; 
+  var updateRSVP = function(){
     rsvped = false; // default
+    $rsvp_circle.css({border: '1px solid #fff',
+      cursor:'pointer'});
+    $rsvp_text.css('display','none');
+    $rsvp_success.css('display','none');
 
     var displayYesRSVP = function() {
       $rsvp_frost.css('display','none');
@@ -67,11 +74,9 @@ $(window).load(function(){
       if (time_left === 'Closed') {
         closed = true;
         $rsvp_frost.css('display','none');
-        $rsvp_circle.css({border: '1px solid #fff',
-        cursor:'auto'});
+        $rsvp_circle.css('cursor','auto');
       }
       $time_left.text(time_left);
-      $('#rsvp_success').fadeOut();
       $rsvp_text.fadeIn();
     };
 
@@ -84,9 +89,6 @@ $(window).load(function(){
       }
     }, function() {
         displayNoRSVP();
-    });
-    backend.numRSVPs(function(len) {
-      updateRsvpCounter(len);
     });
   };
 
@@ -118,7 +120,7 @@ $(window).load(function(){
         cursor:'auto'});
         $('#rsvp_success').fadeIn('slow');
       });
-      checkRSVP();
+      updateRSVP();
     });
 
     e.preventDefault();
@@ -127,7 +129,8 @@ $(window).load(function(){
   // Provide the user's email and password and sign them in
   $('#form-signin').submit(function(e) {
     backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
-      checkUser();
+      updateGreeting();
+      updateRSVP();
       // TODO: hide warning $('notice-reg').hide();
     },
     function() {
@@ -141,7 +144,7 @@ $(window).load(function(){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
       function(user) {
-        checkUser();
+        updateGreeting();
         // TODO: hide warning $('notice-reg').hide();
       });
     } else {
@@ -157,14 +160,15 @@ $(window).load(function(){
 
   $('#submit-unrsvp').on('click', function(e){
     backend.sendRSVP(false, function() {
-      checkRSVP();
+     updateRSVP();
     });
     e.preventDefault();
   });
 
   $('#submit-signout').on('click', function(e){
     backend.logOut();
-    checkUser();
+    updateGreeting();
+    updateRSVP();
     e.preventDefault();
   });
 
@@ -201,10 +205,20 @@ $(window).load(function(){
 
   // Sets the time left to RSVP
   var closed = false; // default
+  var time_left = backend.timeLeft();
+  if(time_left === 'Closed'){
+   closed = true;
+   $rsvp_frost.css('display','none');
+   $rsvp_circle.css('cursor', 'auto');
+  }
+  $time_left.text(time_left);
+
+  // Sets the number of RSVPs
+  updateCounter();
 
   // Greets user, or displays signup message
-  checkUser();
+  updateGreeting();
 
   // Check if user has RSVPed that day, display RSVP or green check mark
-  checkRSVP();
+  updateRSVP();
 });
