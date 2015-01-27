@@ -23,6 +23,23 @@ var backend = (function() {
    }
   };
 
+  var updateUser = function(user, callback) {
+    var currentUser = Parse.User.current();
+
+    if (currentUser) {
+      currentUser.set('username', user.get('email'));
+      currentUser.set('email', user.get('email'));
+      currentUser.set('fullname', user.get('fullname'));
+      currentUser.set('password', user.get('signature'));
+
+      user.save(null, {
+        success: function(user) {
+          callback();
+        }
+      });
+    }
+  };
+
   // signUp takes the user's fullname, password, and email
   // If sign-up was successful, it passes the fullname back to 'callback()'
   // Otherwise, it passes the username and error to 'err()'
@@ -228,6 +245,7 @@ var backend = (function() {
    // --------------------------- //
   return {
     checkUser: checkUser,
+    updateUser: updateUser,
     signUp: signUp,
     logIn: logIn,
     logOut: logOut,
