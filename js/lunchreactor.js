@@ -11,6 +11,7 @@ $(window).load(function(){
   var $middle = $('#middle');
   var $rsvp_frost = $('#frost', '#middle');
   var $rsvp_circle = $('#rsvp', '#middle');
+  var $rsvp_text = $('#rsvp_text', '#middle');
   var $time_left = $('#time_left');
   var $rsvp_count = $('#rsvp_count');
   var $new_user = $('#new_user');
@@ -30,6 +31,43 @@ $(window).load(function(){
     });
   };
 
+  // shows the appropriate greeting
+  var user;
+  var checkUser = function(){
+    $greet.hide();
+    $new_user.hide();
+    backend.checkUser(function(currentuser){ 
+      user = currentuser.get('fullname'); 
+    });
+  
+    if(user !== undefined){
+      $userlink.text(user);
+      $greet.fadeIn();
+    }else{
+      $new_user.fadeIn();
+    }
+  };
+
+  // shows the appropriate RSVP box
+  var rsvped; 
+  var checkRSVP = function(){
+    rsvped = false; // default
+
+    backend.checkRSVP(function(response) {
+      if (response) {
+        rsvped = true;
+      }
+    });
+
+    if(!rsvped){ $rsvp_text.fadeIn(); }
+    else { 
+      $rsvp_frost.css('display','none');
+      $rsvp_circle.css({border: '1px solid #66BB6A',
+      cursor:'auto'});
+      $('#rsvp_success').fadeIn();
+    }
+  };
+
   /* ****************
    * Event Handlers *
    * ****************/
@@ -46,15 +84,14 @@ $(window).load(function(){
   // Submits RSVP on click.
   $rsvp_circle.on('click', function(e) {
 
-    if(user === undefined){ $('#auth-link[rel*=leanModal]').trigger('click'); return; }
     if(rsvped || closed){ return; }
-
+    if(user === undefined){ $('#auth-link[rel*=leanModal]').trigger('click'); return; }
 
     // Call the backend function to set the user's 'rsvp' var on Parse{}
     backend.sendRSVP(true, function() {
       rsvped = true;
       $rsvp_frost.css('display','none');
-      $('#rsvp_text').fadeOut('fast', function(){
+      $rsvp_text.fadeOut('fast', function(){
         $rsvp_circle.css({border: '1px solid #66BB6A',
         cursor:'auto'});
         $('#rsvp_success').fadeIn('slow');
@@ -67,10 +104,7 @@ $(window).load(function(){
   // Provide the user's email and password and sign them in
   $('#form-signin').submit(function(e) {
     backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
-      $new_user.hide();
-      user = username;
-      $userlink.text(user);
-      $greet.fadeIn();
+      checkUser();
       // TODO: hide warning $('notice-reg').hide();
     },
     function() {
@@ -84,9 +118,7 @@ $(window).load(function(){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
       function(user) {
-        $new_user.hide();
-        $userlink.text(user);
-        $greet.fadeIn();
+        checkUser();
         // TODO: hide warning $('notice-reg').hide();
       });
     } else {
@@ -106,7 +138,8 @@ $(window).load(function(){
   });
 
   $('#submit-signout').on('click', function(e){
-    console.log('signout');
+    backend.logOut();
+    checkUser();
     e.preventDefault();
   });
 
@@ -157,29 +190,8 @@ $(window).load(function(){
   });
 
   // Greets user, or displays signup message
-  var user;
-  backend.checkUser(function(currentuser){ user = currentuser.get('fullname'); });
-  if(user !== undefined){
-    $userlink.text(user);
-    $greet.fadeIn();
-  }else{
-    $new_user.fadeIn();
-  }
+  checkUser();
 
   // Check if user has RSVPed that day, display RSVP or green check mark
-  var rsvped = false; // default
-  backend.checkRSVP(function(response) {
-   if (response) {
-     rsvped = response;
-     if (!rsvped) {
-       $('#rsvp_text').fadeIn();
-     }else{
-       $rsvp_frost.css('display','none');
-       $rsvp_circle.css({border: '1px solid #66BB6A',
-       cursor:'auto'});
-       $('#rsvp_success').fadeIn();
-     }
-   }
-  });
-
+  checkRSVP();
 });
