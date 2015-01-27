@@ -44,11 +44,11 @@ $(window).load(function(){
     });
 
   // Submits RSVP on click.
-  $rsvp_circle.on('click',function() {
-
-    if(rsvped || closed){ return; }
+  $rsvp_circle.on('click', function(e) {
 
     if(user === undefined){ $('#auth-link[rel*=leanModal]').trigger('click'); return; }
+    if(rsvped || closed){ return; }
+
 
     // Call the backend function to set the user's 'rsvp' var on Parse{}
     backend.sendRSVP(true, function() {
@@ -60,6 +60,8 @@ $(window).load(function(){
         $('#rsvp_success').fadeIn('slow');
       });
     });
+
+    e.preventDefault();
   });
 
   // Provide the user's email and password and sign them in
@@ -68,13 +70,13 @@ $(window).load(function(){
       $new_user.hide();
       user = username;
       $userlink.text(user);
-      $greet.show();
+      $greet.fadeIn();
       // TODO: hide warning $('notice-reg').hide();
     },
     function() {
       // TODO: display warning $('notice-reg').show();
     });
-    return false;
+    e.preventDefault();
   });
 
   // If the passwords match, provide them to the funciton to set up a new account
@@ -84,7 +86,7 @@ $(window).load(function(){
       function(user) {
         $new_user.hide();
         $userlink.text(user);
-        $greet.show();
+        $greet.fadeIn();
         // TODO: hide warning $('notice-reg').hide();
       });
     } else {
@@ -159,9 +161,9 @@ $(window).load(function(){
   backend.checkUser(function(currentuser){ user = currentuser.get('fullname'); });
   if(user !== undefined){
     $userlink.text(user);
-    $greet.show();
+    $greet.fadeIn();
   }else{
-    $new_user.show();
+    $new_user.fadeIn();
   }
 
   // Check if user has RSVPed that day, display RSVP or green check mark
@@ -169,12 +171,13 @@ $(window).load(function(){
   backend.checkRSVP(function(response) {
    if (response) {
      rsvped = response;
-     if (rsvped) {
+     if (!rsvped) {
+       $('#rsvp_text').fadeIn();
+     }else{
        $rsvp_frost.css('display','none');
-       $('#rsvp_text').hide();
        $rsvp_circle.css({border: '1px solid #66BB6A',
        cursor:'auto'});
-       $('#rsvp_success').show();
+       $('#rsvp_success').fadeIn();
      }
    }
   });
