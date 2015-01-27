@@ -42,9 +42,9 @@
         </p>
       </div>
       <p id="new_user">
-        <a id="auth-link" rel="leanModal" href="#modal-auth" >Sign in</a> or <a id="auth-link2" rel="leanModal" href="#modal-auth">create an account</a> in seconds.
+        <a id="link-auth" rel="leanModal" href="#modal-auth" >Sign in</a> or <a id="link-auth2" rel="leanModal" href="#modal-auth">create an account</a> in seconds.
       </p>
-      <p id="greet"><a id="user-link" rel="leanModal" href="#modal-user"></a>, you're all that and a bag of chips.<br>Mmm... chips.</p>
+      <p id="greet"><a id="link-prefs" rel="leanModal" href="#modal-prefs"></a>, you're all that and a bag of chips.<br>Mmm... chips.</p>
     </div>
 
     <div id="modal-auth" style="display:none;">
@@ -70,16 +70,16 @@
       </div>
     </div>
 
-    <div id="modal-user" class="center" style="display:none;">
+    <div id="modal-prefs" class="center" style="display:none;">
       <h3>User Preferences</h3>
-      <form id="form-user" name="form-user" method="post" action="lunchtime.html">
-       <input type="text" name="email-user" id="email-user" class="txtfield" tabindex="1" placeholder="email address">
-       <input type="text" name="flname-user" id="flname-user" class="txtfield" tabindex="2" placeholder="first and last name">
-       <textarea  name="signature-user" id="signature-user" class="txtfield" style="resize:vertical;" maxlength="250" tabindex="3" placeholder="signature (250 chars max)"></textarea>
+      <form id="form-prefs" name="form-prefs" method="post" action="lunchtime.html">
+       <input type="text" name="email-prefs" id="email-prefs" class="txtfield" tabindex="1" placeholder="email address">
+       <input type="text" name="flname-prefs" id="flname-prefs" class="txtfield" tabindex="2" placeholder="first and last name">
+       <textarea  name="signature-prefs" id="signature-prefs" class="txtfield" style="resize:vertical;" maxlength="250" tabindex="3" placeholder="signature (250 chars max)"></textarea>
        <input type="submit" name="submit-update" id="submit-update" class="flatbtn-blu hidemodal" value="Update" style="width:123px;margin-right:8px;padding-left:18px;" tabindex="4">
        <button type="button" name="submit-unrsvp" id="submit-unrsvp" class="flatbtn-blu hidemodal" style="width:123px;padding:12px;" tabindex="5">Un-RSVP</button>
         </form>
-       <p id="notice-user" class="notice">incorrect login credentials</p>
+       <p id="notice-prefs" class="notice">incorrect login credentials</p>
         <hr style="margin-bottom:16px">
         <button type="button" name="submit-signout" id="submit-signout" class="flatbtn-blu hidemodal" tabindex="6">Sign out</button>
     </div>

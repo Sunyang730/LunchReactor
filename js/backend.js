@@ -224,7 +224,7 @@ var backend = (function() {
         error("Error: " + error.code + " " + error.message);
       }
     });
-  }
+  };
 
   // Use getRSVPs to pass the number of respondents to the callback
   var numRSVPs = function(callback) {
