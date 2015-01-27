@@ -168,8 +168,11 @@ $(function(){
                      $('#flname-reg').val(),
                      function(user) {
                        updateGreeting();
-        // TODO: hide warning $('notice-reg').hide();
                      });
+      },
+      function(error) {
+        console.log(error + '\n' + error.message + '\n' + error.code);
+      });
     } else {
       // TODO: display warning $('notice-reg').show();
     }
