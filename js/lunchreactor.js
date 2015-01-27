@@ -93,6 +93,21 @@ $(window).load(function(){
     return false;
   });
 
+  $('#submit-update').on('click', function(e){
+    console.log('update');
+    e.preventDefault();
+  });
+
+  $('#submit-unrsvp').on('click', function(e){
+    console.log('unrsvp');
+    e.preventDefault();
+  });
+
+  $('#submit-signout').on('click', function(e){
+    console.log('signout');
+    e.preventDefault();
+  });
+
   // Show login/register modal
   $('#auth-link[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
   $('#auth-link2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
@@ -141,7 +156,7 @@ $(window).load(function(){
 
   // Greets user, or displays signup message
   var user;
-  backend.checkUser(function(username){ user = username; });
+  backend.checkUser(function(currentuser){ user = currentuser.get('fullname'); });
   if(user !== undefined){
     $userlink.text(user);
     $greet.show();
