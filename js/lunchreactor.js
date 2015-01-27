@@ -1,4 +1,4 @@
-$(window).load(function(){
+$(function(){
 
   /* ******************
    * Global Variables *
@@ -25,32 +25,34 @@ $(window).load(function(){
    * ***********/
 
   // updates the RSVP counter
-  var updateRsvpCounter = function(num){
-    $rsvp_count.fadeOut('fast', function(){
-      $rsvp_count.text(num).fadeIn('fast');
+  var updateRsvpCounter = function(){
+    backend.numRSVPs(function(len) {
+      $rsvp_count.fadeOut('fast', function(){
+        $rsvp_count.text(len).fadeIn('fast');
+      });
     });
   };
 
   // shows the appropriate greeting
   var user;
   var checkUser = function(){
-    user = undefined; //default
+    user = undefined; // default
     $greet.hide();
     $new_user.hide();
-    backend.checkUser(function(currentuser){
-      user = currentuser.get('fullname');
+    backend.checkUser(function(currentuser){ 
+      user = currentuser; 
     });
 
     if(user !== undefined){
-      $userlink.text(user);
+      $userlink.text(user.get('fullname'));
       $greet.fadeIn();
     }else{
       $new_user.fadeIn();
     }
   };
 
-  // shows the appropriate RSVP box
-  var rsvped;
+  // shows the appropriate RSVP button/checkmark 
+  var rsvped; 
   var checkRSVP = function(){
     rsvped = false; // default
 
@@ -201,6 +203,16 @@ $(window).load(function(){
 
   // Sets the time left to RSVP
   var closed = false; // default
+  var time_left = backend.timeLeft();
+  if(time_left === 'Closed'){
+   closed = true;
+   $rsvp_frost.css('display','none');
+   $rsvp_circle.css('cursor', 'auto');
+  }
+  $time_left.text(time_left);
+
+  // Sets the number of RSVPs
+  updateRsvpCounter();
 
   // Greets user, or displays signup message
   checkUser();
