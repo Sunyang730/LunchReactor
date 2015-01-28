@@ -159,8 +159,8 @@ $(function(){
     function(error) {
       // TODO: display warning $('notice-signin').show();
       $('.hidemodal').unbind("click");
-      $('#notice-signin').text(error.message);
-      $('#notice-signin').css("display", "block");
+      $notice_signin.text(error.message);
+      $notice_signin.css("display", "block");
     });
     e.preventDefault();
     // return false;
@@ -179,8 +179,8 @@ $(function(){
       function(error) {
         // TODO: display warning $('notice-reg').show();
         $('.hidemodal').unbind("click");
-        $('#notice-reg').text(error.message);
-        $('#notice-reg').css("display", "block");
+        $notice_reg.text(error.message);
+        $notice_reg.css("display", "block");
       });
     } else {
       // TODO: display warning $('notice-reg').show();
