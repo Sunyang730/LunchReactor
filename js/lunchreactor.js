@@ -110,6 +110,76 @@ $(function(){
     }
   };
 
+  // shows the appropriate greeting
+  var user;
+  var updateGreeting = function(){
+    user = undefined; // default
+    $('#email-prefs');
+      $greet.hide();
+      $new_user.hide();
+      backend.checkUser(function(currentuser){
+      user = currentuser;
+    });
+
+    if(user !== undefined){
+      $link_prefs.text(user.get('fullname'));
+      $greet.fadeIn();
+    }else{
+      $new_user.fadeIn();
+    }
+  };
+
+  // shows the appropriate RSVP button/checkmark
+  var rsvped;
+  var updateRSVP = function(){
+    rsvped = false; // default
+    $rsvp_circle.css({border: '1px solid #fff',
+      cursor:'pointer'});
+    $rsvp_text.css('display','none');
+    $rsvp_success.css('display','none');
+
+    backend.checkRSVP(function(response) {
+      if (response){ rsvped = true; displayYesRSVP(); }
+      else{ displayNoRSVP(); }
+      reloadPrefs();
+    }, function() { displayNoRSVP(); reloadPrefs(); });
+  };
+  var displayYesRSVP = function() {
+    $rsvp_frost.css('display','none');
+    $rsvp_circle.css({border: '1px solid #66BB6A',
+    cursor:'auto'});
+    $('#rsvp_success').fadeIn();
+  };
+  var displayNoRSVP = function() {
+    closed = false; // default
+    var time_left = backend.timeLeft();
+    if (time_left === 'Closed') {
+      closed = true;
+      $rsvp_frost.css('display','none');
+      $rsvp_circle.css('cursor','auto');
+    }
+    $time_left.text(time_left);
+    $rsvp_text.fadeIn();
+  };
+
+  // clears/auto-populates user prefs
+  var reloadPrefs = function(){
+    $email_prefs.val();
+    $fullname.val();
+    $signature.text();
+    $unrsvp.css({opacity: 0.2, cursor:'auto'}).prop('disabled', true);
+
+    if(user !== undefined){
+     $email_prefs.val(user.get('email'));
+     $fullname.val(user.get('fullname'));
+     $signature.text(user.get('signature'));
+    }
+
+    if(rsvped && !closed){
+      $unrsvp.css({opacity: 1, cursor:'pointer'}).prop('disabled', false);
+    }
+  };
+
   /* ****************
    * Event Handlers *
    * ****************/
@@ -148,14 +218,24 @@ $(function(){
 
   // Provide the user's email and password and sign them in
   $('#form-signin').submit(function(e) {
-    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(username) {
+    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
       updateGreeting();
       updateRSVP();
       reloadPrefs();
-      // TODO: hide warning $('notice-reg').hide();
+      checkUser();
+      // TODO: hide warning $('notice-signin').hide();
+      $('#notice-signin').css("display", "none");
     },
-    function() {
-      // TODO: display warning $('notice-reg').show();
+    function(error) {
+      // TODO: display warning $('notice-signin').show();
+      // $('.hidemodal').unbind("click");
+      $notice_signin.text(error.message);
+      $notice_signin.css('display', 'block');
+
+      var modal_id = $(this).attr('href');
+      $('#lean_overlay').unbind('click').click(function() {
+          close_modal(modal_id);
+      });
     });
     e.preventDefault();
   });
@@ -163,17 +243,27 @@ $(function(){
   // If the passwords match, provide them to the funciton to set up a new account
   $('#form-reg').submit(function(e){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-      backend.signUp($('#email-reg').val(),
-                     $('#pwd-reg').val(),
-                     $('#flname-reg').val(),
-                     function(user) {
-                       updateGreeting();
+      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
+      function(user) {
+        updateGreeting();
+        checkUser();
         // TODO: hide warning $('notice-reg').hide();
-                     });
-    } else {
-      // TODO: display warning $('notice-reg').show();
+        $('#notice-reg').css('display', 'none');
+      },
+      function(error) {
+        // TODO: display warning $('notice-reg').show();
+        // $('.hidemodal').unbind('click');
+        $notice_reg.text(error.message);
+        $notice_reg.css('display', 'block');
+
+        var modal_id = $(this).attr('href');
+        $('#lean_overlay').unbind('click').click(function() {
+          close_modal(modal_id);
+        });
+      });
     }
     e.preventDefault();
+    return false;
   });
 
   $('#submit-update').on('click', function(e){
