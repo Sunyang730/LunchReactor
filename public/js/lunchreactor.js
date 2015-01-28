@@ -22,6 +22,7 @@ $(function(){
   var $notice_reg = $('#notice-reg');
   var $notice_signin = $('#notice-signin');
   var $email_prefs = $('#email-prefs');
+  var $channel_prefs = $('#channel-prefs');
   var $fullname = $('#flname-prefs');
   var $signature = $('#signature-prefs');
   var $unrsvp = $('#submit-unrsvp');
@@ -117,15 +118,17 @@ $(function(){
 
   // clears/auto-populates user prefs
   var reloadPrefs = function(){
-    $email_prefs.val();
-    $fullname.val();
-    $signature.text();
+    $email_prefs.val('');
+    $fullname.val('');
+    $signature.text('');
+    $channel_prefs.val('');
     $unrsvp.css({opacity: 0.2, cursor:'auto'}).prop('disabled', true);
 
     if(user !== undefined){
      $email_prefs.val(user.get('email'));
      $fullname.val(user.get('fullname'));
      $signature.text(user.get('signature'));
+     $channel_prefs.val(user.get('channel'));
     }
 
     if(rsvped && !closed){
@@ -266,7 +269,7 @@ $(function(){
   // If the passwords match, provide them to the funciton to set up a new account
   $('#form-reg').submit(function(e){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
+      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(), $('#channel-reg').val(),
       function(user) {
         updateGreeting();
         checkUser();
@@ -293,11 +296,13 @@ $(function(){
     var $email_prefs = $('#email-prefs');
     var $fullname = $('#flname-prefs');
     var $signature = $('#signature-prefs');
+    var $channel = $('#channel-prefs');
 
     if (user !== undefined) {
       user.set('email', $email_prefs.val());
       user.set('fullname', $fullname.val());
       user.set('signature', $signature.val());
+      user.set('channel', $channel.val());
       backend.updateUser(user, function() {
         console.log('updated');
         updateGreeting();
@@ -325,9 +330,9 @@ $(function(){
   });
 
   // Show auth/prefs modal
-  $('#link-auth[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  $('#link-auth2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  $('#link-prefs[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth2[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-prefs[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
 
   // Hide auth/prefs modal
   $(document).on('keydown', function(e){
