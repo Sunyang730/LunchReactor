@@ -24,8 +24,8 @@
     <div id="middle">
       <h1>Lunch Reactor</h1>
       <h2 id="date">Monday, January 19, 2015</h2>
-      <div class="circle" id="frost"></div>
-      <div class="circle fleft" id="rsvp">
+      <div id="frost" class="circle" ></div>
+      <div id="rsvp" class="circle fleft">
         <p id="rsvp_text">
           <span class="rsvp">RSVP</span>
           <br>
@@ -35,7 +35,7 @@
       </div>
       <div class="circle count fright">
         <p>
-          <span class="count" id="rsvp_count"></span>
+          <span id="rsvp_count" class="count"></span>
         </p>
       </div>
       <p id="new_user">
@@ -48,20 +48,20 @@
       <div id="register" class="fleft center">
         <h3>Create an account</h3>
         <form id="form-reg" name="form-reg" method="post" action="lunchtime.html">
-          <input type="text" name="email-reg" id="email-reg" class="txtfield" tabindex="1" placeholder="email address">
-          <input type="password" name="pwd-reg" id="pwd-reg" class="txtfield" tabindex="2" placeholder="password">
-          <input type="password" name="pwd2-reg" id="pwd2-reg" class="txtfield" tabindex="3" placeholder="verify password">
-          <input type="text" name="flname-reg" id="flname-reg" class="txtfield" tabindex="4" placeholder="first and last name">
-          <input type="submit" name="submit-reg" id="submit-reg" class="flatbtn-blu hidemodal" value="Create Account" tabindex="5">
+          <input id="email-reg" type="text" name="email-reg" class="txtfield" tabindex="1" placeholder="email address">
+          <input id="pwd-reg" type="password" name="pwd-reg" class="txtfield" tabindex="2" placeholder="password">
+          <input id="pwd2-reg" type="password" name="pwd2-reg" class="txtfield" tabindex="3" placeholder="verify password">
+          <input id="flname-reg" type="text" name="flname-reg" class="txtfield" tabindex="4" placeholder="first and last name">
+          <input id="submit-reg" type="submit" name="submit-reg" class="flatbtn-blu hidemodal" value="Create Account" tabindex="5">
           <p id="notice-reg" class="notice">passwords must match</p>
         </form>
       </div>
       <div id="signin" class="fright center">
         <h3>Sign in</h3>
         <form id="form-signin" name="form-signin" method="post" action="lunchtime.html">
-          <input type="text" name="email-signin" id="email-signin" class="txtfield" tabindex="6" placeholder="email address">
-          <input type="password" name="pwd-signin" id="pwd-signin" class="txtfield" tabindex="7" placeholder="password">
-          <input type="submit" name="submit-signin" id="submit-signin" class="flatbtn-blu hidemodal" value="Sign In" tabindex="8">
+          <input id="email-signin" type="text" name="email-signin" class="txtfield" tabindex="6" placeholder="email address">
+          <input id="pwd-signin" type="password" name="pwd-signin" class="txtfield" tabindex="7" placeholder="password">
+          <input id="submit-signin" type="submit" name="submit-signin" class="flatbtn-blu hidemodal" value="Sign In" tabindex="8">
           <p id="notice-signin" class="notice">incorrect login credentials</p>
         </form>
       </div>
@@ -70,15 +70,15 @@
     <div id="modal-prefs" class="center" style="display:none;">
       <h3>User Preferences</h3>
       <form id="form-prefs" name="form-prefs" method="post" action="lunchtime.html">
-       <input type="text" name="email-prefs" id="email-prefs" class="txtfield" tabindex="1" placeholder="email address">
-       <input type="text" name="flname-prefs" id="flname-prefs" class="txtfield" tabindex="2" placeholder="first and last name">
-       <textarea  name="signature-prefs" id="signature-prefs" class="txtfield" style="resize:vertical;" maxlength="250" tabindex="3" placeholder="signature (250 chars max)"></textarea>
-       <input type="submit" name="submit-update" id="submit-update" class="flatbtn-blu hidemodal" value="Update" style="width:123px;margin-right:8px;padding-left:18px;" tabindex="4">
-       <button type="button" name="submit-unrsvp" id="submit-unrsvp" class="flatbtn-blu hidemodal" style="width:123px;padding:12px;" tabindex="5">Un-RSVP</button>
+       <input id="email-prefs" type="text" name="email-prefs" class="txtfield" tabindex="1" placeholder="email address">
+       <input id="flname-prefs" type="text" name="flname-prefs" class="txtfield" tabindex="2" placeholder="first and last name">
+       <textarea id="signature-prefs" name="signature-prefs" class="txtfield" style="resize:vertical;" maxlength="250" tabindex="3" placeholder="signature (250 chars max)"></textarea>
+       <input id="submit-update" type="submit" name="submit-update" class="flatbtn-blu hidemodal" value="Update" style="width:123px;margin-right:8px;padding-left:18px;" tabindex="4">
+       <button id="submit-unrsvp" type="button" name="submit-unrsvp" class="flatbtn-blu hidemodal" style="width:123px;padding:12px;" tabindex="5">Un-RSVP</button>
         </form>
        <p id="notice-prefs" class="notice">incorrect login credentials</p>
         <hr style="margin-bottom:16px">
-        <button type="button" name="submit-signout" id="submit-signout" class="flatbtn-blu hidemodal" tabindex="6">Sign out</button>
+        <button id="submit-signout" type="button" name="submit-signout" class="flatbtn-blu hidemodal" tabindex="6">Sign out</button>
     </div>
 
     <div id="lean_overlay" style="display:none"></div>
