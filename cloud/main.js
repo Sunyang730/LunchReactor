@@ -13,7 +13,7 @@ var rsvps = [];
 Parse.Cloud.useMasterKey();
 
 var updateMatches = function(callback) {
-    
+
   //pull all users
   var Users = Parse.Object.extend('User');
   var query= new Parse.Query(Users);
@@ -36,11 +36,11 @@ var updateMatches = function(callback) {
 
       //For each user, Add new users to their match list
       for(var j = 0; j<users.length; j++) {
-        
-          
-        //mactchListLength equals num key-value-pairs or 0 if undefined  
+
+
+        //mactchListLength equals num key-value-pairs or 0 if undefined
         var matchListLength = matches[j]?Object.keys(matches[j]).length:0;
-        
+
         //if total number of users > than this users matchlist + 1
         if ( users.length > matchListLength+1 ) {
 
@@ -50,16 +50,16 @@ var updateMatches = function(callback) {
             // add users, check to make sure we are not added ourself
             for (k; k<users.length; k++) {
               if (users[k] !== users[j]) {
-                matches[j][users[k]]=0; 
-              } 
+                matches[j][users[k]]=0;
+              }
             }
-            userArray[j].set('matches', matches[j]); 
+            userArray[j].set('matches', matches[j]);
             userArray[j].save();
         }
       }
   }
 }).then(function(userArray){
-  
+
   var dailyGroups = [];
   while (rsvps.length > 0) {
     var current_rsvp = rsvps.shift();
@@ -68,16 +68,16 @@ var updateMatches = function(callback) {
     //console.log('typeof rsvps: ' + typeof rsvps);
     //console.log('typeof current_rsvp: ' + typeof current_rsvp);
     var current_matches = {};
-      
-    //match first person in rsvp list with their User name 
+
+    //match first person in rsvp list with their User name
     for(var i = 0; i<users.length; i++) {
         //console.log('for ' + i + ' ' + users[i]);
         if (current_rsvp  === users[i]) {
           current_matches = matches[i];
           break;
         }
-    }  
-  
+    }
+
     //make an rsvp list for this person
     var matchesByName = {};
     //console.log('matchesByName: ' + JSON.stringify(matchesByName));
@@ -88,15 +88,15 @@ var updateMatches = function(callback) {
           if ( rsvps[ii] === jj ) {
             matchesByName[jj] = current_matches[jj];
             break;
-          }  
+          }
         }
     }
-  
-  
+
+
     //console.log('matchesByName: ' + JSON.stringify(matchesByName));
-  
+
     var matchesByCount = {};
-  
+
     //swap key-value-pairs (keys become values and vice versa)
     //console.log('Current Matches: ' + JSON.stringify(matchesByName));
     for(var j in matchesByName) {
@@ -106,18 +106,18 @@ var updateMatches = function(callback) {
         matchesByCount[matchesByName[j]] = [j];
       }
     }
-  
+
     //console.log('RSVPS: ' + rsvps);
     //console.log('matchesByCount: ' + JSON.stringify(matchesByCount));
-  
+
     //get the list of names with lowest number of matches
-    var k = 0; 
+    var k = 0;
     for (k; !matchesByCount.hasOwnProperty(k);  k++){}
     var lowestCountList = matchesByCount[k];
-  
+
     //console.log('lowestCountList: ' + lowestCountList);
     //console.log('Random number gerenated: ' + Math.floor(Math.random() * lowestCountList.length));
-  
+
     //create a matches randomly
     var matchNum = Math.floor(Math.random() * lowestCountList.length);
     var match1 = lowestCountList[matchNum];
@@ -145,13 +145,13 @@ var updateMatches = function(callback) {
         for (k; !matchesByCount.hasOwnProperty(k);  k++){}
         lowestCountList = matchesByCount[k];
       }
-  
+
       //update match3's matchlist
       //userArray[match3].matches.set(current_rsvp, userArray[match3].matches[current_rsvp] + 1);
       //userArray[match3].matches.set(match2, userArray[match3].matches[match2] + 1);
       //userArray[match3].matches.set(match1, userArray[match3].matches[match1] + 1);
       //userArray[match3].save();
-  
+
       console.log(current_rsvp + ' was matched with ' + match1 + ' and ' + match2 + ' and ' + match3 + '!');
       //add to daily group array
       dailyGroups.push([current_rsvp,match1,match2,match3]);
@@ -160,16 +160,16 @@ var updateMatches = function(callback) {
       //add to daily group array
       dailyGroups.push([current_rsvp,match1,match2]);
     }
-  
+
     console.log('RSVPS: ' + rsvps);
-  
+
     //update each users matchlist
     //userArray[current_rsvp].matches.set(match1, userArray[current_rsvp].matches[match1] + 1);
     //userArray[current_rsvp].matches.set(match2, userArray[current_rsvp].matches[match2] + 1);
-  
+
     //userArray[match1].matches.set(current_rsvp, userArray[match1].matches[current_rsvp] + 1);
     //userArray[match1].matches.set(match2, userArray[match1].matches[match2] + 1);
-    
+
     //userArray[match2].matches.set(current_rsvp, userArray[match2].matches[current_rsvp] + 1);
     //userArray[match2].matches.set(match1, userArray[match2].matches[match1] + 1);
     //userArray[current_rsvp].save();
@@ -178,13 +178,77 @@ var updateMatches = function(callback) {
   }
 
   console.log(dailyGroups);
+  uploadMatches(dailyGroups);
+  notifyMatches(dailyGroups);
 
   });
+
+  // Upload matches to the Matches class on Parse
+  var uploadMatches = function(matchGroup) {
+    var Matches = Parse.Object.extend('Matches');
+    var matchArray = new Matches();
+
+    console.log('Uploading matches..');
+
+    matchArray.save({matches: matchGroup});
+  };
+
+  /*********************************
+   *   Email Section
+   ********************************/
+
+ // Notify a 2d array of matches
+ var notifyMatches = function(matchGroup) {
+
+   // Set up the SendGrid parameters
+   var sendgrid = require("sendgrid");
+   sendgrid.initialize("LunchReactor", "hackreactor0");
+
+   // Send a notification email to an array of users
+   var notifyUsers = function(userGroup) {
+     var userEmails = [];
+     var userDetails = 'Check out your group for today\'s lunch!\n\n\n';
+
+     // Set email recipients and their message content
+     for (var j = 0; j < userGroup.length; j++) {
+       userEmails.push(userGroup[j].get('email'));
+       userDetails += userGroup[j].get('fullname') + '\n' +
+                      userGroup[j].get('signature') + '\n\n';
+     }
+
+     console.log('Emailing ' + userEmails.join(', '));
+
+     // Call the SendGrid api to send the emails
+    //  sendgrid.sendEmail({
+    //    to: userEmails,
+    //    from: 'lunchreactor@gmail.com',
+    //    subject: 'View Today\'s Lunch Match!',
+    //    text: userDetails
+    //  }, {
+    //    success: function(httpResponse) {
+    //      console.log(httpResponse);
+    //      response.success("Email sent!");
+    //    },
+    //    error: function(httpResponse) {
+    //      console.error(httpResponse);
+    //      response.error("Uh oh, something went wrong");
+    //    }
+    //  });
+   };
+
+   // Loop through the matches to notify every set of users
+   for (var i = 0; i < matchGroup.length; i++) {
+     console.log('Notifying Group ' + i);
+     console.log(matchGroup[i]);
+     notifyUsers(matchGroup[i]);
+   }
+ };
+
 };
-     
+
 
   console.log("Starting");
-  //getMatches(); 
+  //getMatches();
   updateMatches();
 
 //  var getMatches = function(){
@@ -192,16 +256,16 @@ var updateMatches = function(callback) {
 //      updateMatches(function(users){
 //      //while(rsvps.length > 0) {
 //
-//        //match first person in rsvp list with their User object  
+//        //match first person in rsvp list with their User object
 //        for(var i = 0; i<users.length; i++) {
 //            if (rsvps[0] === users[i].fullname)
 //                break;
-//        }  
+//        }
 //        var matches = users[i].matches;
 //        var newmatches = {};
 //
 //        //make a new object where the keys are digits  that are the number
-//        //times you've matched a person and  
+//        //times you've matched a person and
 //        //their value pairs as an array of names with whom you've been
 //        //matched n times.
 //        for(var j in matches) {
@@ -221,7 +285,7 @@ var updateMatches = function(callback) {
 //      //  var match = newmatches[k](Math.random() * newmatches[k].length);
 //     // }
 //
-//      }); 
+//      });
 //    });
 //  };
 
@@ -243,31 +307,4 @@ var updateMatches = function(callback) {
 //      //}
 //    });
 //  };
-
-  /*********************************
-   *   Email Section
-   ********************************/
-//  var sendgrid = require("sendgrid");
-//  sendgrid.initialize("LunchReactor", "hackreactor0");
-//
-//  var notifyUser = function(email, match) {
-//    sendgrid.sendEmail({
-//      to: email,
-//      from: 'lunchreactor@gmail.com',
-//      subject: 'View Today\'s Lunch Match!',
-//      text: 'Good morning, you\'re all set to get lunch with ' + match + ' today!'
-//    }, {
-//      success: function(httpResponse) {
-//        console.log(httpResponse);
-//        response.success("Email sent!");
-//      },
-//      error: function(httpResponse) {
-//        console.error(httpResponse);
-//        response.error("Uh oh, something went wrong");
-//      }
-//    });
-//  };
-//
-//  notifyUser('mattfdbrown@gmail.com', 'Matt');
-
 });
