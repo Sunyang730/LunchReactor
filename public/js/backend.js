@@ -40,7 +40,7 @@ var backend = (function() {
   // signUp takes the user's fullname, password, and email
   // If sign-up was successful, it passes the fullname back to 'callback()'
   // Otherwise, it passes the username and error to 'err()'
-  var signUp = function(email, password, fullname, callback, err) {
+  var signUp = function(email, password, fullname, channel, callback, err) {
     var user = new Parse.User();
     user.set('username', email);
     user.set('emailVerified', false);
@@ -49,6 +49,7 @@ var backend = (function() {
     user.set('fullname', fullname);
     user.set('rsvp', false);
     user.set('matches', {});
+    user.set('channel', channel);
 
     user.signUp(null, {
       success: function(user) {
