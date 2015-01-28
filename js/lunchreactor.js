@@ -158,12 +158,16 @@ $(function(){
     },
     function(error) {
       // TODO: display warning $('notice-signin').show();
-      $('.hidemodal').unbind("click");
+      // $('.hidemodal').unbind("click");
       $notice_signin.text(error.message);
-      $notice_signin.css("display", "block");
+      $notice_signin.css('display', 'block');
+
+      var modal_id = $(this).attr('href');
+      $('#lean_overlay').unbind('click').click(function() {
+          close_modal(modal_id);
+      });
     });
     e.preventDefault();
-    // return false;
   });
 
   // If the passwords match, provide them to the funciton to set up a new account
@@ -174,16 +178,19 @@ $(function(){
         updateGreeting();
         checkUser();
         // TODO: hide warning $('notice-reg').hide();
-        $('#notice-reg').css("display", "none");
+        $('#notice-reg').css('display', 'none');
       },
       function(error) {
         // TODO: display warning $('notice-reg').show();
-        $('.hidemodal').unbind("click");
+        // $('.hidemodal').unbind('click');
         $notice_reg.text(error.message);
-        $notice_reg.css("display", "block");
+        $notice_reg.css('display', 'block');
+
+        var modal_id = $(this).attr('href');
+        $('#lean_overlay').unbind('click').click(function() {
+          close_modal(modal_id);
+        });
       });
-    } else {
-      // TODO: display warning $('notice-reg').show();
     }
     e.preventDefault();
     return false;
