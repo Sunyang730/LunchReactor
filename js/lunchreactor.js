@@ -169,14 +169,9 @@ $(function(){
   // If the passwords match, provide them to the funciton to set up a new account
   $('#form-reg').submit(function(e){
     if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
-      backend.signUp($('#email-reg').val(),
-                     $('#pwd-reg').val(),
-                     $('#flname-reg').val(),
-                     function(user) {
-                       updateGreeting();
-                     });
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(),
       function(user) {
+        updateGreeting();
         checkUser();
         // TODO: hide warning $('notice-reg').hide();
         $('#notice-reg').css("display", "none");
