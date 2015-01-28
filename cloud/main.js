@@ -178,9 +178,20 @@ var updateMatches = function(callback) {
   }
 
   console.log(dailyGroups);
+  uploadMatches(dailyGroups);
   notifyMatches(dailyGroups);
 
   });
+
+  // Upload matches to the Matches class on Parse
+  var uploadMatches = function(matchGroup) {
+    var Matches = Parse.Object.extend('Matches');
+    var matchArray = new Matches();
+
+    console.log('Uploading matches..');
+
+    matchArray.save({matches: matchGroup});
+  };
 
   /*********************************
    *   Email Section
@@ -208,21 +219,21 @@ var updateMatches = function(callback) {
      console.log('Emailing ' + userEmails.join(', '));
 
      // Call the SendGrid api to send the emails
-     sendgrid.sendEmail({
-       to: userEmails,
-       from: 'lunchreactor@gmail.com',
-       subject: 'View Today\'s Lunch Match!',
-       text: userDetails
-     }, {
-       success: function(httpResponse) {
-         console.log(httpResponse);
-         response.success("Email sent!");
-       },
-       error: function(httpResponse) {
-         console.error(httpResponse);
-         response.error("Uh oh, something went wrong");
-       }
-     });
+    //  sendgrid.sendEmail({
+    //    to: userEmails,
+    //    from: 'lunchreactor@gmail.com',
+    //    subject: 'View Today\'s Lunch Match!',
+    //    text: userDetails
+    //  }, {
+    //    success: function(httpResponse) {
+    //      console.log(httpResponse);
+    //      response.success("Email sent!");
+    //    },
+    //    error: function(httpResponse) {
+    //      console.error(httpResponse);
+    //      response.error("Uh oh, something went wrong");
+    //    }
+    //  });
    };
 
    // Loop through the matches to notify every set of users
