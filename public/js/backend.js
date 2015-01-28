@@ -140,6 +140,17 @@ var backend = (function() {
     });
   };
 
+  var getKey = function(decrypt) {
+    var Key = Parse.Object.extend('Key');
+    var keyQuery = new Parse.Query(Key);
+    keyQuery.find({
+      success: function(results) {
+        decrypt(results[0].get('key'));
+      }
+    });
+    // alert(btoa('hi'));
+  }
+
   /* ********************
    * Frontend Functions *
    * ********************/
@@ -156,7 +167,7 @@ var backend = (function() {
   var timeLeft = function(){
     var now = moment();
     var deadline = moment().hour(11).minute(0).second(0);
-    if(now.isAfter(deadline) || 
+    if(now.isAfter(deadline) ||
        deadline.from(now) === 'in a few seconds'){
       return 'Closed';
     }
@@ -177,7 +188,8 @@ var backend = (function() {
     backgrounds: backgrounds,
     generateBackground: generateBackground,
     timeLeft: timeLeft,
-    numRSVPs: numRSVPs
+    numRSVPs: numRSVPs,
+    getKey: getKey
   };
 
 })();
