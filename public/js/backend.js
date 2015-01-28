@@ -140,17 +140,6 @@ var backend = (function() {
     });
   };
 
-  var getKey = function(decrypt) {
-    var Key = Parse.Object.extend('Key');
-    var keyQuery = new Parse.Query(Key);
-    keyQuery.find({
-      success: function(results) {
-        decrypt(results[0].get('key'));
-      }
-    });
-    // alert(btoa('hi'));
-  }
-
   /* ********************
    * Frontend Functions *
    * ********************/
@@ -188,8 +177,7 @@ var backend = (function() {
     backgrounds: backgrounds,
     generateBackground: generateBackground,
     timeLeft: timeLeft,
-    numRSVPs: numRSVPs,
-    getKey: getKey
+    numRSVPs: numRSVPs
   };
 
 })();
