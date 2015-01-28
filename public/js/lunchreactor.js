@@ -44,7 +44,7 @@ $(function(){
     // attach and fade in when big 
     if(width > 640){
       $video = $('<video>').css('display', 'none')
-        .attr({id: 'bgvid', autoplay:'true'});
+        .attr({id: 'bgvid'}).prop({autoplay:true, loop: true});
       var $source = $('<source>')
         .attr({id: 'source', src: background, type: 'video/mp4'});
                                                         
