@@ -4,8 +4,7 @@ $(function(){
    * Global Variables *
    * ******************/
 
-  var $video = $('#bgvid');
-  var $source = $video.find('#source');
+  var $bg = $('#bg');
   var $sign = $('#signup');
   var $reg = $sign.find('#register');
   var $middle = $('#middle');
@@ -30,6 +29,30 @@ $(function(){
   /* ***********
    * Functions *
    * ***********/
+
+  // updates the background
+  var $video, width;
+  var background = backend.generateBackground();
+  var updateBackground = function(){
+    width = $(window).width(); // default
+
+    // fade out and dettach when small 
+    if($bg.children().length > 0 && width < 640){
+      $video.hide('slow', function(){ $bg.empty();}); 
+    }
+
+    // attach and fade in when big 
+    if(width > 640){
+      $video = $('<video>').css('display', 'none')
+        .attr({id: 'bgvid', autoplay:'true'});
+      var $source = $('<source>')
+        .attr({id: 'source', src: background, type: 'video/mp4'});
+                                                        
+      $video.append($source);
+      $bg.append($video);
+      $video.fadeIn('slow');
+    }
+  };
 
   // updates the RSVP counter
   var updateCounter = function(){
@@ -316,27 +339,14 @@ $(function(){
   });
 
   // Shows/Hides video background
-  var small = false;
-  $(window).on('resize', function() {
-    if(small && $(this).width() > 640){
-      $video.fadeToggle('slow');
-      small = false;
-      return;
-    }
-
-    if (!small && $(this).width() < 640){
-      $video.fadeToggle('slow');
-      small = true;
-      return;
-    }
-  });
+  $(window).on('resize', updateBackground);
 
   /* **************
    * Default Code *
    * **************/
 
   // Sets a random motion background
-  $source.attr('src', backend.generateBackground());
+  updateBackground();
 
   // Sets the day's date
   $('#date').text(moment().format('dddd, MMMM Do YYYY'));
