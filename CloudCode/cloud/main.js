@@ -31,7 +31,7 @@ var updateMatches = function(callback) {
         }
       }
       console.log('Users: ' + users);
-      console.log('Matches: ' + matches);
+      console.log('Matches: ' + JSON.stringify(matches));
       console.log('RSVPS: ' + rsvps);
 
       //For each user, Add new users to their match list
@@ -59,39 +59,126 @@ var updateMatches = function(callback) {
       }
   }
 }).then(function(userArray){
-  //match first person in rsvp list with their User object  
-  for(var i = 0; i<users.length; i++) {
-      if (rsvps[0] === users[i].fullname)
+  
+  var dailyGroups = [];
+  while (rsvps.length > 0) {
+    var current_rsvp = rsvps.shift();
+    console.log('current_rsvp: ' + current_rsvp);
+    console.log('RSVPS: ' + rsvps);
+    //console.log('typeof rsvps: ' + typeof rsvps);
+    //console.log('typeof current_rsvp: ' + typeof current_rsvp);
+    var current_matches = {};
+      
+    //match first person in rsvp list with their User name 
+    for(var i = 0; i<users.length; i++) {
+        //console.log('for ' + i + ' ' + users[i]);
+        if (current_rsvp  === users[i]) {
+          current_matches = matches[i];
           break;
-  }  
-  //var oldmatches = matches;
-  var newmatches = {};
-
-  console.log('RSVPS: ' + rsvps);
-  console.log('RSVPS type: ' + typeof rsvps);
-  console.log('newmatches: ' + newmatches);
-
-  //make a new object where the keys are digits  that are the number
-  //times you've matched a person and  
-  //their value pairs as an array of names with whom you've been
-  //matched n times.
-
-  for(var j in matches) {
-    if(newmatches.hasOwnProperty(matches[j]) ){
-      newmatches[matches[j]].push(j);
-    }else{
-      newmatches[matches[j]] = [j];
+        }
+    }  
+  
+    //make an rsvp list for this person
+    var matchesByName = {};
+    //console.log('matchesByName: ' + JSON.stringify(matchesByName));
+    for(var ii = 0; ii<rsvps.length; ii++) {
+        //console.log('for ' + ii);
+        for (var jj in current_matches){
+          //console.log('rsvps[ii]: ' + rsvps[ii] + ' jj: '+ jj);
+          if ( rsvps[ii] === jj ) {
+            matchesByName[jj] = current_matches[jj];
+            break;
+          }  
+        }
     }
+  
+  
+    //console.log('matchesByName: ' + JSON.stringify(matchesByName));
+  
+    var matchesByCount = {};
+  
+    //swap key-value-pairs (keys become values and vice versa)
+    //console.log('Current Matches: ' + JSON.stringify(matchesByName));
+    for(var j in matchesByName) {
+      if( matchesByCount.hasOwnProperty(matchesByName[j]) ){
+        matchesByCount[matchesByName[j]].push(j);
+      }else{
+        matchesByCount[matchesByName[j]] = [j];
+      }
+    }
+  
+    //console.log('RSVPS: ' + rsvps);
+    //console.log('matchesByCount: ' + JSON.stringify(matchesByCount));
+  
+    //get the list of names with lowest number of matches
+    var k = 0; 
+    for (k; !matchesByCount.hasOwnProperty(k);  k++){}
+    var lowestCountList = matchesByCount[k];
+  
+    //console.log('lowestCountList: ' + lowestCountList);
+    //console.log('Random number gerenated: ' + Math.floor(Math.random() * lowestCountList.length));
+  
+    //create a matches randomly
+    var matchNum = Math.floor(Math.random() * lowestCountList.length);
+    var match1 = lowestCountList[matchNum];
+    rsvps.splice(matchNum,1);
+    lowestCountList.splice(matchNum,1);
+    if ( lowestCountList.length <= 0 ) {
+      for (k; !matchesByCount.hasOwnProperty(k);  k++){}
+      lowestCountList = matchesByCount[k];
+    }
+    matchNum = Math.floor(Math.random() * lowestCountList.length);
+    var match2 = lowestCountList[matchNum];
+    rsvps.splice(matchNum,1);
+    lowestCountList.splice(matchNum,1);
+    if ( lowestCountList.length <= 0 ) {
+      for (k; !matchesByCount.hasOwnProperty(k);  k++){}
+      lowestCountList = matchesByCount[k];
+    }
+    //if there are not enough to make groups of three evenly, create 1-2 gropus of 4
+    if (rsvps.length%3 > 0) {
+      matchNum = Math.floor(Math.random() * lowestCountList.length);
+      var match3 = lowestCountList[matchNum];
+      rsvps.splice(matchNum,1);
+      lowestCountList.splice(matchNum,1);
+      if ( lowestCountList.length <= 0 ) {
+        for (k; !matchesByCount.hasOwnProperty(k);  k++){}
+        lowestCountList = matchesByCount[k];
+      }
+  
+      //update match3's matchlist
+      //userArray[match3].matches.set(current_rsvp, userArray[match3].matches[current_rsvp] + 1);
+      //userArray[match3].matches.set(match2, userArray[match3].matches[match2] + 1);
+      //userArray[match3].matches.set(match1, userArray[match3].matches[match1] + 1);
+      //userArray[match3].save();
+  
+      console.log(current_rsvp + ' was matched with ' + match1 + ' and ' + match2 + ' and ' + match3 + '!');
+      //add to daily group array
+      dailyGroups.push([current_rsvp,match1,match2,match3]);
+    } else {
+      console.log(current_rsvp + ' was matched with ' + match1 + ' and ' + match2 + '!');
+      //add to daily group array
+      dailyGroups.push([current_rsvp,match1,match2]);
+    }
+  
+    console.log('RSVPS: ' + rsvps);
+  
+    //update each users matchlist
+    //userArray[current_rsvp].matches.set(match1, userArray[current_rsvp].matches[match1] + 1);
+    //userArray[current_rsvp].matches.set(match2, userArray[current_rsvp].matches[match2] + 1);
+  
+    //userArray[match1].matches.set(current_rsvp, userArray[match1].matches[current_rsvp] + 1);
+    //userArray[match1].matches.set(match2, userArray[match1].matches[match2] + 1);
+    
+    //userArray[match2].matches.set(current_rsvp, userArray[match2].matches[current_rsvp] + 1);
+    //userArray[match2].matches.set(match1, userArray[match2].matches[match1] + 1);
+    //userArray[current_rsvp].save();
+    //userArray[match1].save();
+    //userArray[match2].save();
   }
 
-  console.log('RSVPS: ' + rsvps);
-  console.log('newmatches: ' + newmatches);
+  console.log(dailyGroups);
 
-  //get the list of names with lowest number of matches
-  //  for (var k = 0; !newmatches.hasOwnProperty(k);  k++){
-  //  }
-  //  var match = newmatches[k](Math.random() * newmatches[k].length);
-  // }
   });
 };
      
