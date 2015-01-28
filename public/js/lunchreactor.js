@@ -325,8 +325,8 @@ $(function(){
   });
 
   // Show auth/prefs modal
-  $('#link-auth[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
-  $('#link-auth2[rel*=leanModal]').leanModal({ top: 300, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth2[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
   $('#link-prefs[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
 
   // Hide auth/prefs modal
