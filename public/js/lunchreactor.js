@@ -59,7 +59,7 @@ $(function(){
   var updateCounter = function(){
     backend.numRSVPs(function(len) {
       $rsvp_count.fadeOut('fast', function(){
-        $rsvp_count.text(len).fadeIn('fast');
+        $rsvp_count.html(len).fadeIn('fast');
       });
     });
   };
@@ -97,7 +97,10 @@ $(function(){
       else{ displayNoRSVP(); }
       reloadPrefs();
     }, function() { displayNoRSVP(); reloadPrefs(); });
+    
+    updateCounter();
   };
+
   var displayYesRSVP = function() {
     $rsvp_frost.css('display','none');
     $rsvp_circle.css({border: '1px solid #66BB6A',
@@ -184,7 +187,6 @@ $(function(){
         $('#rsvp_success').fadeIn('slow');
       });
       updateRSVP();
-      updateCounter();
       reloadPrefs();
     });
 
@@ -264,7 +266,6 @@ $(function(){
     backend.sendRSVP(false, function(){
       updateRSVP();
       reloadPrefs();
-      updateCounter();
     });
     e.preventDefault();
   });
@@ -313,9 +314,6 @@ $(function(){
    $rsvp_circle.css('cursor', 'auto');
   }
   $time_left.text(time_left);
-
-  // Sets the number of RSVPs
-  updateCounter();
 
   // Greets user, or displays signup message
   updateGreeting();
