@@ -147,15 +147,15 @@ $(function(){
   var $video, width;
   var background = backend.generateBackground();
   var updateBackground = function(){
-    width = $(window).width(); // default
-
+    width = $(window).width(); // defaults
+    
     // fade out and dettach when small
     if($bg.children().length > 0 && width < 640){
       $video.hide('slow', function(){ $bg.empty();});
     }
 
     // attach and fade in when big
-    if(width > 640){
+    if(width > 640 && $bg.children().length === 0){
       $video = $('<video>').css('display', 'none')
         .attr({id: 'bgvid'}).prop({autoplay:true, loop: true});
       var $source = $('<source>')
