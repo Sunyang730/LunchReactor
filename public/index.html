@@ -26,19 +26,19 @@
       <h2 id="date">Monday, January 19, 2015</h2>
       <div id="frost" class="circle" ></div>
       <div id="rsvp" class="circle fleft">
-        <p id="rsvp_text">
+        <p id="rsvp-text">
           <span class="rsvp">RSVP</span>
           <br>
-          <span id="time_left"></span>
+          <span id="time-left"></span>
         </p>
-        <p id="rsvp_success">&#x2713</p>
+        <p id="rsvp-success">&#x2713</p>
       </div>
       <div class="circle count fright">
         <p>
-          <span id="rsvp_count" class="count"></span>
+          <span id="rsvp-count" class="count"></span>
         </p>
       </div>
-      <p id="new_user">
+      <p id="new-user">
         <a id="link-auth" rel="leanModal" href="#modal-auth" >Sign in</a> or <a id="link-auth2" rel="leanModal" href="#modal-auth">create an account</a> in seconds.
       </p>
       <p id="greet"><a id="link-prefs" rel="leanModal" href="#modal-prefs"></a>, you're all that and a bag of chips.<br>Mmm... chips.</p>
@@ -47,7 +47,7 @@
     <div id="modal-auth" style="display:none;">
       <div id="register" class="fleft center">
         <h3>Create an account</h3>
-        <form id="form-reg" name="form-reg" method="post" action="lunchtime.html">
+        <form id="form-reg" name="form-reg" method="post" action="index.html">
           <input id="email-reg" type="text" name="email-reg" class="txtfield" tabindex="1" placeholder="email address">
           <input id="pwd-reg" type="password" name="pwd-reg" class="txtfield" tabindex="2" placeholder="password">
           <input id="pwd2-reg" type="password" name="pwd2-reg" class="txtfield" tabindex="3" placeholder="verify password">
@@ -59,7 +59,7 @@
       </div>
       <div id="signin" class="fright center">
         <h3>Sign in</h3>
-        <form id="form-signin" name="form-signin" method="post" action="lunchtime.html">
+        <form id="form-signin" name="form-signin" method="post" action="index.html">
           <input id="email-signin" type="text" name="email-signin" class="txtfield" tabindex="6" placeholder="email address">
           <input id="pwd-signin" type="password" name="pwd-signin" class="txtfield" tabindex="7" placeholder="password">
           <input id="submit-signin" type="submit" name="submit-signin" class="flatbtn-blu hidemodal" value="Sign In" tabindex="8">
@@ -70,7 +70,7 @@
 
     <div id="modal-prefs" class="center" style="display:none;">
       <h3>User Preferences</h3>
-      <form id="form-prefs" name="form-prefs" method="post" action="lunchtime.html">
+      <form id="form-prefs" name="form-prefs" method="post" action="index.html">
        <input id="email-prefs" type="text" name="email-prefs" class="txtfield" tabindex="1" placeholder="email address">
        <input id="flname-prefs" type="text" name="flname-prefs" class="txtfield" tabindex="2" placeholder="first and last name">
        <textarea id="signature-prefs" name="signature-prefs" class="txtfield" style="resize:vertical;" maxlength="250" tabindex="3" placeholder="signature (250 chars max)"></textarea>

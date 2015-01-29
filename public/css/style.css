@@ -198,7 +198,7 @@ p.notice {
   z-index:2;
 }
 
-#new_user, #greet {
+#new-user, #greet {
   font-family:'Lato', Geneva, sans-serif;
   display:none;
   color: #fff;
@@ -208,13 +208,13 @@ p.notice {
   text-align:center;
 }
 
-#new_user a, #greet a{
+#new-user a, #greet a{
   color:#fff;
   text-decoration:none;
   font-weight:300;
 }
 
-#new_user a:hover, #greet a:hover{
+#new-user a:hover, #greet a:hover{
   border-bottom: 1px solid #fff;
 }
 
@@ -241,7 +241,7 @@ p.notice {
   cursor:pointer;
 }
 
-#rsvp_text{
+#rsvp-text{
   display:none;
 }
 
@@ -279,7 +279,7 @@ hr {
   font-family:'Roboto Slab', Geneva, sans-serif;
 }
 
-#rsvp_success{
+#rsvp-success{
   display:none;
   color: #66BB6A;
   font-size:96pt;
@@ -318,7 +318,7 @@ h2 {
   margin-right: 25px;
 }
 
-#new_user, #greet {
+#new-user, #greet {
 margin-top: 300px;
 font-size: 32pt;
 }

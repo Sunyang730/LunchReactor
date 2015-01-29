@@ -6,21 +6,19 @@ $(function(){
 
   var $bg = $('#bg');
   var $middle = $('#middle');
-  var $rsvp_frost = $('#frost');
-  var $rsvp_circle = $('#rsvp');
-  var $rsvp_text = $('#rsvp-text');
-  var $rsvp_success = $('#rsvp-success');
-  var $time_left = $('#time-left');
-  var $rsvp_count = $('#rsvp-count');
-  var $new_user = $('#new-user');
+  var $rsvp_frost = $('#frost', '#middle');
+  var $rsvp_circle = $('#rsvp', '#middle');
+  var $rsvp_text = $('#rsvp_text', '#middle');
+  var $rsvp_success = $('#rsvp_success', '#middle');
+  var $time_left = $('#time_left');
+  var $rsvp_count = $('#rsvp_count');
+  var $new_user = $('#new_user');
   var $greet = $('#greet');
-
-  var $link_auth = $('#link-auth[rel*=leanModal]');
-  var $link_auth2 = $('#link-auth2[rel*=leanModal]');
-  var $link_prefs =  $('#link-prefs[rel*=leanModal]');
+  var $link_auth;
+  var $link_auth2;
+  var $link_prefs = $('#link-prefs');
 
   var $modal_auth = $('#modal-auth');
-  var $form_reg = $('#form-reg');
   var $email_reg = $('#email-reg');
   var $pw_reg = $('#pwd-reg');
   var $pw2_reg = $('#pwd2-reg');
@@ -29,27 +27,45 @@ $(function(){
   var $notice_reg = $('#notice-reg');
   var $register = $('#submit-reg');
 
-  var $form_signin = $('#form-signin');
-  var $email_signin = $('#email-signin');
+  var $email_signin = $('#email_signin');
   var $pw_signin = $('#pwd-signin');
   var $notice_signin = $('#notice-signin');
   var $signin = $('#submit-signin');
 
   var $modal_prefs = $('#modal-prefs');
   var $email_prefs = $('#email-prefs');
-  var $fullname_prefs = $('#flname-prefs');
+  var $fullname = $('#flname-prefs');
   var $signature = $('#signature-prefs');
   var $channel_prefs = $('#channel-prefs');
-  var $notice_prefs = $('#notice-prefs');
   var $unrsvp = $('#submit-unrsvp');
-  var $update = $('#submit-update');
-  var $signout = $('#submit-signout');
-  
-  var $lean_overlay = $('#lean_overlay');
 
   /* ***********
    * Functions *
    * ***********/
+
+  // updates the background
+  var $video, width;
+  var background = backend.generateBackground();
+  var updateBackground = function(){
+    width = $(window).width(); // default
+
+    // fade out and dettach when small
+    if($bg.children().length > 0 && width < 640){
+      $video.hide('slow', function(){ $bg.empty();});
+    }
+
+    // attach and fade in when big
+    if(width > 640){
+      $video = $('<video>').css('display', 'none')
+        .attr({id: 'bgvid'}).prop({autoplay:true, loop: true});
+      var $source = $('<source>')
+        .attr({id: 'source', src: background, type: 'video/mp4'});
+
+      $video.append($source);
+      $bg.append($video);
+      $video.fadeIn('slow');
+    }
+  };
 
   // updates the RSVP counter
   var updateCounter = function(){
@@ -59,20 +75,17 @@ $(function(){
       });
     });
   };
-  
-  // updates the user object
-  var user;
-  var reloadUser = function(){
-    user = undefined;
-    backend.checkUser(function(currentUser){
-      user = currentUser; 
-    });
-  }; 
 
   // shows the appropriate greeting
+  var user;
   var updateGreeting = function(){
+    user = undefined; // default
     $greet.hide();
     $new_user.hide();
+    backend.checkUser(function(currentuser){
+      user = currentuser;
+    });
+
     if(user !== undefined){
       $link_prefs.text(user.get('fullname'));
       $greet.fadeIn();
@@ -103,7 +116,7 @@ $(function(){
     $rsvp_frost.css('display','none');
     $rsvp_circle.css({border: '1px solid #66BB6A',
     cursor:'auto'});
-    $rsvp_success.fadeIn();
+    $('#rsvp_success').fadeIn();
   };
   var displayNoRSVP = function() {
     closed = false; // default
@@ -120,50 +133,20 @@ $(function(){
   // clears/auto-populates user prefs
   var reloadPrefs = function(){
     $email_prefs.val('');
-    $fullname_prefs.val('');
+    $fullname.val('');
     $signature.text('');
     $channel_prefs.val('');
     $unrsvp.css({opacity: 0.2, cursor:'auto'}).prop('disabled', true);
 
     if(user !== undefined){
      $email_prefs.val(user.get('email'));
-     $fullname_prefs.val(user.get('fullname'));
+     $fullname.val(user.get('fullname'));
      $signature.text(user.get('signature'));
      $channel_prefs.val(user.get('channel'));
     }
 
     if(rsvped && !closed){
       $unrsvp.css({opacity: 1, cursor:'pointer'}).prop('disabled', false);
-    }
-  };
-
-  // clears reg/signin form elements
-  var clearFormSignIn = function(){
-    $email_signin.val('');
-    $pw_signin.val('');
-  };
-
-  // updates the background
-  var $video, width;
-  var background = backend.generateBackground();
-  var updateBackground = function(){
-    width = $(window).width(); // default
-
-    // fade out and dettach when small
-    if($bg.children().length > 0 && width < 640){
-      $video.hide('slow', function(){ $bg.empty();});
-    }
-
-    // attach and fade in when big
-    if(width > 640){
-      $video = $('<video>').css('display', 'none')
-        .attr({id: 'bgvid'}).prop({autoplay:true, loop: true});
-      var $source = $('<source>')
-        .attr({id: 'source', src: background, type: 'video/mp4'});
-
-      $video.append($source);
-      $bg.append($video);
-      $video.fadeIn('slow');
     }
   };
 
@@ -185,7 +168,7 @@ $(function(){
   $rsvp_circle.on('click', function(e) {
 
     if(rsvped || closed){ return; }
-    if(user === undefined){ $link_auth.trigger('click'); return; }
+    if(user === undefined){ $('#link-auth[rel*=leanModal]').trigger('click'); return; }
 
     backend.sendRSVP(true, function() {
       rsvped = true;
@@ -193,7 +176,7 @@ $(function(){
       $rsvp_text.fadeOut('fast', function(){
         $rsvp_circle.css({border: '1px solid #66BB6A',
         cursor:'auto'});
-        $rsvp_success.fadeIn('slow');
+        $('#rsvp_success').fadeIn('slow');
       });
       updateRSVP();
       reloadPrefs();
@@ -202,154 +185,110 @@ $(function(){
     e.preventDefault();
   });
 
-  // Submit sign in form
-  $form_signin.on('submit', function(e) {
-
+  // Provide the user's email and password and sign them in
+  $('#form-signin').submit(function(e) {
     if(!validateSignIn()){
-      e.preventDefault();
-      return;
+            
     }
 
-    backend.logIn($email_signin.val(), $pw_signin.val(), function(user) {
-      reloadUser(); 
+    backend.logIn($('#email-signin').val(), $('#pwd-signin').val(), function(user) {
       updateGreeting();
       updateRSVP();
       reloadPrefs();
-
-      $notice_signin.css("display", "none");
-      closeModal($modal_auth);
+      backend.checkUser();
+      // TODO: hide warning $('notice-signin').hide();
+      $('#notice-signin').css("display", "none");
     },
     function(error) {
-      $notice_signin.text(error.message).slideDown();
+      // TODO: display warning $('notice-signin').show();
+      // $('.hidemodal').unbind("click");
+      $notice_signin.text(error.message);
+      $notice_signin.css('display', 'block');
+
+      var modal_id = $(this).attr('href');
+      $('#lean_overlay').unbind('click').click(function() {
+          close_modal(modal_id);
+      });
     });
     e.preventDefault();
   });
-  var validateSignIn = function(){
-    $notice_signin.css('display', 'none');
-    if($email_signin.val() === '' ||
-      $pw_signin.val() === ''){
-      
-      $notice_signin.text('missing login parameters').slideDown();
-      return false;
-    }
-    return true;
-  };
 
-  // Submit user registration form
-  $form_reg.on('submit', function(e){
-
-    if(!validateReg()){
-      e.preventDefault();
-      return;
-    }
-
-    backend.signUp($email_reg.val(),
-      $pw_reg.val(), $fullname_reg.val(),
-      $channel_reg.val(),
+  // If the passwords match, provide them to the funciton to set up a new account
+  $('#form-reg').submit(function(e){
+    if ($('#pwd-reg').val() === $('#pwd2-reg').val()) {
+      backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(), $('#channel-reg').val(),
       function(user) {
-        reloadUser();
         updateGreeting();
-        closeModal($modal_auth);
+        backend.checkUser();
+        // TODO: hide warning $('notice-reg').hide();
+        $('#notice-reg').css('display', 'none');
       },
       function(error) {
-        $notice_reg.text(error.message).slideDown();
+        // TODO: display warning $('notice-reg').show();
+        // $('.hidemodal').unbind('click');
+        $notice_reg.text(error.message);
+        $notice_reg.css('display', 'block');
+
+        var modal_id = $(this).attr('href');
+        $('#lean_overlay').unbind('click').click(function() {
+          close_modal(modal_id);
+        });
       });
-
+    }
     e.preventDefault();
+    return false;
   });
-  var validateReg = function(){
-    $notice_reg.css('display', 'none');
-    if($email_reg.val() === '' ||
-      $pw_reg.val() === '' ||
-      $pw2_reg.val() === '' ||
-      $fullname_reg.val() === '' ||
-      $channel_reg.val() === ''){
 
-      $notice_reg.text('missing form fields').slideDown();
-      return false;
-    }
-    if($pw_reg.val() !== $pw2_reg.val()){
-      $notice_reg.text('passwords did not match').slideDown();
-      return false;
-    }
-    return true;
-  };
+  $('#submit-update').on('click', function(e){
+    var $fullname = $('#flname-prefs');
+    var $signature = $('#signature-prefs');
 
-  // Update user preferences
-  $update.on('click', function(e){
-
-    if(!validateUpdate()){
-      e.preventDefault();
-      return;
-    }
+    if(true){ $(this).addClass('shownotice');}
 
     if (user !== undefined) {
       user.set('email', $email_prefs.val());
-      user.set('fullname', $fullname_prefs.val());
+      user.set('fullname', $fullname.val());
       user.set('signature', $signature.val());
       user.set('channel', $channel_prefs.val());
       backend.updateUser(user, function() {
-        reloadUser();
+        console.log('updated');
         updateGreeting();
         updateRSVP();
-        closeModal($modal_prefs);
       });
     }
 
     e.preventDefault();
   });
-  var validateUpdate = function(){
-    $notice_prefs.css('display', 'none');
-    if($email_prefs.val() === '' ||
-      $fullname_prefs.val() === '' ||
-      $channel_prefs.val() === ''){
 
-      $notice_prefs.text('missing form fields').slideDown();
-      return false; 
-    } 
-    return true;
-  };
-
-  // Un-RSVP button
-  $unrsvp.on('click', function(e){
+  $('#submit-unrsvp').on('click', function(e){
     backend.sendRSVP(false, function(){
       updateRSVP();
       reloadPrefs();
-      closeModal($modal_prefs);
     });
     e.preventDefault();
   });
 
-  // Sign out button
-  $signout.on('click', function(e){
+  $('#submit-signout').on('click', function(e){
     backend.logOut();
-    reloadUser();
     updateGreeting();
     updateRSVP();
     reloadPrefs();
-    clearFormSignIn();
-    closeModal($modal_prefs);
     e.preventDefault();
-  }); 
-
-  // Show auth/prefs modal
-  $link_auth.leanModal({ top: 200, overlay: 0.45 });
-  $link_auth2.leanModal({ top: 200, overlay: 0.45 });
-  $link_prefs.leanModal({ top: 200, overlay: 0.45 });
-
-  // Hide modals on ESC key
-  $(document).on('keydown', function(e){
-    if(e.keyCode === 27){
-      closeModal($modal_auth);
-      closeModal($modal_prefs);
-    }
   });
 
-  // Hides modal dialog
-  var closeModal = function(modal_id){
-    $lean_overlay.fadeOut(200);
-    $(modal_id).css({'display': 'none'});
-  };
+  // Show auth/prefs modal
+  $('#link-auth[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-auth2[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
+  $('#link-prefs[rel*=leanModal]').leanModal({ top: 200, overlay: 0.45, closeButton: ".hidemodal" });
+
+  // Hide auth/prefs modal
+  $(document).on('keydown', function(e){
+    if(e.keyCode === 27){
+      $('#lean_overlay').fadeOut(200);
+      $modal_auth.css({display: 'none'});
+      $modal_prefs.css({display: 'none'});
+    }
+  });
 
   // Shows/Hides video background
   $(window).on('resize', updateBackground);
@@ -375,7 +314,6 @@ $(function(){
   $time_left.text(time_left);
 
   // Greets user, or displays signup message
-  reloadUser();
   updateGreeting();
 
   // Check if user has RSVPed that day, display RSVP or green check mark
