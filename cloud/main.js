@@ -92,6 +92,7 @@ var updateMatches = function(callback) {
     matchObj[match2] = matchObj[match2] + 1;
     getUser(match1).set('matches', matchObj);
     getUser(match1).save();
+    incrementMatches(match2, match1);
   };
 
   // repeat code until we have matched everyone who RSVPed
@@ -137,41 +138,27 @@ var updateMatches = function(callback) {
 
     //create a matches randomly
     var match1 = randomMatch();
-    var match2 = randomMatch();
-    //if there are not enough to make groups of three evenly, create 1-2 gropus of 4
-    if (rsvps.length%3 > 0) {
-        var match3 = randomMatch();
 
-      //update match3's matchlist
-      incrementMatches(match3, currentRSVP);
-      incrementMatches(match3, match2);
-      incrementMatches(match3, match1);
+    if (rsvps.length%3 === 0) {
+      var match2 = randomMatch();
 
-      //add to daily group array
-      dailyGroups.push([getUser(currentRSVP),getUser(match1),getUser(match2),getUser(match3)]);
-      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + ' and ' + match3 + '!');
-    } else {
+      //update each users matchlist
+      incrementMatches(match2, match1);
+      incrementMatches(match2, currentRSVP);
       //add to daily group array
       dailyGroups.push([getUser(currentRSVP),getUser(match1),getUser(match2)]);
-      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + '!');
+      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2);
+    } else {
+      //add to daily group array
+      dailyGroups.push([getUser(currentRSVP),getUser(match1)]);
+      console.log(currentRSVP + ' was matched with ' + match1);
+      incrementMatches(currentRSVP, match1);
     }
-
-    //update each users matchlist
-
-    incrementMatches(currentRSVP, match1);
-    incrementMatches(currentRSVP, match2);
-
-    incrementMatches(match1, currentRSVP);
-    incrementMatches(match1, match2);
-
-    incrementMatches(match2, match1);
-    incrementMatches(match2, currentRSVP);
   }
 
   uploadMatches(dailyGroups);
   notifyMatches(dailyGroups);
-
-  });
+});
 
   // Upload matches to the Matches class on Parse
   var uploadMatches = function(matchGroup) {
