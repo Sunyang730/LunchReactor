@@ -51,6 +51,7 @@ var backend = (function() {
     user.set('rsvp', false);
     user.set('matches', {});
     user.set('channel', channel);
+    user.set('signature', '');
 
     user.signUp(null, {
       success: function(user) {

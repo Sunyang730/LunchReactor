@@ -50,7 +50,7 @@ var updateMatches = function(callback) {
 
             // add users, check to make sure we are not added ourself
             for (k; k<users.length; k++) {
-              
+
               // dont add yourself
               if (users[k] !== users[j]) {
                 matches[j][users[k]]=0;
@@ -71,7 +71,7 @@ var updateMatches = function(callback) {
     for (var i in userArray) {
       if ( user === userArray[i].get('fullname') )
         break;
-    } 
+    }
     return userArray[i];
   };
   var randomMatch = function () {
@@ -157,7 +157,7 @@ var updateMatches = function(callback) {
     }
 
     //update each users matchlist
-    
+
     incrementMatches(currentRSVP, match1);
     incrementMatches(currentRSVP, match2);
 
@@ -178,7 +178,7 @@ var updateMatches = function(callback) {
     var Matches = Parse.Object.extend('Matches');
     var matchArray = new Matches();
 
-    console.log('Uploading matches..');
+    // console.log('Uploading matches..');
 
     matchArray.save({matches: matchGroup});
   };
@@ -207,28 +207,28 @@ var updateMatches = function(callback) {
                       userGroup[j].get('signature') + '<br><br>';
      }
 
+    //  console.log('Sending emails to ' + userEmails.join(', '));
      // Call the SendGrid api to send the emails
-    //  sendgrid.sendEmail({
-    //    to: userEmails,
-    //    from: 'lunchreactor@gmail.com',
-    //    subject: 'View Today\'s Lunch Match!',
-    //    html: userDetails + '<br>'
-    //  }, {
-    //    success: function(httpResponse) {
-    //      console.log(httpResponse);
-    //      response.success("Email sent!");
-    //    },
-    //    error: function(httpResponse) {
-    //      console.error(httpResponse);
-    //      response.error("Uh oh, something went wrong");
-    //    }
-    //  });
+     sendgrid.sendEmail({
+       to: userEmails,
+       from: 'lunchreactor@gmail.com',
+       subject: 'View Today\'s Lunch Match!',
+       html: userDetails + '<br>'
+     }, {
+       success: function(httpResponse) {
+         console.log(httpResponse);
+         response.success("Email sent!");
+       },
+       error: function(httpResponse) {
+         console.error(httpResponse);
+         response.error("Uh oh, something went wrong");
+       }
+     });
    };
 
    // Loop through the matches to notify every set of users
    for (var i = 0; i < matchGroup.length; i++) {
-     console.log('Notifying Group ' + i);
-     console.log(matchGroup[i]);
+    //  console.log('Notifying Group ' + i);
      notifyUsers(matchGroup[i]);
    }
  };
