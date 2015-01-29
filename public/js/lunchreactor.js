@@ -97,7 +97,7 @@ $(function(){
       else{ displayNoRSVP(); }
       reloadPrefs();
     }, function() { displayNoRSVP(); reloadPrefs(); });
-    
+
     updateCounter();
   };
 
@@ -256,6 +256,7 @@ $(function(){
       backend.updateUser(user, function() {
         console.log('updated');
         updateGreeting();
+        updateRSVP();
       });
     }
 
