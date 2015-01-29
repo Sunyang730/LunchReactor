@@ -118,27 +118,38 @@ var backend = (function() {
 
   // Get the user's who have RSVP'd
   var getRSVPs = function(callback, error) {
-    var query = new Parse.Query(Parse.User);
-    query.equalTo('rsvp', true);
-    query.find({
-      success: function(results) {
-        var users = [];
-        for (var i = 0; i < results.length; i++) {
-          var object = results[i];
-          users.push(object.get('user'));
+    var currentUser = Parse.User.current();
+
+    if (currentUser) {
+      var query = new Parse.Query(Parse.User);
+      query.equalTo('rsvp', true);
+      query.equalTo('channel', currentUser.get('channel'));
+      query.find({
+        success: function(results) {
+          var users = [];
+          for (var i = 0; i < results.length; i++) {
+            var object = results[i];
+            users.push(object.get('user'));
+          }
+          callback(users);
+        },
+        error: function(error) {
+          error("Error: " + error.code + " " + error.message);
         }
-        callback(users);
-      },
-      error: function(error) {
-        error("Error: " + error.code + " " + error.message);
-      }
-    });
+      });
+    } else {
+      callback('');
+    }
   };
 
   // Use getRSVPs to pass the number of respondents to the callback
   var numRSVPs = function(callback) {
     getRSVPs(function(vals) {
-      callback(vals.length);
+      if (vals === '') {
+        callback('&#8212;');
+      } else {
+        callback(vals.length);
+      }
     });
   };
 
