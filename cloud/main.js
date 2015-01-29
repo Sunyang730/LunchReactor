@@ -308,3 +308,19 @@ var updateMatches = function(callback) {
 //    });
 //  };
 });
+
+// Job to reset users RSVPs (to be run at midnight)
+Parse.Cloud.job("resetRSVPs", function(request, response) {
+  Parse.Cloud.useMasterKey();
+
+  var query = new Parse.Query(Parse.User);
+
+  query.find({
+    success: function(users) {
+      for (var i = 0; i < users.length; i++) {
+        users[i].set('rsvp', false);
+        users[i].save();
+      }
+    }
+  });
+});
