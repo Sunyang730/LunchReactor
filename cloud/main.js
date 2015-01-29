@@ -74,6 +74,17 @@ var updateMatches = function(callback) {
     } 
     return userArray[i];
   };
+  var randomMatch = function () {
+    var matchNum = Math.floor(Math.random() * lowestCountList.length);
+    var match = lowestCountList[matchNum];
+    rsvps.splice(matchNum,1);
+    lowestCountList.splice(matchNum,1);
+    if ( lowestCountList.length <= 0 ) {
+      for (k; !matchesByCount.hasOwnProperty(k);  k++){}
+      lowestCountList = matchesByCount[k];
+    }
+    return match;
+  };
 
   var incrementMatches = function(match1, match2) {
 
@@ -108,9 +119,8 @@ var updateMatches = function(callback) {
         }
     }
 
-    var matchesByCount = {};
-
     //swap key-value-pairs (keys become values and vice versa)
+    var matchesByCount = {};
     for(var j in matchesByName) {
       if( matchesByCount.hasOwnProperty(matchesByName[j]) ){
         matchesByCount[matchesByName[j]].push(j);
@@ -126,32 +136,11 @@ var updateMatches = function(callback) {
 
 
     //create a matches randomly
-    var matchNum = Math.floor(Math.random() * lowestCountList.length);
-    var match1 = lowestCountList[matchNum];
-    rsvps.splice(matchNum,1);
-    lowestCountList.splice(matchNum,1);
-    if ( lowestCountList.length <= 0 ) {
-      for (k; !matchesByCount.hasOwnProperty(k);  k++){}
-      lowestCountList = matchesByCount[k];
-    }
-    matchNum = Math.floor(Math.random() * lowestCountList.length);
-    var match2 = lowestCountList[matchNum];
-    rsvps.splice(matchNum,1);
-    lowestCountList.splice(matchNum,1);
-    if ( lowestCountList.length <= 0 ) {
-      for (k; !matchesByCount.hasOwnProperty(k);  k++){}
-      lowestCountList = matchesByCount[k];
-    }
+    var match1 = randomMatch();
+    var match2 = randomMatch();
     //if there are not enough to make groups of three evenly, create 1-2 gropus of 4
     if (rsvps.length%3 > 0) {
-      matchNum = Math.floor(Math.random() * lowestCountList.length);
-      var match3 = lowestCountList[matchNum];
-      rsvps.splice(matchNum,1);
-      lowestCountList.splice(matchNum,1);
-      if ( lowestCountList.length <= 0 ) {
-        for (k; !matchesByCount.hasOwnProperty(k);  k++){}
-        lowestCountList = matchesByCount[k];
-      }
+        var match3 = randomMatch();
 
       //update match3's matchlist
       incrementMatches(match3, currentRSVP);
