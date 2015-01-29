@@ -28,8 +28,9 @@ var backend = (function() {
       currentUser.set('email', user.get('email'));
       currentUser.set('fullname', user.get('fullname'));
       currentUser.set('signature', user.get('signature'));
+      currentUser.set('channel', user.get('channel'));
 
-      user.save(null, {
+      currentUser.save(null, {
         success: function(user) {
           callback();
         }
