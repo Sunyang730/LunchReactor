@@ -6,6 +6,7 @@ Parse.Cloud.job("notifyUsers", function(request, response) {
    *   Matching Section
    ********************************/
 
+var allUsers = [];
 var users = [];
 var matches = [];
 var rsvps = [];
@@ -31,6 +32,8 @@ var updateMatches = function(callback) {
           rsvps.push(object.get('fullname'));
         }
       }
+
+      allUsers = userArray;
       console.log('Users: ' + users);
       console.log('Matches: ' + JSON.stringify(matches));
       console.log('RSVPS: ' + rsvps);
@@ -208,23 +211,22 @@ var updateMatches = function(callback) {
    // Send a notification email to an array of users
    var notifyUsers = function(userGroup) {
      var userEmails = [];
-     var userDetails = 'Check out your group for today\'s lunch!\n\n\n';
+     var userDetails = 'Check out your group for today\'s lunch!<br><br><br>';
 
      // Set email recipients and their message content
      for (var j = 0; j < userGroup.length; j++) {
        userEmails.push(userGroup[j].get('email'));
-       userDetails += userGroup[j].get('fullname') + '\n' +
-                      userGroup[j].get('signature') + '\n\n';
+       userDetails += '<b>' + userGroup[j].get('fullname') + '</b><br>' +
+                      userGroup[j].get('email') + '<br>' +
+                      userGroup[j].get('signature') + '<br><br>';
      }
-
-     console.log('Emailing ' + userEmails.join(', '));
 
      // Call the SendGrid api to send the emails
     //  sendgrid.sendEmail({
     //    to: userEmails,
     //    from: 'lunchreactor@gmail.com',
     //    subject: 'View Today\'s Lunch Match!',
-    //    text: userDetails
+    //    html: userDetails + '<br>'
     //  }, {
     //    success: function(httpResponse) {
     //      console.log(httpResponse);
