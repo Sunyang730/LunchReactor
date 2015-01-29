@@ -18,6 +18,7 @@ var updateMatches = function(callback) {
   var Users = Parse.Object.extend('User');
   var query= new Parse.Query(Users);
   query.ascending('createdAt');
+  query.equalTo('channel', 'beta');
   query.find({
     success: function(userArray) {
 
