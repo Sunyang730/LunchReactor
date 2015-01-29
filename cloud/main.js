@@ -211,7 +211,7 @@ var updateMatches = function(callback) {
    // Send a notification email to an array of users
    var notifyUsers = function(userGroup) {
      var userEmails = [];
-     var userDetails = 'Check out your group for today\'s lunch!\n\n\n';
+     var userDetails = 'Check out your group for today\'s lunch!<br><br><br>';
 
      // Set email recipients and their message content
      for (var j = 0; j < userGroup.length; j++) {
@@ -222,21 +222,21 @@ var updateMatches = function(callback) {
      }
 
      // Call the SendGrid api to send the emails
-     sendgrid.sendEmail({
-       to: userEmails,
-       from: 'lunchreactor@gmail.com',
-       subject: 'View Today\'s Lunch Match!',
-       html: userDetails + '<br>'
-     }, {
-       success: function(httpResponse) {
-         console.log(httpResponse);
-         response.success("Email sent!");
-       },
-       error: function(httpResponse) {
-         console.error(httpResponse);
-         response.error("Uh oh, something went wrong");
-       }
-     });
+    //  sendgrid.sendEmail({
+    //    to: userEmails,
+    //    from: 'lunchreactor@gmail.com',
+    //    subject: 'View Today\'s Lunch Match!',
+    //    html: userDetails + '<br>'
+    //  }, {
+    //    success: function(httpResponse) {
+    //      console.log(httpResponse);
+    //      response.success("Email sent!");
+    //    },
+    //    error: function(httpResponse) {
+    //      console.error(httpResponse);
+    //      response.error("Uh oh, something went wrong");
+    //    }
+    //  });
    };
 
    // Loop through the matches to notify every set of users
