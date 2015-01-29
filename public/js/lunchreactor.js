@@ -24,8 +24,8 @@ $(function(){
   var $email_reg = $('#email-reg');
   var $pw_reg = $('#pwd-reg');
   var $pw2_reg = $('#pwd2-reg');
-  var fullname_reg = $('#flname-reg');
-  var channel_reg = $('#channel-reg');
+  var $fullname_reg = $('#flname-reg');
+  var $channel_reg = $('#channel-reg');
   var $notice_reg = $('#notice-reg');
   var $register = $('#submit-reg');
 
@@ -197,13 +197,12 @@ $(function(){
       });
       updateRSVP();
       reloadPrefs();
-    });
-
+    }); 
     e.preventDefault();
   });
 
   // Submit sign in form
-  $form_signin.on('submit', function(e) {
+  $signin.on('click', function(e) {
 
     if(!validateSignIn()){
       e.preventDefault();
@@ -216,7 +215,7 @@ $(function(){
       updateRSVP();
       reloadPrefs();
 
-      $notice_signin.css("display", "none");
+      $notice_signin.css('display', 'none');
       closeModal($modal_auth);
     },
     function(error) {
@@ -236,7 +235,7 @@ $(function(){
   };
 
   // Submit user registration form
-  $form_reg.on('submit', function(e){
+  $register.on('click', function(e){
 
     if(!validateReg()){
       e.preventDefault();
@@ -253,6 +252,7 @@ $(function(){
       },
       function(error) {
         $notice_reg.text(error.message).slideDown();
+        e.preventDefault();
       });
 
     e.preventDefault();
@@ -264,12 +264,11 @@ $(function(){
       $pw2_reg.val() === '' ||
       $fullname_reg.val() === '' ||
       $channel_reg.val() === ''){
-
       $notice_reg.text('missing form fields').slideDown();
       return false;
-    }
-    if($pw_reg.val() !== $pw2_reg.val()){
-      $notice_reg.text('passwords did not match').slideDown();
+    }else if($pw_reg.val() !== $pw2_reg.val()){
+      $notice_reg.text('passwords did not match')
+       .slideDown();
       return false;
     }
     return true;
