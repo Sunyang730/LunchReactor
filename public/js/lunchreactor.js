@@ -26,7 +26,7 @@ $(function(){
   var $fullname = $('#flname-prefs');
   var $signature = $('#signature-prefs');
   var $unrsvp = $('#submit-unrsvp');
-  
+
   /* ***********
    * Functions *
    * ***********/
@@ -37,18 +37,18 @@ $(function(){
   var updateBackground = function(){
     width = $(window).width(); // default
 
-    // fade out and dettach when small 
+    // fade out and dettach when small
     if($bg.children().length > 0 && width < 640){
-      $video.hide('slow', function(){ $bg.empty();}); 
+      $video.hide('slow', function(){ $bg.empty();});
     }
 
-    // attach and fade in when big 
+    // attach and fade in when big
     if(width > 640){
       $video = $('<video>').css('display', 'none')
         .attr({id: 'bgvid'}).prop({autoplay:true, loop: true});
       var $source = $('<source>')
         .attr({id: 'source', src: background, type: 'video/mp4'});
-                                                        
+
       $video.append($source);
       $bg.append($video);
       $video.fadeIn('slow');
@@ -155,57 +155,6 @@ $(function(){
     }
   };
 
-  // shows the appropriate RSVP button/checkmark
-  var rsvped;
-  var updateRSVP = function(){
-    rsvped = false; // default
-    $rsvp_circle.css({border: '1px solid #fff',
-      cursor:'pointer'});
-    $rsvp_text.css('display','none');
-    $rsvp_success.css('display','none');
-
-    backend.checkRSVP(function(response) {
-      if (response){ rsvped = true; displayYesRSVP(); }
-      else{ displayNoRSVP(); }
-      reloadPrefs();
-    }, function() { displayNoRSVP(); reloadPrefs(); });
-  };
-  var displayYesRSVP = function() {
-    $rsvp_frost.css('display','none');
-    $rsvp_circle.css({border: '1px solid #66BB6A',
-    cursor:'auto'});
-    $('#rsvp_success').fadeIn();
-  };
-  var displayNoRSVP = function() {
-    closed = false; // default
-    var time_left = backend.timeLeft();
-    if (time_left === 'Closed') {
-      closed = true;
-      $rsvp_frost.css('display','none');
-      $rsvp_circle.css('cursor','auto');
-    }
-    $time_left.text(time_left);
-    $rsvp_text.fadeIn();
-  };
-
-  // clears/auto-populates user prefs
-  var reloadPrefs = function(){
-    $email_prefs.val();
-    $fullname.val();
-    $signature.text();
-    $unrsvp.css({opacity: 0.2, cursor:'auto'}).prop('disabled', true);
-
-    if(user !== undefined){
-     $email_prefs.val(user.get('email'));
-     $fullname.val(user.get('fullname'));
-     $signature.text(user.get('signature'));
-    }
-
-    if(rsvped && !closed){
-      $unrsvp.css({opacity: 1, cursor:'pointer'}).prop('disabled', false);
-    }
-  };
-
   /* ****************
    * Event Handlers *
    * ****************/
@@ -296,13 +245,12 @@ $(function(){
     var $email_prefs = $('#email-prefs');
     var $fullname = $('#flname-prefs');
     var $signature = $('#signature-prefs');
-    var $channel = $('#channel-prefs');
 
     if (user !== undefined) {
       user.set('email', $email_prefs.val());
       user.set('fullname', $fullname.val());
       user.set('signature', $signature.val());
-      user.set('channel', $channel.val());
+      user.set('channel', $channel_prefs.val());
       backend.updateUser(user, function() {
         console.log('updated');
         updateGreeting();
