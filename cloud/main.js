@@ -32,20 +32,15 @@ var updateMatches = function(callback) {
           rsvps.push(object.get('fullname'));
         }
       }
-
-      allUsers = userArray;
-      console.log('Users: ' + users);
-      console.log('Matches: ' + JSON.stringify(matches));
-      console.log('RSVPS: ' + rsvps);
-
       //For each user, Add new users to their match list
       for(var j = 0; j<users.length; j++) {
-
 
         //mactchListLength equals num key-value-pairs or 0 if undefined
         var matchListLength = matches[j]?Object.keys(matches[j]).length:0;
 
         //if total number of users > than this users matchlist + 1
+        //(add 1 to matchlist side because you don't include yourself in your own
+        //match list.
         if ( users.length > matchListLength+1 ) {
 
             //if matchListLength != 0, add 1 to it.
@@ -53,10 +48,13 @@ var updateMatches = function(callback) {
 
             // add users, check to make sure we are not added ourself
             for (k; k<users.length; k++) {
+              
+              // dont add yourself
               if (users[k] !== users[j]) {
                 matches[j][users[k]]=0;
               }
             }
+            // save to Parse
             userArray[j].set('matches', matches[j]);
             userArray[j].save();
         }
@@ -64,20 +62,20 @@ var updateMatches = function(callback) {
   }
 }).then(function(userArray){
 
+  // what we are returning overall, an array where each argument is an array of 3-4 user objects
   var dailyGroups = [];
+
+  // repeat code until we have matched everyone who RSVPed
   while (rsvps.length > 0) {
-    var current_rsvp = rsvps.shift();
-    console.log('current_rsvp: ' + current_rsvp);
-    console.log('RSVPS: ' + rsvps);
-    //console.log('typeof rsvps: ' + typeof rsvps);
-    //console.log('typeof current_rsvp: ' + typeof current_rsvp);
-    var current_matches = {};
+
+    var currentRSVP = rsvps.shift();
+    var currentMatches = {};
 
     //match first person in rsvp list with their User name
     for(var i = 0; i<users.length; i++) {
         //console.log('for ' + i + ' ' + users[i]);
-        if (current_rsvp  === users[i]) {
-          current_matches = matches[i];
+        if (currentRSVP  === users[i]) {
+          currentMatches = matches[i];
           break;
         }
     }
@@ -87,10 +85,10 @@ var updateMatches = function(callback) {
     //console.log('matchesByName: ' + JSON.stringify(matchesByName));
     for(var ii = 0; ii<rsvps.length; ii++) {
         //console.log('for ' + ii);
-        for (var jj in current_matches){
+        for (var jj in currentMatches){
           //console.log('rsvps[ii]: ' + rsvps[ii] + ' jj: '+ jj);
           if ( rsvps[ii] === jj ) {
-            matchesByName[jj] = current_matches[jj];
+            matchesByName[jj] = currentMatches[jj];
             break;
           }
         }
@@ -151,32 +149,32 @@ var updateMatches = function(callback) {
       }
 
       //update match3's matchlist
-      //userArray[match3].matches.set(current_rsvp, userArray[match3].matches[current_rsvp] + 1);
+      //userArray[match3].matches.set(currentRSVP, userArray[match3].matches[currentRSVP] + 1);
       //userArray[match3].matches.set(match2, userArray[match3].matches[match2] + 1);
       //userArray[match3].matches.set(match1, userArray[match3].matches[match1] + 1);
       //userArray[match3].save();
 
-      console.log(current_rsvp + ' was matched with ' + match1 + ' and ' + match2 + ' and ' + match3 + '!');
+      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + ' and ' + match3 + '!');
       //add to daily group array
-      dailyGroups.push([current_rsvp,match1,match2,match3]);
+      dailyGroups.push([currentRSVP,match1,match2,match3]);
     } else {
-      console.log(current_rsvp + ' was matched with ' + match1 + ' and ' + match2 + '!');
+      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + '!');
       //add to daily group array
-      dailyGroups.push([current_rsvp,match1,match2]);
+      dailyGroups.push([currentRSVP,match1,match2]);
     }
 
     console.log('RSVPS: ' + rsvps);
 
     //update each users matchlist
-    //userArray[current_rsvp].matches.set(match1, userArray[current_rsvp].matches[match1] + 1);
-    //userArray[current_rsvp].matches.set(match2, userArray[current_rsvp].matches[match2] + 1);
+    //userArray[currentRSVP].matches.set(match1, userArray[currentRSVP].matches[match1] + 1);
+    //userArray[currentRSVP].matches.set(match2, userArray[currentRSVP].matches[match2] + 1);
 
-    //userArray[match1].matches.set(current_rsvp, userArray[match1].matches[current_rsvp] + 1);
+    //userArray[match1].matches.set(currentRSVP, userArray[match1].matches[currentRSVP] + 1);
     //userArray[match1].matches.set(match2, userArray[match1].matches[match2] + 1);
 
-    //userArray[match2].matches.set(current_rsvp, userArray[match2].matches[current_rsvp] + 1);
+    //userArray[match2].matches.set(currentRSVP, userArray[match2].matches[currentRSVP] + 1);
     //userArray[match2].matches.set(match1, userArray[match2].matches[match1] + 1);
-    //userArray[current_rsvp].save();
+    //userArray[currentRSVP].save();
     //userArray[match1].save();
     //userArray[match2].save();
   }
@@ -254,62 +252,6 @@ var updateMatches = function(callback) {
   //getMatches();
   updateMatches();
 
-//  var getMatches = function(){
-//    getRSVPs(function(rsvps){
-//      updateMatches(function(users){
-//      //while(rsvps.length > 0) {
-//
-//        //match first person in rsvp list with their User object
-//        for(var i = 0; i<users.length; i++) {
-//            if (rsvps[0] === users[i].fullname)
-//                break;
-//        }
-//        var matches = users[i].matches;
-//        var newmatches = {};
-//
-//        //make a new object where the keys are digits  that are the number
-//        //times you've matched a person and
-//        //their value pairs as an array of names with whom you've been
-//        //matched n times.
-//        for(var j in matches) {
-//          if(newmatches.hasOwnProperty(matches[j]) && rsvps.find(function(el){if( el === matches[j] ) return true;})) {
-//              newmatches[matches[j]].push(j);
-//          }else{
-//              mewmatches[matches[j]] = [j];
-//          }
-//        }
-//
-//        console.log(rsvps);
-//        console.log(newmatches);
-//
-//        //get the list of names with lowest number of matches
-//      //  for (var k = 0; !newmatches.hasOwnProperty(k);  k++){
-//      //  }
-//      //  var match = newmatches[k](Math.random() * newmatches[k].length);
-//     // }
-//
-//      });
-//    });
-//  };
-
-//  var getRSVPs= function(callback) {
-//    var Rsvps = Parse.Object.extend('User');
-//    var query = new Parse.Query(Rsvps);
-//    query.equalTo('rsvp',true);
-//    query.find({
-//      success: function(results) {
-//        var rsvps = [];
-//        for (var i = 0; i < results.length; i++) {
-//          var object = results[i];
-//          rsvps.push(object.get('fullname'));
-//        }
-//        callback(rsvps);
-//      }
-//      //error: function(error) {
-//      //  error("Error: " + error.code + " " + error.message);
-//      //}
-//    });
-//  };
 });
 
 // Job to reset users RSVPs (to be run at midnight)
