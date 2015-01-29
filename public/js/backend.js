@@ -3,7 +3,12 @@ var backend = (function() {
    // --------------------------- //
    // Initialization code.
    // --------------------------- //
+
+   // Initialize the Parse API for the PRODUCTION Lunch Reactor app
    Parse.initialize("MpPiIKUQR5feeQMw36y6Bw5DKHObYLJ78DenmItK", "zTVd77R41YJjuySxIiGgxs4BewGD26qaLRmtm8Q2");
+
+   // Initialize the Parse API for the STAGING Lunch Reactor app
+   // Parse.initialize("cZmj5scCCZGUgkCN4paelLSiA6zqEW6TJtXTPNCz", "QtZfQDyaMOQlniUGYqRdzXbutEWSWDK7bKx304pR");
 
   /* *******************
    * Backend Functions *
