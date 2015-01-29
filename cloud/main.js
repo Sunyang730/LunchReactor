@@ -18,6 +18,8 @@ var updateMatches = function(callback) {
   //pull all users
   var Users = Parse.Object.extend('User');
   var query= new Parse.Query(Users);
+
+
   query.ascending('createdAt');
   query.equalTo('channel', 'beta');
   query.find({
@@ -65,6 +67,14 @@ var updateMatches = function(callback) {
   // what we are returning overall, an array where each argument is an array of 3-4 user objects
   var dailyGroups = [];
 
+  var getUser = function(user) {
+    for (var i in userArray) {
+      if ( user === userArray[i].get('fullname') )
+        break;
+    } 
+    return userArray[i];
+  };
+
   // repeat code until we have matched everyone who RSVPed
   while (rsvps.length > 0) {
 
@@ -73,7 +83,6 @@ var updateMatches = function(callback) {
 
     //match first person in rsvp list with their User name
     for(var i = 0; i<users.length; i++) {
-        //console.log('for ' + i + ' ' + users[i]);
         if (currentRSVP  === users[i]) {
           currentMatches = matches[i];
           break;
@@ -82,11 +91,8 @@ var updateMatches = function(callback) {
 
     //make an rsvp list for this person
     var matchesByName = {};
-    //console.log('matchesByName: ' + JSON.stringify(matchesByName));
     for(var ii = 0; ii<rsvps.length; ii++) {
-        //console.log('for ' + ii);
         for (var jj in currentMatches){
-          //console.log('rsvps[ii]: ' + rsvps[ii] + ' jj: '+ jj);
           if ( rsvps[ii] === jj ) {
             matchesByName[jj] = currentMatches[jj];
             break;
@@ -94,13 +100,9 @@ var updateMatches = function(callback) {
         }
     }
 
-
-    //console.log('matchesByName: ' + JSON.stringify(matchesByName));
-
     var matchesByCount = {};
 
     //swap key-value-pairs (keys become values and vice versa)
-    //console.log('Current Matches: ' + JSON.stringify(matchesByName));
     for(var j in matchesByName) {
       if( matchesByCount.hasOwnProperty(matchesByName[j]) ){
         matchesByCount[matchesByName[j]].push(j);
@@ -109,16 +111,11 @@ var updateMatches = function(callback) {
       }
     }
 
-    //console.log('RSVPS: ' + rsvps);
-    //console.log('matchesByCount: ' + JSON.stringify(matchesByCount));
-
     //get the list of names with lowest number of matches
     var k = 0;
     for (k; !matchesByCount.hasOwnProperty(k);  k++){}
     var lowestCountList = matchesByCount[k];
 
-    //console.log('lowestCountList: ' + lowestCountList);
-    //console.log('Random number gerenated: ' + Math.floor(Math.random() * lowestCountList.length));
 
     //create a matches randomly
     var matchNum = Math.floor(Math.random() * lowestCountList.length);
@@ -149,25 +146,23 @@ var updateMatches = function(callback) {
       }
 
       //update match3's matchlist
-      //userArray[match3].matches.set(currentRSVP, userArray[match3].matches[currentRSVP] + 1);
-      //userArray[match3].matches.set(match2, userArray[match3].matches[match2] + 1);
-      //userArray[match3].matches.set(match1, userArray[match3].matches[match1] + 1);
-      //userArray[match3].save();
+      userArray[match3].matches.set(currentRSVP, userArray[match3].matches[currentRSVP] + 1);
+      userArray[match3].matches.set(match2, userArray[match3].matches[match2] + 1);
+      userArray[match3].matches.set(match1, userArray[match3].matches[match1] + 1);
+      userArray[match3].save();
 
+      //add to daily group array
+      dailyGroups.push([getUser(currentRSVP),getUser(match1),getUser(match2),getUser(match3)]);
       console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + ' and ' + match3 + '!');
-      //add to daily group array
-      dailyGroups.push([currentRSVP,match1,match2,match3]);
     } else {
-      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + '!');
       //add to daily group array
-      dailyGroups.push([currentRSVP,match1,match2]);
+      dailyGroups.push([getUser(currentRSVP),getUser(match1),getUser(match2)]);
+      console.log(currentRSVP + ' was matched with ' + match1 + ' and ' + match2 + '!');
     }
 
-    console.log('RSVPS: ' + rsvps);
-
     //update each users matchlist
-    //userArray[currentRSVP].matches.set(match1, userArray[currentRSVP].matches[match1] + 1);
-    //userArray[currentRSVP].matches.set(match2, userArray[currentRSVP].matches[match2] + 1);
+    userArray[currentRSVP].matches.set(match1, userArray[currentRSVP].matches[match1] + 1);
+    userArray[currentRSVP].matches.set(match2, userArray[currentRSVP].matches[match2] + 1);
 
     //userArray[match1].matches.set(currentRSVP, userArray[match1].matches[currentRSVP] + 1);
     //userArray[match1].matches.set(match2, userArray[match1].matches[match2] + 1);
@@ -179,7 +174,6 @@ var updateMatches = function(callback) {
     //userArray[match2].save();
   }
 
-  console.log(dailyGroups);
   uploadMatches(dailyGroups);
   notifyMatches(dailyGroups);
 
