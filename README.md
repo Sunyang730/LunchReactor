@@ -12,7 +12,7 @@ LunchReactor is a web applicaiton that randomly pairs up Hack Reactor Students f
 Rounds open 12:00am and close at 11:00am everyday. Participants sign up on the day of and are notified via email with their lunch appointment.
 
 
-![alt text](./bg/screenshot-landingpage.png "Landing Page")
+![alt text](public/bg/screenshot-landingpage.png "Landing Page")
 
 
 #### I'm interested. How do I sign up?
@@ -21,12 +21,12 @@ Rounds open 12:00am and close at 11:00am everyday. Participants sign up on the d
 3. Click on your username to open 'User Preferences'
 4. Update your channel name to **'beta'**. * **This is a must! Otherwise you won't be part of a group and might get lonely!** * (We'll roll out cohort channels in the next iteration)
 
-![alt text](./bg/screenshot-userprefs.png "User Preferences")
+![alt text](public/bg/screenshot-userprefs.png "User Preferences")
 
 ## That's it! You're done! 
 #### Wait for an email shortly after 11:00am and lunch on!
 
-Now go mingle with your cohort
+###### Now go mingle with your cohort
 ![alt text](http://media.giphy.com/media/xJ3xXy0MHqXhm/giphy.gif "Giphy")
 
 Credits: 
