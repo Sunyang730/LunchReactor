@@ -75,6 +75,14 @@ var updateMatches = function(callback) {
     return userArray[i];
   };
 
+  var incrementMatches = function(match1, match2) {
+
+    var matchObj = getUser(match1).get('matches');
+    matchObj[match2] = matchObj[match2] + 1;
+    getUser(match1).set('matches', matchObj);
+    getUser(match1).save();
+  };
+
   // repeat code until we have matched everyone who RSVPed
   while (rsvps.length > 0) {
 
@@ -146,10 +154,9 @@ var updateMatches = function(callback) {
       }
 
       //update match3's matchlist
-      userArray[match3].matches.set(currentRSVP, userArray[match3].matches[currentRSVP] + 1);
-      userArray[match3].matches.set(match2, userArray[match3].matches[match2] + 1);
-      userArray[match3].matches.set(match1, userArray[match3].matches[match1] + 1);
-      userArray[match3].save();
+      incrementMatches(match3, currentRSVP);
+      incrementMatches(match3, match2);
+      incrementMatches(match3, match1);
 
       //add to daily group array
       dailyGroups.push([getUser(currentRSVP),getUser(match1),getUser(match2),getUser(match3)]);
@@ -161,17 +168,15 @@ var updateMatches = function(callback) {
     }
 
     //update each users matchlist
-    userArray[currentRSVP].matches.set(match1, userArray[currentRSVP].matches[match1] + 1);
-    userArray[currentRSVP].matches.set(match2, userArray[currentRSVP].matches[match2] + 1);
+    
+    incrementMatches(currentRSVP, match1);
+    incrementMatches(currentRSVP, match2);
 
-    //userArray[match1].matches.set(currentRSVP, userArray[match1].matches[currentRSVP] + 1);
-    //userArray[match1].matches.set(match2, userArray[match1].matches[match2] + 1);
+    incrementMatches(match1, currentRSVP);
+    incrementMatches(match1, match2);
 
-    //userArray[match2].matches.set(currentRSVP, userArray[match2].matches[currentRSVP] + 1);
-    //userArray[match2].matches.set(match1, userArray[match2].matches[match1] + 1);
-    //userArray[currentRSVP].save();
-    //userArray[match1].save();
-    //userArray[match2].save();
+    incrementMatches(match2, match1);
+    incrementMatches(match2, currentRSVP);
   }
 
   uploadMatches(dailyGroups);
