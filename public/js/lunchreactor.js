@@ -199,7 +199,7 @@ $(function(){
       updateGreeting();
       updateRSVP();
       reloadPrefs();
-      checkUser();
+      backend.checkUser();
       // TODO: hide warning $('notice-signin').hide();
       $('#notice-signin').css("display", "none");
     },
@@ -223,7 +223,7 @@ $(function(){
       backend.signUp($('#email-reg').val(), $('#pwd-reg').val(), $('#flname-reg').val(), $('#channel-reg').val(),
       function(user) {
         updateGreeting();
-        checkUser();
+        backend.checkUser();
         // TODO: hide warning $('notice-reg').hide();
         $('#notice-reg').css('display', 'none');
       },
