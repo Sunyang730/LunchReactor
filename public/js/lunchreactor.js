@@ -248,6 +248,7 @@ $(function(){
       function(user) {
         reloadUser();
         updateGreeting();
+        reloadPrefs();
         closeModal($modal_auth);
       },
       function(error) {
