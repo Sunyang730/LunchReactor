@@ -4,6 +4,10 @@
             "applicationId": "MpPiIKUQR5feeQMw36y6Bw5DKHObYLJ78DenmItK", 
             "masterKey": "5J54hYMklKSIYeUZEuwd6aPADgOzK7uY1Jb1G67k"
         }, 
+        "Lunch Reactor Staging": {
+            "applicationId": "cZmj5scCCZGUgkCN4paelLSiA6zqEW6TJtXTPNCz", 
+            "masterKey": "uMxewq9YJTrYGH03norG5XzECOO1uuAn3mJJllMY"
+        }, 
         "_default": {
             "link": "Lunch Reactor"
         }
